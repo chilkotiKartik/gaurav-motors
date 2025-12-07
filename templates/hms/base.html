@@ -1,0 +1,1528 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{% block title %}GAURAV MOTORS LOHAGHAT - Quality Car Service{% endblock %}</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/hms.css') }}" rel="stylesheet">
+    <style>
+      * {
+        font-family: 'Poppins', sans-serif;
+      }
+      
+      body {
+        background: linear-gradient(180deg, #f5f9ff 0%, #eef6ff 50%, #e8f5ff 100%);
+        background-attachment: fixed;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      
+      
+      /* Top Announcement Bar */
+      .top-bar {
+        background: linear-gradient(90deg, #0b5bb0 0%, #0d6efd 50%, #0b84d9 100%);
+        color: white;
+        padding: 8px 0;
+        font-size: 0.85rem;
+        animation: slideDown 0.5s ease-out;
+      }
+      
+      @keyframes slideDown {
+        from { transform: translateY(-100%); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+      
+      .top-bar a {
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s;
+      }
+      
+      .top-bar a:hover {
+        color: #bfe6ff;
+        transform: scale(1.05);
+      }
+      
+      /* Enhanced Navbar */
+      .main-navbar {
+        background: rgba(13, 110, 253, 0.96);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.12);
+        transition: all 0.3s;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        animation: fadeIn 0.8s ease-out;
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      
+      .main-navbar.scrolled {
+        padding: 5px 0;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+      }
+      
+      .navbar-brand {
+        font-size: 1.3rem;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        transition: all 0.3s;
+        animation: bounceIn 1s ease-out;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      
+      .logo-wrapper {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        animation: logoGlow 3s ease-in-out infinite;
+      }
+      
+      @keyframes logoGlow {
+        0%, 100% {
+          box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        50% {
+          box-shadow: 0 8px 30px rgba(255,193,7,0.5), 0 0 20px rgba(255,193,7,0.3);
+        }
+      }
+      
+      .logo-img {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+      }
+      
+      .brand-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.2;
+      }
+      
+      .brand-name {
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+        color: #fff;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      
+      @keyframes bounceIn {
+        0% { transform: scale(0); opacity: 0; }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); opacity: 1; }
+      }
+      
+      .navbar-brand:hover {
+        transform: scale(1.08);
+      }
+      
+      .navbar-brand:hover .logo-wrapper {
+        transform: rotate(-8deg) scale(1.15);
+        box-shadow: 0 10px 40px rgba(13, 110, 253, 0.4), 0 0 30px rgba(255,193,7,0.4) !important;
+      }
+      
+      .navbar-brand:hover .logo-img {
+        transform: rotate(8deg) scale(1.1);
+        filter: drop-shadow(3px 3px 8px rgba(0,0,0,0.3));
+      }
+      
+      .navbar-brand:hover .logo-bg {
+        box-shadow: 0 8px 30px rgba(255, 255, 255, 0.3);
+      }
+      
+      .navbar-brand .leaf-icon {
+        animation: rotate 4s infinite linear;
+      }
+      
+      @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      
+      .nav-link {
+        position: relative;
+        transition: all 0.3s;
+        font-weight: 500;
+        padding: 10px 15px !important;
+        margin: 0 5px;
+        border-radius: 8px;
+      }
+      
+      .nav-link::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 3px;
+        background: #0d6efd;
+        transition: all 0.3s;
+        transform: translateX(-50%);
+      }
+      
+      .nav-link:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-3px);
+      }
+      
+      .nav-link:hover::before {
+        width: 80%;
+      }
+      
+      .nav-link i {
+        transition: all 0.3s;
+      }
+      
+      .nav-link:hover i {
+        transform: scale(1.2) rotate(10deg);
+      }
+      
+      /* Badge Pulse Animation */
+      .badge-pulse {
+        animation: pulse 2s infinite;
+      }
+      
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+      }
+      
+      /* Container with fade-in */
+      .main-container {
+        animation: fadeInUp 0.8s ease-out;
+        position: relative;
+        z-index: 1;
+      }
+      
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      /* Alert Animations */
+      .alert {
+        animation: slideInRight 0.5s ease-out;
+      }
+      
+      @keyframes slideInRight {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      
+      /* Scroll to Top Button */
+      .scroll-top {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #0d6efd 0%, #0b84d9 100%);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        font-size: 1.5rem;
+        cursor: pointer;
+        opacity: 0;
+        transition: all 0.3s;
+        z-index: 1000;
+        box-shadow: 0 5px 20px rgba(13,110,253,0.18);
+      }
+      
+      .scroll-top.visible {
+        opacity: 1;
+        animation: bounceIn 0.5s;
+      }
+      
+      .scroll-top:hover {
+        transform: translateY(-10px) scale(1.1);
+        box-shadow: 0 10px 30px rgba(76, 175, 80, 0.6);
+      }
+
+      /* ========================================
+         MOBILE OPTIMIZATION & ADVANCED FEATURES
+         ======================================== */
+
+      /* Enhanced Dropdown Menu Styling */
+      .dropdown-menu {
+        border: none;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        border-radius: 12px;
+        padding: 0.5rem 0;
+        animation: dropdownFadeIn 0.3s ease;
+      }
+
+      @keyframes dropdownFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .dropdown-item {
+        padding: 0.75rem 1.5rem;
+        transition: all 0.3s ease;
+        border-left: 3px solid transparent;
+      }
+
+      .dropdown-item:hover {
+        background: linear-gradient(90deg, rgba(13,110,253,0.1) 0%, transparent 100%);
+        border-left-color: #0d6efd;
+        transform: translateX(5px);
+      }
+
+      .dropdown-menu-dark .dropdown-item:hover {
+        background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+        border-left-color: #fbbf24;
+      }
+
+      .dropdown-header {
+        font-weight: 700;
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+        padding: 0.75rem 1.5rem 0.5rem;
+      }
+
+      /* Mobile Menu Enhancements */
+      @media (max-width: 991px) {
+        .navbar-collapse {
+          background: linear-gradient(135deg, rgba(13,110,253,0.98) 0%, rgba(11,132,217,0.98) 100%);
+          padding: 1.5rem;
+          border-radius: 15px;
+          margin-top: 1rem;
+          box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+          max-height: 70vh;
+          overflow-y: auto;
+          animation: mobileMenuSlide 0.4s ease;
+        }
+
+        @keyframes mobileMenuSlide {
+          from {
+            opacity: 0;
+            transform: translateY(-30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .navbar-collapse::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        .navbar-collapse::-webkit-scrollbar-track {
+          background: rgba(255,255,255,0.1);
+          border-radius: 10px;
+        }
+
+        .navbar-collapse::-webkit-scrollbar-thumb {
+          background: rgba(255,255,255,0.3);
+          border-radius: 10px;
+        }
+
+        .nav-link {
+          padding: 1rem 1.5rem !important;
+          margin: 0.25rem 0;
+          border-radius: 10px;
+          font-size: 1.05rem;
+          background: rgba(255,255,255,0.05);
+          border-left: 4px solid transparent;
+        }
+
+        .nav-link:hover, .nav-link.active {
+          background: rgba(255,255,255,0.15);
+          border-left-color: #fbbf24;
+          transform: translateX(5px);
+        }
+
+        .dropdown-menu {
+          background: rgba(255,255,255,0.1);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255,255,255,0.2);
+          margin-top: 0.5rem;
+        }
+
+        .dropdown-menu-dark {
+          background: rgba(0,0,0,0.3);
+        }
+
+        .dropdown-item {
+          color: white !important;
+          padding: 0.9rem 2rem;
+        }
+
+        .dropdown-divider {
+          border-color: rgba(255,255,255,0.2);
+          margin: 0.5rem 0;
+        }
+
+        .brand-name {
+          font-size: 1.1rem !important;
+        }
+
+        .logo-wrapper {
+          width: 55px !important;
+          height: 55px !important;
+        }
+      }
+
+      /* Mobile Service Banner */
+      @media (max-width: 768px) {
+        .top-bar {
+          font-size: 0.75rem;
+          padding: 8px 0;
+        }
+
+        .top-bar .col-md-4 {
+          padding: 4px 8px;
+        }
+
+        .top-bar .col-md-4:not(:last-child) {
+          border-right: none;
+          border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Stack service contact banner vertically */
+        div[style*="background: linear-gradient(135deg, #dc3545"] .row > div {
+          padding: 8px !important;
+          border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        div[style*="background: linear-gradient(135deg, #dc3545"] .row > div:last-child {
+          border-bottom: none;
+        }
+      }
+
+      /* Tablet Optimization */
+      @media (min-width: 768px) and (max-width: 991px) {
+        .navbar-brand {
+          font-size: 1rem;
+        }
+
+        .nav-link {
+          padding: 0.5rem 0.8rem !important;
+          font-size: 0.9rem;
+        }
+      }
+
+      /* Advanced Loading Animation */
+      .page-loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        opacity: 1;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+      }
+
+      .page-loader.hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      .loader-spinner {
+        width: 60px;
+        height: 60px;
+        border: 5px solid rgba(255,255,255,0.2);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      /* Smooth Scroll Behavior */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Back to Top Button Enhancement */
+      .scroll-top {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      @media (max-width: 768px) {
+        .scroll-top {
+          bottom: 90px;
+          right: 20px;
+          width: 45px;
+          height: 45px;
+          font-size: 1.2rem;
+        }
+      }
+
+      /* Advanced Hover Effects for Cards */
+      .card {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.15) !important;
+      }
+
+      /* Progress Bar Animation */
+      @keyframes progressAnimation {
+        from { width: 0; }
+        to { width: var(--progress-width); }
+      }
+
+      .progress-bar {
+        animation: progressAnimation 1.5s ease-out;
+      }
+
+      /* Notification Badge Pulse */
+      .badge-notification {
+        animation: badgePulse 2s infinite;
+      }
+
+      @keyframes badgePulse {
+        0%, 100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(220,53,69,0.7);
+        }
+        50% {
+          transform: scale(1.05);
+          box-shadow: 0 0 0 8px rgba(220,53,69,0);
+        }
+      }
+
+      /* Skeleton Loading for Images */
+      .skeleton {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: skeletonLoading 1.5s infinite;
+      }
+
+      @keyframes skeletonLoading {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+
+      /* Touch Device Optimizations */
+      @media (hover: none) and (pointer: coarse) {
+        .nav-link, .btn, .dropdown-item {
+          min-height: 44px;
+          display: flex;
+          align-items: center;
+        }
+
+        .card:active {
+          transform: scale(0.98);
+        }
+      }
+
+      /* Accessibility Improvements */
+      .nav-link:focus, .btn:focus, .form-control:focus {
+        outline: 3px solid #fbbf24;
+        outline-offset: 2px;
+      }
+
+      /* Dark Mode Removed - Original Light Theme Only */
+
+      /* Print Optimization */
+      @media print {
+        .navbar, .top-bar, .scroll-top, .chatbot {
+          display: none !important;
+        }
+
+        body {
+          background: white;
+        }
+      }
+
+      /* Reduced Motion for Accessibility */
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+
+      /* Advanced Search Bar */
+      .search-enhanced {
+        position: relative;
+      }
+
+      .search-enhanced input {
+        padding-left: 45px;
+        padding-right: 45px;
+      }
+
+      .search-enhanced .search-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+      }
+
+      .search-enhanced .clear-search {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #6c757d;
+        transition: all 0.3s;
+      }
+
+      .search-enhanced .clear-search:hover {
+        color: #dc3545;
+        transform: translateY(-50%) scale(1.2);
+      }
+
+      /* Floating Action Buttons for Quick Contact */
+      .fab-container {
+        position: fixed;
+        bottom: 100px;
+        right: 30px;
+        z-index: 998;
+      }
+
+      @media (max-width: 768px) {
+        .fab-container {
+          bottom: 150px;
+          right: 20px;
+        }
+        
+        .fab-whatsapp, .fab-main {
+          width: 55px !important;
+          height: 55px !important;
+        }
+      }
+
+      /* WhatsApp Pulse Animation */
+      @keyframes pulse {
+        0%, 100% {
+          box-shadow: 0 8px 25px rgba(37,211,102,0.5);
+        }
+        50% {
+          box-shadow: 0 8px 35px rgba(37,211,102,0.8), 0 0 0 15px rgba(37,211,102,0.1);
+        }
+      }
+      
+      /* Hover Effects */
+      .fab-whatsapp:hover, .fab-main:hover {
+        text-decoration: none;
+        color: white !important;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Professional Workshop Background Pattern -->
+    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; pointer-events: none; opacity: 0.03; background-image: url('{{ url_for('static', filename='images/gm3.jpg') }}'); background-size: cover; background-position: center; background-attachment: fixed;"></div>
+    
+    <!-- Service Contact Banner -->
+    <div style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); color: white; padding: 12px 0; font-weight: 600; box-shadow: 0 3px 15px rgba(220,53,69,0.2); position: relative; z-index: 999;">
+      <div class="container-fluid">
+        <div class="row align-items-center text-center">
+          <div class="col-md-4">
+            <i class="fas fa-phone-volume me-2"></i>
+            <span class="badge bg-white text-danger me-2" style="font-size: 0.75rem;">CALL NOW</span>
+            <strong style="font-size: 1.1rem;">+91 9997612579</strong>
+          </div>
+          <div class="col-md-4">
+            <i class="fas fa-clock me-2"></i>
+            <strong>Mon-Sat 9AM-7PM</strong> - Quality Service
+          </div>
+          <div class="col-md-4">
+            <a href="{{ url_for('list_doctors') }}" class="btn btn-light btn-sm" style="font-weight: 600;">
+              <i class="fas fa-calendar-check me-1"></i>Book Service
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark main-navbar shadow-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand fw-bold d-flex align-items-center" href="{{ url_for('index') }}" style="gap: 12px;">
+          <div class="logo-wrapper position-relative" style="width: 70px; height: 70px;">
+            <div class="logo-bg position-absolute w-100 h-100 rounded-3" style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); box-shadow: 0 6px 20px rgba(0,0,0,0.15); border: 2px solid rgba(255,255,255,0.5);"></div>
+            <img src="{{ url_for('static', filename='images/logo.png') }}" 
+                 alt="GM Logo" 
+                 class="logo-img position-relative" 
+                 style="width: 100%; height: 100%; object-fit: contain; padding: 10px; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));">
+          </div>
+          <div class="brand-text">
+            <div class="d-flex align-items-center gap-2">
+              <strong class="brand-name" style="font-size: 1.4rem; letter-spacing: 1.5px; color: white; text-shadow: 2px 2px 6px rgba(0,0,0,0.3); font-weight: 800;">GAURAV MOTORS</strong>
+            </div>
+            <span class="badge bg-warning text-dark" style="font-size: 0.65rem; padding: 4px 10px; margin-top: 2px; box-shadow: 0 2px 8px rgba(255,193,7,0.4);"><i class="fas fa-map-marker-alt me-1"></i>Lohaghat, Uttarakhand</span>
+          </div>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            {% if current_user.is_authenticated %}
+              <!-- ADMIN NAVIGATION -->
+              {% if current_user.role == 'admin' %}
+                <li class="nav-item"><a class="nav-link active" href="{{ url_for('admin_dashboard') }}"><i class="fas fa-tachometer-alt me-1"></i>Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_patients') }}"><i class="fas fa-users me-1"></i>Customers</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('list_doctors') }}"><i class="fas fa-cogs me-1"></i>Spare Parts</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_appointments') }}"><i class="fas fa-box me-1"></i>Parts Orders</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_appointments') }}"><i class="fas fa-calendar-alt me-1"></i>Service Bookings</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_analytics') }}"><i class="fas fa-chart-bar me-1"></i>Analytics</a></li>
+              
+              <!-- MECHANIC NAVIGATION -->
+              {% elif current_user.role == 'mechanic' %}
+                <li class="nav-item"><a class="nav-link active" href="{{ url_for('doctor_dashboard') }}"><i class="fas fa-tools me-1"></i>Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('doctor_availability') }}"><i class="fas fa-calendar-check me-1"></i>My Schedule</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('list_doctors') }}"><i class="fas fa-boxes me-1"></i>All Parts</a></li>
+              
+              <!-- CUSTOMER NAVIGATION -->
+              {% elif current_user.role == 'patient' %}
+                <li class="nav-item"><a class="nav-link active" href="{{ url_for('patient_dashboard') }}"><i class="fas fa-car me-1"></i>My Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('list_doctors') }}"><i class="fas fa-search me-1"></i>Search Parts</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('patient_edit') }}"><i class="fas fa-user-edit me-1"></i>My Profile</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('services') }}"><i class="fas fa-car-mechanic me-1"></i>Services</a></li>
+              {% endif %}
+            {% else %}
+              <!-- PUBLIC NAVIGATION (Not Logged In) -->
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}"><i class="fas fa-home me-1"></i>Home</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}"><i class="fas fa-info-circle me-1"></i>About</a></li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown">
+                  <i class="fas fa-tools me-1"></i>Services
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{{ url_for('services') }}"><i class="fas fa-car me-2"></i>All Services</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="{{ url_for('services') }}#engine"><i class="fas fa-cog me-2 text-danger"></i>Engine Service</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('services') }}#brake"><i class="fas fa-circle-stop me-2 text-info"></i>Brake Service</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('services') }}#electrical"><i class="fas fa-bolt me-2 text-warning"></i>Electrical</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('services') }}#ac"><i class="fas fa-snowflake me-2 text-success"></i>AC Service</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('services') }}#bodywork"><i class="fas fa-car-side me-2 text-primary"></i>Body Work</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('services') }}#general"><i class="fas fa-wrench me-2 text-secondary"></i>General Service</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                  <i class="fas fa-shopping-cart me-1"></i>Spare Parts
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark">
+                  <li><a class="dropdown-item" href="{{ url_for('list_doctors') }}"><i class="fas fa-boxes me-2"></i>Browse All Parts</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><h6 class="dropdown-header text-warning"><i class="fas fa-layer-group me-2"></i>Categories</h6></li>
+                  <li><a class="dropdown-item" href="{{ url_for('list_doctors', category=1) }}"><i class="fas fa-engine me-2 text-primary"></i>Engine Components</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('list_doctors', category=2) }}"><i class="fas fa-circle-notch me-2 text-danger"></i>Brake Systems</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('list_doctors', category=3) }}"><i class="fas fa-filter me-2 text-success"></i>Filters & Fluids</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('list_doctors', category=4) }}"><i class="fas fa-bolt me-2 text-warning"></i>Electrical Parts</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('list_doctors', category=5) }}"><i class="fas fa-car-side me-2" style="color: #6f42c1;"></i>Suspension</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('list_doctors', category=6) }}"><i class="fas fa-cog me-2" style="color: #fd7e14;"></i>Transmission</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('list_doctors', category=7) }}"><i class="fas fa-car me-2 text-info"></i>Body & Exterior</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('list_doctors', category=8) }}"><i class="fas fa-couch me-2" style="color: #0dcaf0;"></i>Interior Parts</a></li>
+                </ul>
+              </li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('faq') }}"><i class="fas fa-question-circle me-1"></i>FAQ</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('contact') }}"><i class="fas fa-envelope me-1"></i>Contact</a></li>
+            {% endif %}
+          </ul>
+          <ul class="navbar-nav ms-auto">
+            {% if current_user.is_authenticated %}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                  <i class="fas fa-user-circle me-1"></i>
+                  <strong>{{ current_user.username }}</strong>
+                  <span class="badge bg-light text-success ms-2" style="font-size: 0.7rem;">{{ current_user.role|title }}</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  {% if current_user.role == 'patient' %}
+                    <li><a class="dropdown-item" href="{{ url_for('patient_edit') }}"><i class="fas fa-user-edit me-2"></i>Edit Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                  {% elif current_user.role == 'mechanic' %}
+                    <li><a class="dropdown-item" href="{{ url_for('doctor_availability') }}"><i class="fas fa-calendar me-2"></i>Manage Schedule</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                  {% elif current_user.role == 'admin' %}
+                    <li><a class="dropdown-item" href="{{ url_for('admin_dashboard') }}"><i class="fas fa-tachometer-alt me-2"></i>Admin Panel</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                  {% endif %}
+                  <li><a class="dropdown-item text-danger" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                </ul>
+              </li>
+            {% else %}
+              <li class="nav-item"><a class="nav-link btn btn-warning text-dark fw-bold px-4 ms-2" href="{{ url_for('list_doctors') }}" style="border-radius: 25px; box-shadow: 0 4px 15px rgba(251,191,36,0.4);"><i class="fas fa-calendar-check me-1"></i>Book Now</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container mt-4">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, msg in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+              {{ msg }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </div>
+    <!-- Professional Hospital Footer -->
+    <footer class="mt-5 text-white shadow-lg" style="background: linear-gradient(135deg, #0b5bb0 0%, #0d6efd 50%, #0b84d9 100%); position: relative; overflow: hidden;">
+      <!-- Decorative Background Pattern -->
+      <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.05; background: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,0.05) 35px, rgba(255,255,255,0.05) 70px);"></div>
+      
+      <div class="container position-relative" style="z-index: 1;">
+        <!-- Main Footer Content -->
+        <div class="row py-5">
+          <!-- About Gaurav Motors -->
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="d-flex align-items-center mb-3">
+              <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Gaurav Motors Logo" style="width: 50px; height: 50px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.2); margin-right: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); background: white; padding: 5px;">
+              <div>
+                <h5 class="fw-bold mb-0" style="font-size: 1.1rem; letter-spacing: 0.5px;">GAURAV</h5>
+                <span class="small" style="opacity: 0.9;">MOTORS LOHAGHAT</span>
+              </div>
+            </div>
+            <p class="text-white small mb-3" style="opacity: 0.85; line-height: 1.6;">
+              Premier car workshop in Lohaghat, Uttarakhand, providing quality auto repair and maintenance services with expert technicians and modern equipment.
+            </p>
+            <div class="mb-3">
+              <span class="badge bg-light text-primary me-1 mb-2" style="font-size: 0.7rem;"><i class="fas fa-award me-1"></i>Trusted Service</span>
+              <span class="badge bg-light text-primary me-1 mb-2" style="font-size: 0.7rem;"><i class="fas fa-cogs me-1"></i>Genuine Parts</span>
+              <span class="badge bg-light text-primary mb-2" style="font-size: 0.7rem;"><i class="fas fa-star me-1"></i>Quality Parts</span>
+            </div>
+            <div class="d-flex gap-2">
+              <a href="#" class="btn btn-sm btn-outline-light rounded-circle" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; transition: all 0.3s;" onmouseover="this.style.background='#ffffff'; this.style.color='#0d6efd';" onmouseout="this.style.background=''; this.style.color='';"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="btn btn-sm btn-outline-light rounded-circle" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; transition: all 0.3s;" onmouseover="this.style.background='#ffffff'; this.style.color='#0d6efd';" onmouseout="this.style.background=''; this.style.color='';"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="btn btn-sm btn-outline-light rounded-circle" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; transition: all 0.3s;" onmouseover="this.style.background='#ffffff'; this.style.color='#0d6efd';" onmouseout="this.style.background=''; this.style.color='';"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="btn btn-sm btn-outline-light rounded-circle" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; transition: all 0.3s;" onmouseover="this.style.background='#ffffff'; this.style.color='#0d6efd';" onmouseout="this.style.background=''; this.style.color='';"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#" class="btn btn-sm btn-outline-light rounded-circle" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; transition: all 0.3s;" onmouseover="this.style.background='#ffffff'; this.style.color='#0d6efd';" onmouseout="this.style.background=''; this.style.color='';"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+
+          <!-- Car Services -->
+          <div class="col-lg-3 col-md-6 mb-4">
+            <h6 class="fw-bold mb-3" style="font-size: 1rem; border-left: 3px solid #fff; padding-left: 10px;">
+              <i class="fas fa-tools me-2"></i>Our Services
+            </h6>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a href="{{ url_for('services') }}#engine" class="text-white text-decoration-none hover-link d-flex align-items-center" style="opacity: 0.85; transition: all 0.3s;">
+                  <i class="fas fa-cog me-2 text-danger"></i>Engine Service & Repair
+                </a>
+              </li>
+              <li class="mb-2">
+                <a href="{{ url_for('services') }}#brake" class="text-white text-decoration-none hover-link d-flex align-items-center" style="opacity: 0.85; transition: all 0.3s;">
+                  <i class="fas fa-circle-stop me-2 text-info"></i>Brake System Service
+                </a>
+              </li>
+              <li class="mb-2">
+                <a href="{{ url_for('services') }}#electrical" class="text-white text-decoration-none hover-link d-flex align-items-center" style="opacity: 0.85; transition: all 0.3s;">
+                  <i class="fas fa-bolt me-2 text-warning"></i>Electrical & Diagnostics
+                </a>
+              </li>
+              <li class="mb-2">
+                <a href="{{ url_for('services') }}#ac" class="text-white text-decoration-none hover-link d-flex align-items-center" style="opacity: 0.85; transition: all 0.3s;">
+                  <i class="fas fa-snowflake me-2 text-success"></i>AC Repair & Service
+                </a>
+              </li>
+              <li class="mb-2">
+                <a href="{{ url_for('services') }}#bodywork" class="text-white text-decoration-none hover-link d-flex align-items-center" style="opacity: 0.85; transition: all 0.3s;">
+                  <i class="fas fa-car-side me-2" style="color: #ff69b4;"></i>Body Work & Painting
+                </a>
+              </li>
+              <li class="mb-2">
+                <a href="{{ url_for('services') }}#general" class="text-white text-decoration-none hover-link d-flex align-items-center" style="opacity: 0.85; transition: all 0.3s;">
+                  <i class="fas fa-wrench me-2 text-secondary"></i>General Maintenance
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="col-lg-3 col-md-6 mb-4">
+            <h6 class="fw-bold mb-3" style="font-size: 1rem; border-left: 3px solid #fff; padding-left: 10px;">
+              <i class="fas fa-link me-2"></i>Quick Links
+            </h6>
+            <ul class="list-unstyled">
+              <li class="mb-2"><a href="{{ url_for('index') }}" class="text-white text-decoration-none hover-link" style="opacity: 0.85; transition: all 0.3s;"><i class="fas fa-chevron-right me-2"></i>Home</a></li>
+              <li class="mb-2"><a href="{{ url_for('about') }}" class="text-white text-decoration-none hover-link" style="opacity: 0.85; transition: all 0.3s;"><i class="fas fa-chevron-right me-2"></i>About Gaurav Motors</a></li>
+              <li class="mb-2"><a href="{{ url_for('list_doctors') }}" class="text-white text-decoration-none hover-link" style="opacity: 0.85; transition: all 0.3s;"><i class="fas fa-chevron-right me-2"></i>Find a Mechanic</a></li>
+              <li class="mb-2"><a href="{{ url_for('services') }}" class="text-white text-decoration-none hover-link" style="opacity: 0.85; transition: all 0.3s;"><i class="fas fa-chevron-right me-2"></i>Car Services</a></li>
+              <li class="mb-2"><a href="{{ url_for('faq') }}" class="text-white text-decoration-none hover-link" style="opacity: 0.85; transition: all 0.3s;"><i class="fas fa-chevron-right me-2"></i>FAQ & Help Center</a></li>
+              <li class="mb-2"><a href="{{ url_for('contact') }}" class="text-white text-decoration-none hover-link" style="opacity: 0.85; transition: all 0.3s;"><i class="fas fa-chevron-right me-2"></i>Contact Us</a></li>
+              <li class="mb-2"><a href="#" class="text-white text-decoration-none hover-link" style="opacity: 0.85; transition: all 0.3s;"><i class="fas fa-chevron-right me-2"></i>Careers at Gaurav Motors</a></li>
+              <li class="mb-2"><a href="#" class="text-white text-decoration-none hover-link" style="opacity: 0.85; transition: all 0.3s;"><i class="fas fa-chevron-right me-2"></i>Customer Portal</a></li>
+            </ul>
+          </div>
+
+          <!-- Contact Information -->
+          <div class="col-lg-3 col-md-6 mb-4">
+            <h6 class="fw-bold mb-3" style="font-size: 1rem; border-left: 3px solid #fff; padding-left: 10px;">
+              <i class="fas fa-address-card me-2"></i>Contact Information
+            </h6>
+            <ul class="list-unstyled small" style="opacity: 0.9;">
+              <li class="mb-3">
+                <div class="d-flex align-items-start">
+                  <i class="fas fa-map-marker-alt me-3 mt-1" style="color: #fff; font-size: 1.1rem;"></i>
+                  <div>
+                    <strong class="d-block mb-1">Address:</strong>
+                    <span>Main Road, Lohaghat<br>Champawat, Uttarakhand 262524</span>
+                  </div>
+                </div>
+              </li>
+              <li class="mb-3">
+                <div class="d-flex align-items-start">
+                  <i class="fas fa-phone-alt me-3 mt-1" style="color: #fff; font-size: 1.1rem;"></i>
+                  <div>
+                    <strong class="d-block mb-1">Phone:</strong>
+                    <span>Service: +91 9997612579<br>
+                    <span class="badge bg-success" style="font-size: 0.7rem;">WhatsApp: +91 9997612579</span></span>
+                  </div>
+                </div>
+              </li>
+              <li class="mb-3">
+                <div class="d-flex align-items-start">
+                  <i class="fas fa-envelope me-3 mt-1" style="color: #fff; font-size: 1.1rem;"></i>
+                  <div>
+                    <strong class="d-block mb-1">Email:</strong>
+                    <span>info@gauravmotors.com<br>service@gauravmotors.com</span>
+                  </div>
+                </div>
+              </li>
+              <li class="mb-2">
+                <div class="d-flex align-items-start">
+                  <i class="fas fa-clock me-3 mt-1" style="color: #fff; font-size: 1.1rem;"></i>
+                  <div>
+                    <strong class="d-block mb-1">Hours:</strong>
+                    <span class="badge bg-success" style="font-size: 0.75rem;">Mon-Sat 9AM-7PM</span><br>
+                    <span class="small">Sunday: Closed</span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Mission Statement -->
+        <div class="row py-4 border-top border-white border-opacity-25">
+          <div class="col-12 text-center">
+            <div class="mb-3">
+              <i class="fas fa-car" style="font-size: 2rem; opacity: 0.8;"></i>
+            </div>
+            <p class="mb-2 fw-bold" style="font-size: 1.15rem; letter-spacing: 0.5px;">
+              "Quality Service, Trusted Care for Your Vehicle"
+            </p>
+            <p class="small mb-0" style="opacity: 0.85;">
+              <span class="me-3"><i class="fas fa-check-circle me-1"></i>Expert Mechanics</span>
+              <span class="me-3"><i class="fas fa-check-circle me-1"></i>Modern Equipment</span>
+              <span class="me-3"><i class="fas fa-check-circle me-1"></i>Quality Parts</span>
+              <span class="me-3"><i class="fas fa-check-circle me-1"></i>Customer First</span>
+              <span><i class="fas fa-check-circle me-1"></i>Honest Pricing</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Bottom Copyright Bar -->
+        <div class="row py-3 border-top border-white border-opacity-25">
+          <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
+            <p class="mb-0 small" style="opacity: 0.8;">
+              &copy; 2025 <strong>GAURAV MOTORS LOHAGHAT</strong>. All Rights Reserved.
+            </p>
+          </div>
+          <div class="col-md-6 text-center text-md-end">
+            <p class="mb-0 small" style="opacity: 0.8;">
+              <a href="#" class="text-white text-decoration-none me-3">Privacy Policy</a>
+              <a href="#" class="text-white text-decoration-none me-3">Terms of Service</a>
+              <a href="#" class="text-white text-decoration-none">Sitemap</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top" id="scrollTopBtn" onclick="scrollToTop()">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- ============= PREMIUM CHATBOT SYSTEM ============= -->
+    <!-- Chatbot FAB Button -->
+    <button id="chatbot-fab" class="chatbot-fab">
+        <i class="fas fa-comments"></i>
+        <span class="chat-badge">NEW</span>
+    </button>
+
+    <!-- Chatbot Window -->
+    <div id="chatbot-window" class="chatbot-window">
+        <div class="chatbot-header">
+            <div class="chatbot-header-left">
+                <div class="chatbot-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div>
+                    <h5 class="mb-0">Gaurav Motors AI</h5>
+                    <small class="text-white-50">
+                        <span class="status-dot"></span> Online & Ready
+                    </small>
+                </div>
+            </div>
+            <button id="chatbot-close" class="chatbot-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="chatbot-quick-replies">
+            <button class="quick-reply-btn" onclick="sendQuickReply('services')">🔧 Services</button>
+            <button class="quick-reply-btn" onclick="sendQuickReply('book appointment')">📅 Book</button>
+            <button class="quick-reply-btn" onclick="sendQuickReply('spare parts')">🛠️ Parts</button>
+            <button class="quick-reply-btn" onclick="sendQuickReply('price')">💰 Price</button>
+            <button class="quick-reply-btn" onclick="sendQuickReply('phone')">📞 Contact</button>
+        </div>
+        
+        <div id="chatbot-messages" class="chatbot-messages">
+            <div class="welcome-message">
+                <div class="welcome-icon">🚗</div>
+                <h4>Welcome to Gaurav Motors!</h4>
+                <p>Your complete car service & spare parts solution. I can help you book services, find parts, check prices, and answer all your questions!</p>
+            </div>
+        </div>
+        
+        <div id="typing-indicator" class="typing-indicator">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+        </div>
+        
+        <div class="chatbot-input-area">
+            <input type="text" id="chatbot-input" placeholder="Type your message..." autocomplete="off">
+            <button id="chatbot-send" class="chatbot-send-btn">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <style>
+        /* ============= PREMIUM CHATBOT STYLES ============= */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(13, 110, 253, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(13, 110, 253, 0); }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+        
+        .chatbot-fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #0d6efd, #0846aa);
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            color: white;
+            font-size: 32px;
+            cursor: pointer;
+            z-index: 999999;
+            box-shadow: 0 10px 40px rgba(13, 110, 253, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            animation: float 3s ease-in-out infinite, pulse 2s infinite;
+        }
+        .chatbot-fab:hover {
+            transform: scale(1.15) translateY(-5px);
+            box-shadow: 0 15px 50px rgba(13, 110, 253, 0.9);
+        }
+        .chatbot-fab .chat-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: linear-gradient(135deg, #ff4444, #cc0000);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 800;
+            border: 3px solid white;
+            animation: pulse 2s infinite;
+        }
+        
+        .chatbot-window {
+            position: fixed;
+            bottom: 120px;
+            right: 30px;
+            width: 420px;
+            max-width: 90vw;
+            height: 650px;
+            max-height: 85vh;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 999998;
+            animation: slideUp 0.4s ease;
+        }
+        .chatbot-window.open {
+            display: flex;
+        }
+        
+        .chatbot-header {
+            background: linear-gradient(135deg, #0d6efd, #0846aa);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chatbot-header-left {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .chatbot-avatar {
+            width: 45px;
+            height: 45px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            margin-right: 5px;
+            animation: pulse 2s infinite;
+        }
+        .chatbot-close-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .chatbot-close-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(90deg);
+        }
+        
+        .chatbot-quick-replies {
+            display: flex;
+            gap: 8px;
+            padding: 12px;
+            background: #f8f9fa;
+            overflow-x: auto;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .chatbot-quick-replies::-webkit-scrollbar {
+            height: 4px;
+        }
+        .chatbot-quick-replies::-webkit-scrollbar-thumb {
+            background: #0d6efd;
+            border-radius: 4px;
+        }
+        .quick-reply-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid #0d6efd;
+            color: #0d6efd;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+        .quick-reply-btn:hover {
+            background: linear-gradient(135deg, #0d6efd, #0846aa);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.4);
+        }
+        
+        .chatbot-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: linear-gradient(180deg, #fff, #f8f9fa);
+        }
+        .chatbot-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+        .chatbot-messages::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #0d6efd, #0846aa);
+            border-radius: 10px;
+        }
+        
+        .welcome-message {
+            text-align: center;
+            padding: 40px 20px;
+            animation: slideUp 0.6s ease;
+        }
+        .welcome-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+            animation: float 3s ease-in-out infinite;
+        }
+        .welcome-message h4 {
+            color: #1e293b;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .welcome-message p {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+        
+        .chat-message {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            animation: slideUp 0.3s ease;
+        }
+        .chat-message.user {
+            flex-direction: row-reverse;
+        }
+        .message-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .chat-message.bot .message-avatar {
+            background: linear-gradient(135deg, #0d6efd, #0846aa);
+            color: white;
+        }
+        .chat-message.user .message-avatar {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+        }
+        .message-content {
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.5;
+        }
+        .chat-message.bot .message-content {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            color: #1e293b;
+            border-bottom-left-radius: 4px;
+        }
+        .chat-message.user .message-content {
+            background: linear-gradient(135deg, #0d6efd, #0846aa);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .typing-indicator {
+            display: none;
+            padding: 15px 20px;
+            gap: 6px;
+            align-items: center;
+        }
+        .typing-indicator.active {
+            display: flex;
+        }
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #0d6efd;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        .chatbot-input-area {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            border-top: 1px solid #e9ecef;
+            background: white;
+        }
+        #chatbot-input {
+            flex: 1;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            padding: 12px 18px;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        #chatbot-input:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1);
+        }
+        .chatbot-send-btn {
+            background: linear-gradient(135deg, #0d6efd, #0846aa);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+        }
+        .chatbot-send-btn:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 6px 20px rgba(13, 110, 253, 0.5);
+        }
+        
+        @media (max-width: 768px) {
+            .chatbot-window {
+                width: 100%;
+                height: 100%;
+                max-height: 100vh;
+                bottom: 0;
+                right: 0;
+                border-radius: 0;
+            }
+            .chatbot-fab {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ============= PREMIUM CHATBOT JAVASCRIPT =============
+        console.log('🚀 Initializing Premium Chatbot...');
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const fab = document.getElementById('chatbot-fab');
+            const chatWindow = document.getElementById('chatbot-window');
+            const closeBtn = document.getElementById('chatbot-close');
+            const sendBtn = document.getElementById('chatbot-send');
+            const input = document.getElementById('chatbot-input');
+            const messages = document.getElementById('chatbot-messages');
+            const typingIndicator = document.getElementById('typing-indicator');
+            
+            
+            // Chat responses database
+            const responses = {
+                "hello": "🙏 Hello! Welcome to Gaurav Motors! I can help you book services, check prices, find spare parts, and answer questions. What's your name?",
+                "hi": "👋 Hi there! I'm here to assist with all your car service needs. May I know your name?",
+                "services": "🔧 **Our Services:**\n\n1. Oil Change (₹1,500)\n2. Brake Service (₹2,000)\n3. Engine Diagnostic (₹1,000)\n4. AC Service (₹1,800)\n5. Battery Replacement (₹3,000)\n6. Full Service (₹5,000)\n\nWhich service do you need?",
+                "spare parts": "🛠️ **Spare Parts Available:**\n\n• Oil Filters (₹350+)\n• Brake Pads (₹1,800+)\n• Air Filters (₹550+)\n• Batteries (₹4,500+)\n• Wipers (₹400+)\n\nWhat part do you need?",
+                "price": "💰 **Pricing:**\n• Oil Change: ₹1,500\n• Brake Service: ₹2,000\n• Engine Check: ₹1,000\n• AC Service: ₹1,800\n• Full Service: ₹5,000\n\nNeed a detailed quote?",
+                "book appointment": "📅 **Book Appointment:**\n\nPlease share:\n1. Your name\n2. Phone number\n3. Service needed\n4. Preferred date\n\nOr call: +91 9997612579",
+                "phone": "📞 **Contact Us:**\n• Phone: +91 9997612579\n• Email: info@gauravmotors.com\n• Hours: Mon-Sat 9AM-6PM\n\nHow can I help you today?",
+                "default": "I can help you with:\n\n✓ Book appointments\n✓ Service information\n✓ Spare parts\n✓ Pricing\n✓ Contact details\n\nWhat would you like to know?"
+            };
+            
+            // Open chatbot
+            if (fab) {
+                fab.onclick = function() {
+                    console.log('🖱️ FAB clicked');
+                    chatWindow.classList.add('open');
+                    fab.style.display = 'none';
+                    input.focus();
+                };
+            }
+            
+            // Close chatbot
+            if (closeBtn) {
+                closeBtn.onclick = function() {
+                    console.log('🖱️ Close clicked');
+                    chatWindow.classList.remove('open');
+                    fab.style.display = 'flex';
+                };
+            }
+            
+            // Send message function
+            async function sendMessage() {
+                const text = input.value.trim();
+                if (!text) return;
+
+                // Remove welcome message
+                const welcome = messages.querySelector('.welcome-message');
+                if (welcome) welcome.remove();
+
+                // Add user message
+                addMessage(text, 'user');
+                input.value = '';
+
+                // Show typing
+                typingIndicator.classList.add('active');
+
+                try {
+                    // Make API call to backend
+                    const response = await fetch('/api/chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ message: text })
+                    });
+
+                    const data = await response.json();
+
+                    // Hide typing
+                    typingIndicator.classList.remove('active');
+
+                    if (data.success) {
+                        addMessage(data.response, 'bot');
+                    } else {
+                        addMessage('Sorry, I encountered an error. Please try again.', 'bot');
+                    }
+                } catch (error) {
+                    console.error('Chat API error:', error);
+                    typingIndicator.classList.remove('active');
+                    addMessage('Sorry, I\'m having trouble connecting. Please try again later.', 'bot');
+                }
+            }
+            
+            // Add message to chat
+            function addMessage(text, sender) {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `chat-message ${sender}`;
+                msgDiv.innerHTML = `
+                    <div class="message-avatar">
+                        <i class="fas fa-${sender === 'user' ? 'user' : 'robot'}"></i>
+                    </div>
+                    <div class="message-content">${text}</div>
+                `;
+                messages.appendChild(msgDiv);
+                messages.scrollTop = messages.scrollHeight;
+            }
+            
+            // Get bot response
+            function getResponse(text) {
+                text = text.toLowerCase();
+                for (let key in responses) {
+                    if (text.includes(key)) {
+                        return responses[key];
+                    }
+                }
+                return responses.default;
+            }
+            
+            // Quick reply function
+            window.sendQuickReply = function(msg) {
+                input.value = msg;
+                sendMessage();
+            };
+            
+            // Send button click
+            if (sendBtn) {
+                sendBtn.onclick = sendMessage;
+            }
+            
+            // Enter key to send
+            if (input) {
+                input.onkeypress = function(e) {
+                    if (e.key === 'Enter') {
+                        sendMessage();
+                    }
+                };
+            }
+            
+            console.log('✅ Chatbot initialized and ready!');
+        });
+
+        // Global function for opening chatbot from other pages
+        window.openChatbot = function() {
+            const fab = document.getElementById('chatbot-fab');
+            const chatWindow = document.getElementById('chatbot-window');
+            if (fab && chatWindow) {
+                chatWindow.classList.add('open');
+                fab.style.display = 'none';
+            }
+        };
+        
+        // Scroll to top button
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        window.onscroll = function() {
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        };
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Navbar scroll effect
+        const mainNavbar = document.querySelector('.main-navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                mainNavbar.classList.add('scrolled');
+            } else {
+                mainNavbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+  </body>
+</html>

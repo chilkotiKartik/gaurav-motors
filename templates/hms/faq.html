@@ -1,0 +1,313 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+<!-- FAQ Hero -->
+<div class="hero-section position-relative overflow-hidden mb-5">
+  <div class="jumbotron text-center py-5 text-white rounded-4 shadow-lg" style="background: linear-gradient(180deg, rgba(11,91,176,0.9) 0%, rgba(13,110,253,0.85) 60%), url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1600&q=80') center/cover no-repeat;">
+    <div class="container">
+      <h1 class="display-3 fw-bold mb-3">
+        <i class="fas fa-question-circle me-3"></i>Frequently Asked Questions
+      </h1>
+      <p class="lead fs-4">We're here to help you</p>
+      <p class="mt-3 opacity-75">Find answers to common questions about our healthcare services</p>
+    </div>
+  </div>
+</div>
+
+<div class="container my-5">
+  <!-- Search Box -->
+  <div class="card border-0 shadow-lg mb-5">
+    <div class="card-body p-4">
+      <div class="input-group input-group-lg">
+        <span class="input-group-text bg-primary text-white border-0">
+          <i class="fas fa-search"></i>
+        </span>
+        <input type="text" id="faqSearch" class="form-control border-0 shadow-sm" placeholder="Search for answers..." style="font-size: 1.1rem;">
+      </div>
+      <small class="text-muted mt-2 d-block"><i class="fas fa-info-circle me-1"></i> Type keywords like 'appointment', 'billing', or 'services'</small>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+      <!-- Categories -->
+      <div class="card border-0 shadow-lg mb-4 sticky-top" style="top: 20px;">
+        <div class="card-body p-4">
+          <h5 class="fw-bold text-primary mb-4"><i class="fas fa-list me-2"></i>Categories</h5>
+          <div class="list-group list-group-flush">
+            <a href="#general" class="list-group-item list-group-item-action border-0 rounded-3 mb-2 category-link">
+              <i class="fas fa-info-circle me-2 text-primary"></i>General
+            </a>
+            <a href="#appointments" class="list-group-item list-group-item-action border-0 rounded-3 mb-2 category-link">
+              <i class="fas fa-calendar me-2 text-primary"></i>Appointments
+            </a>
+            <a href="#services" class="list-group-item list-group-item-action border-0 rounded-3 mb-2 category-link">
+              <i class="fas fa-hospital me-2 text-primary"></i>Services
+            </a>
+            <a href="#billing" class="list-group-item list-group-item-action border-0 rounded-3 mb-2 category-link">
+              <i class="fas fa-rupee-sign me-2 text-primary"></i>Billing
+            </a>
+            <a href="#technical" class="list-group-item list-group-item-action border-0 rounded-3 category-link">
+              <i class="fas fa-laptop me-2 text-primary"></i>Technical
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      <!-- General Questions -->
+      <div id="general" class="mb-5">
+        <h3 class="fw-bold text-primary mb-4">
+          <i class="fas fa-info-circle me-2"></i>General Questions
+        </h3>
+        <div class="accordion accordion-flush" id="accordionGeneral">
+          <div class="accordion-item border-0 shadow-sm rounded-3 mb-3">
+            <h2 class="accordion-header">
+              <button class="accordion-button fw-bold bg-primary bg-opacity-10 rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#g1">
+                What is Woodland Medical Centre?
+              </button>
+            </h2>
+            <div id="g1" class="accordion-collapse collapse show" data-bs-parent="#accordionGeneral">
+              <div class="accordion-body">
+                Woodland Medical Centre is a leading healthcare facility dedicated to providing exceptional 
+                medical services with state-of-the-art technology and expert specialists. We offer comprehensive 
+                care across multiple specialties with a patient-first approach.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item border-0 shadow-sm rounded-3 mb-3">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed fw-bold rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#g2">
+                How do I register on the platform?
+              </button>
+            </h2>
+            <div id="g2" class="accordion-collapse collapse" data-bs-parent="#accordionGeneral">
+              <div class="accordion-body">
+                Click on the "Register" button in the navigation menu, fill in your details (name, email, password), 
+                and submit the form. You'll receive instant access to book appointments, view doctors, and manage 
+                your health records digitally. Best part? Each registration saves 10 sheets of paper!
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item border-0 shadow-sm rounded-3 mb-3">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed fw-bold rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#g3">
+                Is my medical data secure?
+              </button>
+            </h2>
+            <div id="g3" class="accordion-collapse collapse" data-bs-parent="#accordionGeneral">
+              <div class="accordion-body">
+                Absolutely! We use industry-standard encryption (SSL/TLS) to protect all your medical data. 
+                Your records are stored securely and only authorized healthcare professionals can access 
+                your information with your consent.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Appointments -->
+      <div id="appointments" class="mb-5">
+        <h3 class="fw-bold text-primary mb-4">
+          <i class="fas fa-calendar me-2"></i>Appointments
+        </h3>
+        <div class="accordion" id="accordionAppointments">
+          <div class="accordion-item border-0 shadow-sm rounded-3 mb-3">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed fw-bold rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#a1">
+                How do I book an appointment?
+              </button>
+            </h2>
+            <div id="a1" class="accordion-collapse collapse" data-bs-parent="#accordionAppointments">
+              <div class="accordion-body">
+                After logging in, click "Find Doctors" to browse available doctors. Select a doctor, 
+                choose an available time slot, add your symptoms, and confirm. You'll receive instant 
+                confirmation via email.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item border-0 shadow-sm rounded-3 mb-3">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed fw-bold rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#a2">
+                Can I reschedule or cancel my appointment?
+              </button>
+            </h2>
+            <div id="a2" class="accordion-collapse collapse" data-bs-parent="#accordionAppointments">
+              <div class="accordion-body">
+                Yes! Go to your Patient Dashboard, find your appointment, and click "Reschedule" or "Cancel". 
+                For rescheduling, select a new available slot. Please note: cancellations should be done at 
+                least 24 hours in advance when possible.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item border-0 shadow-sm rounded-3 mb-3">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed fw-bold rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#a3">
+                Do you offer telemedicine appointments?
+              </button>
+            </h2>
+            <div id="a3" class="accordion-collapse collapse" data-bs-parent="#accordionAppointments">
+              <div class="accordion-body">
+                Yes! We offer virtual consultation options. Select "Virtual Consultation" when booking your appointment 
+                for a convenient online visit with our healthcare professionals.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Services -->
+      <div id="services" class="mb-5">
+        <h3 class="fw-bold text-primary mb-4">
+          <i class="fas fa-hospital me-2"></i>Services
+        </h3>
+        <div class="accordion" id="accordionServices">
+          <div class="accordion-item border-0 shadow-sm rounded-3 mb-3">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed fw-bold rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#s1">
+                What medical services do you offer?
+              </button>
+            </h2>
+            <div id="s1" class="accordion-collapse collapse" data-bs-parent="#accordionServices">
+              <div class="accordion-body">
+                We offer comprehensive healthcare services including Cardiology, Orthopedics, Pediatrics, 
+                Dermatology, Neurology, and General Medicine. Visit our Services page for detailed information 
+                about each department and available treatments.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item border-0 shadow-sm rounded-3 mb-3">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed fw-bold rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#s2">
+                Do you provide emergency services?
+              </button>
+            </h2>
+            <div id="s2" class="accordion-collapse collapse" data-bs-parent="#accordionServices">
+              <div class="accordion-body">
+                Yes! Our 24/7 emergency services are always available. Call our emergency helpline at 
+                <strong>+91-9876-543-210</strong> for immediate assistance. For life-threatening emergencies, 
+                please call local emergency services (112) first.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Billing & Payments -->
+      <div id="billing" class="mb-5">
+        <h3 class="fw-bold text-primary mb-4">
+          <i class="fas fa-rupee-sign me-2"></i>Billing & Payments
+        </h3>
+        <div class="accordion" id="accordionBilling">
+          <div class="accordion-item border-0 shadow-sm rounded-3 mb-3">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed fw-bold rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#b1">
+                What are the consultation fees?
+              </button>
+            </h2>
+            <div id="b1" class="accordion-collapse collapse" data-bs-parent="#accordionBilling">
+              <div class="accordion-body">
+                Consultation fees vary by doctor specialty and experience. General consultations start from 
+                ₹500, while specialist consultations range from ₹800-₹2000. All fees are displayed clearly 
+                when booking your appointment.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item border-0 shadow-sm rounded-3 mb-3">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed fw-bold rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#b2">
+                Do you accept insurance?
+              </button>
+            </h2>
+            <div id="b2" class="accordion-collapse collapse" data-bs-parent="#accordionBilling">
+              <div class="accordion-body">
+                Yes, we work with major insurance providers. Upload your insurance details in your profile, 
+                and we'll process claims digitally. Check with your insurance provider to confirm coverage.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Technical Support -->
+      <div id="technical" class="mb-5">
+        <h3 class="fw-bold text-primary mb-4">
+          <i class="fas fa-laptop me-2"></i>Technical Support
+        </h3>
+        <div class="accordion" id="accordionTechnical">
+          <div class="accordion-item border-0 shadow-sm rounded-3 mb-3">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed fw-bold rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#t1">
+                I forgot my password. What should I do?
+              </button>
+            </h2>
+            <div id="t1" class="accordion-collapse collapse" data-bs-parent="#accordionTechnical">
+              <div class="accordion-body">
+                Click "Forgot Password?" on the login page, enter your registered email, and we'll send 
+                you reset instructions. For security reasons, password resets are handled via email only. 
+                If you need assistance, contact our support team.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item border-0 shadow-sm rounded-3 mb-3">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed fw-bold rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#t2">
+                Which browsers are supported?
+              </button>
+            </h2>
+            <div id="t2" class="accordion-collapse collapse" data-bs-parent="#accordionTechnical">
+              <div class="accordion-body">
+                Woodland Medical Centre HMS works on all modern browsers: Chrome, Firefox, Safari, Edge, and Opera. 
+                We recommend using the latest version for the best experience. Our platform is also 
+                mobile-responsive, so you can access it from any device.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Still Have Questions? -->
+<div class="container my-5">
+  <div class="alert alert-primary text-center py-5 shadow-lg" style="background: linear-gradient(135deg, #0b5bb0 0%, #0d6efd 100%); border: none;">
+    <h3 class="fw-bold text-white mb-3">Still Have Questions?</h3>
+    <p class="text-white fs-5 mb-4">
+      Our support team is here to help! Contact us anytime.
+    </p>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+      <a href="{{ url_for('contact') }}" class="btn btn-light btn-lg px-5 shadow">
+        <i class="fas fa-envelope me-2"></i>Contact Support
+      </a>
+      <a href="tel:+919997612579" class="btn btn-outline-light btn-lg px-5">
+        <i class="fas fa-phone me-2"></i>Call: +91 9997612579
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+// FAQ Search
+document.getElementById('faqSearch').addEventListener('input', function(e) {
+  const searchTerm = e.target.value.toLowerCase();
+  const accordions = document.querySelectorAll('.accordion-item');
+  
+  accordions.forEach(item => {
+    const text = item.textContent.toLowerCase();
+    if (text.includes(searchTerm)) {
+      item.style.display = 'block';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+});
+</script>
+{% endblock %}

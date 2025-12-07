@@ -1,0 +1,255 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+
+<!-- Dashboard Header -->
+<div class="dashboard-header mb-4 p-4 rounded-4 shadow-lg" style="background: linear-gradient(135deg, #0d6efd 0%, #0b84d9 100%);">
+  <div class="row align-items-center">
+    <div class="col-md-8">
+      <h2 class="mb-0 text-white">
+        <i class="fas fa-heartbeat me-2"></i>
+        Patient Dashboard
+      </h2>
+      <p class="text-white mb-0 mt-2 opacity-75">
+        <i class="fas fa-user-circle me-1"></i> Welcome back, <strong>{{ patient.name }}</strong>
+      </p>
+    </div>
+    <div class="col-md-4 text-end">
+      <a class="btn btn-light me-2" href="{{ url_for('patient_edit') }}">
+        <i class="fas fa-user-edit me-1"></i> Edit Profile
+      </a>
+      <a class="btn btn-light" href="{{ url_for('list_doctors') }}">
+        <i class="fas fa-calendar-plus me-1"></i> Book Appointment
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Stats Cards -->
+<div class="row mb-4 g-4">
+  <div class="col-md-3">
+    <div class="card border-0 shadow-lg h-100 stat-card" style="border-left: 4px solid #0d6efd !important;">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="text-muted mb-2">Upcoming Appointments</h6>
+            <h3 class="mb-0 text-primary fw-bold">{{ upcoming|length }}</h3>
+          </div>
+          <div class="bg-primary bg-opacity-10 p-3 rounded-circle">
+            <i class="fas fa-calendar-check fa-2x text-primary"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-3">
+    <div class="card border-0 shadow-lg h-100 stat-card" style="border-left: 4px solid #0b84d9 !important;">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="text-muted mb-2">Contact</h6>
+            <h6 class="mb-0 text-primary">{{ patient.contact or 'Not Set' }}</h6>
+          </div>
+          <div class="bg-info bg-opacity-10 p-3 rounded-circle">
+            <i class="fas fa-phone fa-2x text-info"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-3">
+    <div class="card border-0 shadow-lg h-100 stat-card" style="border-left: 4px solid #198754 !important;">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="text-muted mb-2">Total Visits</h6>
+            <h3 class="mb-0 text-success fw-bold">{{ past|length }}</h3>
+          </div>
+          <div class="bg-success bg-opacity-10 p-3 rounded-circle">
+            <i class="fas fa-user-check fa-2x text-success"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-3">
+    <div class="card border-0 shadow-lg h-100 stat-card" style="border-left: 4px solid #6610f2 !important;">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="text-muted mb-2">Carbon Saved</h6>
+            <h6 class="mb-0">{{ upcoming|length * 2 }}kg CO₂</h6>
+          </div>
+          <div class="bg-purple bg-opacity-10 p-3 rounded">
+            <i class="fas fa-leaf fa-2x" style="color: #9c27b0;"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Upcoming Appointments -->
+<div class="card border-0 shadow-sm mb-4">
+  <div class="card-header bg-white border-bottom py-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">
+        <i class="fas fa-calendar-alt text-success me-2"></i>
+        Upcoming Appointments
+      </h5>
+      <span class="badge bg-success">{{ upcoming|length }} Active</span>
+    </div>
+  </div>
+  <div class="card-body p-0">
+    {% if upcoming %}
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="bg-light">
+            <tr>
+              <th><i class="fas fa-calendar me-1"></i> Date</th>
+              <th><i class="fas fa-clock me-1"></i> Time</th>
+              <th><i class="fas fa-user-md me-1"></i> Doctor</th>
+              <th><i class="fas fa-stethoscope me-1"></i> Specialization</th>
+              <th><i class="fas fa-info-circle me-1"></i> Status</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for a in upcoming %}
+            <tr>
+              <td>
+                <i class="far fa-calendar text-success me-2"></i>
+                <strong>{{ a.date }}</strong>
+              </td>
+              <td>
+                <i class="far fa-clock text-primary me-2"></i>
+                {{ a.time }}
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="avatar-sm bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2">
+                    <i class="fas fa-user-md text-success"></i>
+                  </div>
+                  <strong>{{ a.doctor.name }}</strong>
+                </div>
+              </td>
+              <td>{{ a.doctor.specialization }}</td>
+              <td>
+                <span class="badge {% if a.status == 'confirmed' %}bg-success{% elif a.status == 'pending' %}bg-warning{% else %}bg-secondary{% endif %}">
+                  {{ a.status|title }}
+                </span>
+              </td>
+              <td class="text-end">
+                <a class="btn btn-sm btn-outline-warning" href="{{ url_for('reschedule', appointment_id=a.id) }}" title="Reschedule">
+                  <i class="fas fa-calendar-alt"></i> Reschedule
+                </a>
+                <form method="post" action="{{ url_for('cancel', appointment_id=a.id) }}" style="display:inline" onsubmit="return confirm('Are you sure you want to cancel this appointment?')">
+                  <button class="btn btn-sm btn-outline-danger" title="Cancel">
+                    <i class="fas fa-times"></i> Cancel
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="text-center py-5">
+        <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+        <h5 class="text-muted">No Upcoming Appointments</h5>
+        <p class="text-muted mb-3">Book your first appointment to start your eco-friendly healthcare journey!</p>
+        <a class="btn btn-success" href="{{ url_for('list_doctors') }}">
+          <i class="fas fa-search me-2"></i>Browse Doctors
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row">
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm h-100 hover-lift">
+      <div class="card-body text-center">
+        <div class="mb-3">
+          <i class="fas fa-user-md fa-3x text-success"></i>
+        </div>
+        <h5>Browse Doctors</h5>
+        <p class="text-muted small">Find and book appointments with our expert doctors</p>
+        <a href="{{ url_for('list_doctors') }}" class="btn btn-success w-100">
+          <i class="fas fa-search me-2"></i>View Doctors
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Environmental Impact feature - Coming Soon
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm h-100 hover-lift">
+      <div class="card-body text-center">
+        <div class="mb-3">
+          <i class="fas fa-leaf fa-3x text-success"></i>
+        </div>
+        <h5>Environmental Impact</h5>
+        <p class="text-muted small">See how you're helping save the planet</p>
+        <a href="#" class="btn btn-outline-success w-100 disabled">
+          <i class="fas fa-chart-line me-2"></i>Coming Soon
+        </a>
+      </div>
+    </div>
+  </div>
+  -->
+  
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm h-100 hover-lift">
+      <div class="card-body text-center">
+        <div class="mb-3">
+          <i class="fas fa-user-edit fa-3x text-success"></i>
+        </div>
+        <h5>Update Profile</h5>
+        <p class="text-muted small">Keep your information up to date</p>
+        <a href="{{ url_for('patient_edit') }}" class="btn btn-outline-success w-100">
+          <i class="fas fa-edit me-2"></i>Edit Profile
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .dashboard-header {
+    background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+    padding: 2rem;
+    border-radius: 12px;
+    border-left: 5px solid #4caf50;
+  }
+  
+  .hover-lift {
+    transition: all 0.3s ease;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+  }
+  
+  .avatar-sm {
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+  }
+  
+  .table tbody tr {
+    transition: all 0.2s ease;
+  }
+  
+  .table tbody tr:hover {
+    background-color: #e8f5e9;
+    transform: scale(1.01);
+  }
+</style>
+
+{% endblock %}

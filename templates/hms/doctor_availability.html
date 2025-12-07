@@ -1,0 +1,291 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+
+<!-- Page Header -->
+<div class="availability-header mb-4">
+  <div class="row align-items-center">
+    <div class="col-md-8">
+      <h2 class="mb-0">
+        <i class="fas fa-calendar-alt text-success me-2"></i>
+        Manage Your Availability
+      </h2>
+      <p class="text-muted mb-0 mt-2">
+        <i class="fas fa-user-md me-1"></i> Dr. <strong>{{ doc.name }}</strong> | {{ doc.specialization }}
+      </p>
+    </div>
+    <div class="col-md-4 text-end">
+      <a href="{{ url_for('doctor_dashboard') }}" class="btn btn-outline-success">
+        <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Add New Slot Card -->
+<div class="card border-0 shadow-sm mb-4">
+  <div class="card-header bg-gradient-success text-white py-3">
+    <h5 class="mb-0">
+      <i class="fas fa-plus-circle me-2"></i>
+      Add New Time Slot
+    </h5>
+  </div>
+  <div class="card-body p-4">
+    <form method="post" class="row g-3">
+      <div class="col-md-5">
+        <label class="form-label fw-bold">
+          <i class="fas fa-calendar me-1"></i> Select Date
+        </label>
+        <input type="date" name="date" class="form-control form-control-lg" required 
+               min="{{ today }}" style="border-left: 4px solid #4caf50;">
+        <small class="text-muted">Choose a date for availability</small>
+      </div>
+      
+      <div class="col-md-5">
+        <label class="form-label fw-bold">
+          <i class="fas fa-clock me-1"></i> Select Time
+        </label>
+        <input type="time" name="time" class="form-control form-control-lg" required
+               style="border-left: 4px solid #4caf50;">
+        <small class="text-muted">Choose a time slot</small>
+      </div>
+      
+      <div class="col-md-2 d-flex align-items-end">
+        <button type="submit" class="btn btn-success btn-lg w-100 animate-button">
+          <i class="fas fa-check me-2"></i>
+          Add Slot
+        </button>
+      </div>
+    </form>
+    
+    <div class="alert alert-info mt-3 mb-0" role="alert">
+      <i class="fas fa-info-circle me-2"></i>
+      <strong>Tip:</strong> Add multiple slots to give patients more booking options. Each slot is 30 minutes.
+    </div>
+  </div>
+</div>
+
+<!-- Stats Row -->
+<div class="row mb-4">
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm" style="border-left: 4px solid #4caf50 !important;">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="text-muted mb-2">Total Slots</h6>
+            <h3 class="mb-0 text-success">{{ slots|length }}</h3>
+          </div>
+          <div class="bg-success bg-opacity-10 p-3 rounded">
+            <i class="fas fa-calendar-check fa-2x text-success"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm" style="border-left: 4px solid #2196F3 !important;">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="text-muted mb-2">Available</h6>
+            <h3 class="mb-0 text-primary">{{ slots|selectattr('is_available')|list|length }}</h3>
+          </div>
+          <div class="bg-primary bg-opacity-10 p-3 rounded">
+            <i class="fas fa-clock fa-2x text-primary"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm" style="border-left: 4px solid #ff9800 !important;">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="text-muted mb-2">Booked</h6>
+            <h3 class="mb-0 text-warning">{{ slots|rejectattr('is_available')|list|length }}</h3>
+          </div>
+          <div class="bg-warning bg-opacity-10 p-3 rounded">
+            <i class="fas fa-user-check fa-2x text-warning"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Availability Calendar View -->
+<div class="card border-0 shadow-sm">
+  <div class="card-header bg-white border-bottom py-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">
+        <i class="fas fa-calendar-week text-success me-2"></i>
+        Your Upcoming Availability
+      </h5>
+      <span class="badge bg-success">{{ slots|length }} Slots Created</span>
+    </div>
+  </div>
+  <div class="card-body p-0">
+    {% if slots %}
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="bg-light">
+            <tr>
+              <th width="5%" class="text-center">#</th>
+              <th width="20%"><i class="fas fa-calendar me-1"></i> Date</th>
+              <th width="15%"><i class="fas fa-clock me-1"></i> Time</th>
+              <th width="15%"><i class="fas fa-calendar-day me-1"></i> Day</th>
+              <th width="20%"><i class="fas fa-info-circle me-1"></i> Status</th>
+              <th width="25%" class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for s in slots %}
+            <tr class="slot-row">
+              <td class="text-center">
+                <span class="badge bg-light text-dark">{{ loop.index }}</span>
+              </td>
+              <td>
+                <i class="far fa-calendar text-success me-2"></i>
+                <strong>{{ s.date.strftime('%B %d, %Y') }}</strong>
+              </td>
+              <td>
+                <i class="far fa-clock text-primary me-2"></i>
+                <strong>{{ s.time.strftime('%I:%M %p') }}</strong>
+              </td>
+              <td>
+                <span class="badge bg-info">{{ s.date.strftime('%A') }}</span>
+              </td>
+              <td>
+                {% if s.is_available %}
+                  <span class="badge bg-success px-3 py-2">
+                    <i class="fas fa-check-circle me-1"></i> Available
+                  </span>
+                {% else %}
+                  <span class="badge bg-warning px-3 py-2">
+                    <i class="fas fa-user-check me-1"></i> Booked
+                  </span>
+                {% endif %}
+              </td>
+              <td class="text-center">
+                {% if s.is_available %}
+                  <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Remove this slot?')">
+                    <i class="fas fa-trash me-1"></i> Remove
+                  </button>
+                {% else %}
+                  <button class="btn btn-sm btn-secondary" disabled>
+                    <i class="fas fa-lock me-1"></i> Booked
+                  </button>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="text-center py-5">
+        <i class="fas fa-calendar-times fa-4x text-muted mb-3"></i>
+        <h5 class="text-muted">No Availability Slots Yet</h5>
+        <p class="text-muted mb-4">Start by adding your first available time slot above!</p>
+        <div class="alert alert-light d-inline-block">
+          <i class="fas fa-lightbulb text-warning me-2"></i>
+          <strong>Suggestion:</strong> Add multiple slots throughout the week for better patient reach
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Quick Tips -->
+<div class="card border-0 shadow-sm mt-4 bg-light">
+  <div class="card-body">
+    <h6 class="mb-3"><i class="fas fa-lightbulb text-warning me-2"></i> Quick Tips for Managing Availability</h6>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="d-flex">
+          <div class="me-3">
+            <i class="fas fa-check-circle text-success fa-2x"></i>
+          </div>
+          <div>
+            <strong>Regular Schedule</strong>
+            <p class="small text-muted mb-0">Add recurring slots for consistent patient bookings</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="d-flex">
+          <div class="me-3">
+            <i class="fas fa-clock text-primary fa-2x"></i>
+          </div>
+          <div>
+            <strong>Peak Hours</strong>
+            <p class="small text-muted mb-0">Morning and evening slots are most popular</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="d-flex">
+          <div class="me-3">
+            <i class="fas fa-leaf text-success fa-2x"></i>
+          </div>
+          <div>
+            <strong>Eco Impact</strong>
+            <p class="small text-muted mb-0">Each online booking saves 0.5kg of paper!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .availability-header {
+    background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+    padding: 2rem;
+    border-radius: 12px;
+    border-left: 5px solid #4caf50;
+  }
+  
+  .bg-gradient-success {
+    background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+  }
+  
+  .animate-button {
+    transition: all 0.3s ease;
+  }
+  
+  .animate-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px rgba(76, 175, 80, 0.4);
+  }
+  
+  .slot-row {
+    transition: all 0.2s ease;
+  }
+  
+  .slot-row:hover {
+    background-color: #e8f5e9;
+    transform: scale(1.01);
+  }
+  
+  .form-control-lg {
+    border-radius: 8px;
+  }
+  
+  .form-control:focus {
+    border-color: #4caf50;
+    box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+  }
+</style>
+
+<script>
+  // Set minimum date to today
+  document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date().toISOString().split('T')[0];
+    document.querySelector('input[type="date"]').setAttribute('min', today);
+  });
+</script>
+
+{% endblock %}

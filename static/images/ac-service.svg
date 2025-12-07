@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <defs>
+    <linearGradient id="ac-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d6efd;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#64b5f6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="400" height="300" fill="url(#ac-bg)"/>
+  
+  <!-- AC Unit -->
+  <g transform="translate(200, 120)">
+    <rect x="-100" y="-40" width="200" height="80" fill="#1a4d7a" stroke="#64b5f6" stroke-width="3" rx="8"/>
+    
+    <!-- Vents -->
+    <g fill="none" stroke="#64b5f6" stroke-width="2">
+      <line x1="-80" y1="-20" x2="-80" y2="20"/>
+      <line x1="-60" y1="-20" x2="-60" y2="20"/>
+      <line x1="-40" y1="-20" x2="-40" y2="20"/>
+      <line x1="-20" y1="-20" x2="-20" y2="20"/>
+      <line x1="0" y1="-20" x2="0" y2="20"/>
+      <line x1="20" y1="-20" x2="20" y2="20"/>
+      <line x1="40" y1="-20" x2="40" y2="20"/>
+      <line x1="60" y1="-20" x2="60" y2="20"/>
+      <line x1="80" y1="-20" x2="80" y2="20"/>
+    </g>
+    
+    <!-- Control Panel -->
+    <rect x="-30" y="-15" width="60" height="30" fill="#0d6efd" rx="3"/>
+    <circle cx="-15" cy="0" r="8" fill="#64b5f6"/>
+    <circle cx="0" cy="0" r="8" fill="#64b5f6"/>
+    <circle cx="15" cy="0" r="8" fill="#64b5f6"/>
+  </g>
+  
+  <!-- Cold Air Waves -->
+  <g opacity="0.6">
+    <path d="M 100,180 Q 150,170 200,180 T 300,180" fill="none" stroke="#64b5f6" stroke-width="3"/>
+    <path d="M 120,200 Q 170,190 220,200 T 280,200" fill="none" stroke="#64b5f6" stroke-width="2"/>
+    <path d="M 140,220 Q 180,210 220,220 T 260,220" fill="none" stroke="#64b5f6" stroke-width="2"/>
+  </g>
+  
+  <!-- Snowflakes -->
+  <text x="80" y="190" font-size="20" fill="white" opacity="0.8">❄️</text>
+  <text x="320" y="200" font-size="18" fill="white" opacity="0.7">❄️</text>
+  <text x="200" y="240" font-size="16" fill="white" opacity="0.6">❄️</text>
+  
+  <text x="200" y="280" font-family="Orbitron, Arial" font-size="24" font-weight="900" fill="white" text-anchor="middle">AC SERVICE</text>
+</svg>

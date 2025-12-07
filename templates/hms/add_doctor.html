@@ -1,0 +1,12 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+<h2>Add Doctor</h2>
+<form method="post">
+  <div class="mb-3"><label class="form-label">Username</label><input class="form-control" name="username" required></div>
+  <div class="mb-3"><label class="form-label">Email</label><input class="form-control" name="email" type="email" required></div>
+  <div class="mb-3"><label class="form-label">Password</label><input class="form-control" name="password" type="password" required></div>
+  <div class="mb-3"><label class="form-label">Full name</label><input class="form-control" name="name" required></div>
+  <div class="mb-3"><label class="form-label">Specialization</label><input class="form-control" name="specialization" required></div>
+  <button class="btn btn-primary">Add</button>
+</form>
+{% endblock %}

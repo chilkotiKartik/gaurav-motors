@@ -1,0 +1,3105 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+
+<!-- Premium Hero Section with Clean Blue Theme -->
+<section class="hero-wrapper position-relative overflow-hidden" style="min-height: 100vh;">
+  <!-- Clean Blue Gradient Background with Workshop Image -->
+  <div class="hero-bg position-absolute w-100 h-100" style="background: linear-gradient(135deg, rgba(13,110,253,0.95) 0%, rgba(10,88,202,0.92) 50%, rgba(8,70,170,0.95) 100%), url('https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=1920&q=80') center/cover no-repeat; z-index: 0; background-attachment: scroll;"></div>
+  
+  <!-- Bottom Overlay -->
+  <div class="mountain-overlay position-absolute w-100" style="bottom: 0; left: 0; height: 300px; background: linear-gradient(to top, rgba(8,70,170,0.8), transparent); z-index: 1;"></div>
+  
+  <div class="container position-relative" style="z-index: 10;">
+    <div class="row align-items-center" style="min-height: 100vh; padding: 100px 0 80px;">
+      <!-- Left Content -->
+      <div class="col-lg-6 text-white">
+        <div class="hero-content-wrapper">
+          <!-- Premium Logo Badge -->
+          <div class="mb-4">
+            <div class="d-inline-flex align-items-center gap-3 p-4 rounded-4" style="background: rgba(255,255,255,0.15); backdrop-filter: blur(25px); border: 3px solid rgba(255,255,255,0.3); box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+              <div class="logo-showcase" style="width: 80px; height: 80px; background: linear-gradient(135deg, #fbbf24, #f59e0b); border-radius: 20px; padding: 10px; box-shadow: 0 20px 60px rgba(251,191,36,0.5);">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Gaurav Motors" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));">
+              </div>
+              <div>
+                <div class="fw-bold mb-1" style="font-size: 0.9rem; letter-spacing: 3px; color: #fbbf24;">ESTABLISHED 2010</div>
+                <div class="text-white fw-bold" style="font-size: 1rem;">Premium Automobile Care</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Heading with Clean Design -->
+          <h1 class="display-1 fw-bold mb-3 mb-md-4" style="text-shadow: 0 4px 20px rgba(0,0,0,0.5); line-height: 1.1;">
+            <span style="color: #fbbf24; font-size: 5rem; font-size: clamp(2rem, 8vw, 5rem);">GAURAV</span>
+            <span class="d-block" style="color: #fff; font-size: 4.5rem; font-size: clamp(1.8rem, 7vw, 4.5rem);">MOTORS</span>
+          </h1>
+          
+          <p class="lead mb-3 mb-md-4" style="font-size: clamp(1rem, 3vw, 1.5rem); text-shadow: 0 2px 15px rgba(0,0,0,0.5); line-height: 1.6; max-width: 580px; color: #fff; font-weight: 400;">
+            <strong style="font-size: clamp(1.2rem, 3.5vw, 1.8rem); color: #fff;">Uttarakhand's #1 Auto Workshop</strong><br>
+            <span style="opacity: 0.95;">Where Engineering Meets Excellence - Serving Since 2010</span>
+          </p>
+
+          <!-- Clean Trust Badges -->
+          <div class="trust-badges d-flex flex-wrap gap-3 mb-5">
+            <div class="badge-item" style="background: rgba(255,255,255,0.2); backdrop-filter: blur(20px); padding: 16px 28px; border-radius: 40px; border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: all 0.3s;">
+              <i class="fas fa-certificate me-2" style="color: #fbbf24;"></i><strong style="color: #fff;">ISO Certified</strong>
+            </div>
+            <div class="badge-item" style="background: rgba(255,255,255,0.2); backdrop-filter: blur(20px); padding: 16px 28px; border-radius: 40px; border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: all 0.3s;">
+              <i class="fas fa-trophy me-2" style="color: #fbbf24;"></i><strong style="color: #fff;">Award Winning</strong>
+            </div>
+            <div class="badge-item" style="background: rgba(255,255,255,0.2); backdrop-filter: blur(20px); padding: 16px 28px; border-radius: 40px; border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: all 0.3s;">
+              <i class="fas fa-gem me-2" style="color: #fbbf24;"></i><strong style="color: #fff;">Premium Service</strong>
+            </div>
+            <div class="badge-item" style="background: rgba(255,255,255,0.2); backdrop-filter: blur(20px); padding: 16px 28px; border-radius: 40px; border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: all 0.3s;">
+              <i class="fas fa-shield-check me-2" style="color: #fbbf24;"></i><strong style="color: #fff;">Lifetime Warranty</strong>
+            </div>
+            <div class="badge-item" style="background: rgba(255,255,255,0.2); backdrop-filter: blur(20px); padding: 16px 28px; border-radius: 40px; border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: all 0.3s;">
+              <i class="fas fa-star me-2" style="color: #fbbf24;"></i><strong style="color: #fff;">5000+ Clients</strong>
+            </div>
+          </div>
+
+          <!-- Clean CTA Buttons -->
+          <div class="d-flex gap-4 flex-wrap">
+            <a href="{{ url_for('list_doctors') }}" class="btn btn-lg px-6 py-3 fw-bold position-relative overflow-hidden" style="background: linear-gradient(135deg, #fbbf24, #f59e0b); border: none; border-radius: 50px; box-shadow: 0 15px 45px rgba(251,191,36,0.5); color: #1e293b; transition: all 0.4s;">
+              <span class="position-relative" style="z-index: 2;"><i class="fas fa-calendar-check me-2"></i>Book Service Now</span>
+            </a>
+            <a href="tel:+919997612579" class="btn btn-lg px-6 py-3 fw-bold position-relative" style="background: rgba(255,255,255,0.95); border: none; border-radius: 50px; box-shadow: 0 15px 45px rgba(255,255,255,0.3); color: #0d6efd; transition: all 0.4s;">
+              <i class="fas fa-phone-alt me-2"></i><span>Emergency: +91 9997612579</span>
+            </a>
+          </div>
+
+          <!-- Clean Quick Info Bar -->
+          <div class="quick-info mt-5 p-4 rounded-4" style="background: rgba(255,255,255,0.15); backdrop-filter: blur(25px); border: 2px solid rgba(255,255,255,0.2); box-shadow: 0 15px 40px rgba(0,0,0,0.2);">
+            <div class="row g-4 text-center">
+              <div class="col-4">
+                <div class="info-item" style="transition: all 0.3s;">
+                  <div class="icon-wrapper d-inline-block p-3 rounded-circle mb-2" style="background: rgba(251,191,36,0.2); border: 2px solid rgba(251,191,36,0.3);">
+                    <i class="fas fa-clock fa-2x" style="color: #fbbf24;"></i>
+                  </div>
+                  <div class="small text-white fw-bold">Operating Hours</div>
+                  <div class="small text-white" style="opacity: 0.9;">Mon-Sat: 9 AM - 7 PM</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="info-item" style="transition: all 0.3s;">
+                  <div class="icon-wrapper d-inline-block p-3 rounded-circle mb-2" style="background: rgba(251,191,36,0.2); border: 2px solid rgba(251,191,36,0.3);">
+                    <i class="fas fa-map-marker-alt fa-2x" style="color: #fbbf24;"></i>
+                  </div>
+                  <div class="small text-white fw-bold">Prime Location</div>
+                  <div class="small text-white" style="opacity: 0.9;">Lohaghat, Uttarakhand</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="info-item" style="transition: all 0.3s;">
+                  <div class="icon-wrapper d-inline-block p-3 rounded-circle mb-2" style="background: rgba(251,191,36,0.2); border: 2px solid rgba(251,191,36,0.3);">
+                    <i class="fas fa-headset fa-2x" style="color: #fbbf24;"></i>
+                  </div>
+                  <div class="small text-white fw-bold">24/7 Support</div>
+                  <div class="small text-white" style="opacity: 0.9;">Always Available</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Content - Professional Garage Gallery -->
+      <div class="col-lg-6 mt-4 mt-lg-0">
+        <div class="workshop-showcase-premium position-relative">
+          <!-- Main Workshop Image -->
+          <div class="main-showcase-wrapper position-relative" style="padding: 10px;">
+            <div class="main-image position-relative" style="border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.5); border: 3px solid rgba(255,255,255,0.2);">
+              <img src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&q=80" alt="Modern Garage" class="img-fluid" style="width: 100%; height: clamp(250px, 40vh, 480px); object-fit: cover;">
+              <!-- Overlay Badge -->
+              <div class="position-absolute bottom-0 start-0 m-4 p-4 rounded-4" style="background: rgba(13,110,253,0.95); backdrop-filter: blur(15px); box-shadow: 0 10px 35px rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.2);">
+                <div class="d-flex align-items-center gap-3">
+                  <i class="fas fa-star fa-3x" style="color: #fbbf24;"></i>
+                  <div>
+                    <h3 class="mb-0 fw-bold" style="color: #fff;">4.9/5</h3>
+                    <small class="fw-semibold" style="color: rgba(255,255,255,0.9);">Excellence Rating</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Professional Gallery Grid -->
+          <div class="row g-3 mt-3">
+            <div class="col-4">
+              <div class="gallery-item position-relative" style="border-radius: 20px; overflow: hidden; box-shadow: 0 15px 45px rgba(0,0,0,0.4); height: 150px; border: 4px solid rgba(255,255,255,0.2); transition: all 0.4s; cursor: pointer;">
+                <img src="https://images.unsplash.com/photo-1625047509168-a7026f36de04?w=400&q=80" alt="Auto Repair" class="img-fluid hover-zoom" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s;">
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="gallery-item position-relative" style="border-radius: 20px; overflow: hidden; box-shadow: 0 15px 45px rgba(0,0,0,0.4); height: 150px; border: 4px solid rgba(255,255,255,0.2); transition: all 0.4s; cursor: pointer;">
+                <img src="{{ url_for('static', filename='images/gm3.jpg') }}" alt="Mechanic Work" class="img-fluid hover-zoom" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s;">
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="gallery-item position-relative" style="border-radius: 20px; overflow: hidden; box-shadow: 0 15px 45px rgba(0,0,0,0.4); height: 150px; border: 4px solid rgba(255,255,255,0.2); transition: all 0.4s; cursor: pointer;">
+                <img src="https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=400&q=80" alt="Car Service" class="img-fluid hover-zoom" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s;">
+              </div>
+            </div>
+          </div>
+          
+          <!-- Extra Row of Professional Images -->
+          <div class="row g-3 mt-3">
+            <div class="col-6">
+              <div class="gallery-item position-relative" style="border-radius: 20px; overflow: hidden; box-shadow: 0 15px 45px rgba(0,0,0,0.4); height: 180px; border: 4px solid rgba(255,255,255,0.2); transition: all 0.4s; cursor: pointer;">
+                <img src="https://images.unsplash.com/photo-1621939514649-280e2ee25f60?w=600&q=80" alt="Engine Service" class="img-fluid hover-zoom" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s;">
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="gallery-item position-relative" style="border-radius: 20px; overflow: hidden; box-shadow: 0 15px 45px rgba(0,0,0,0.4); height: 180px; border: 4px solid rgba(255,255,255,0.2); transition: all 0.4s; cursor: pointer;">
+                <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=600&q=80" alt="Workshop Tools" class="img-fluid hover-zoom" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Scroll Indicator -->
+  <div class="text-center position-absolute" style="bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 10;">
+    <div class="scroll-indicator" style="width: 35px; height: 55px; border: 3px solid rgba(255,255,255,0.6); border-radius: 25px; position: relative; box-shadow: 0 0 20px rgba(255,255,255,0.3); background: rgba(0,0,0,0.2);">
+      <div class="scroll-dot" style="width: 8px; height: 8px; background: #fbbf24; border-radius: 50%; position: absolute; top: 12px; left: 50%; transform: translateX(-50%); animation: scrollDot 2s infinite; box-shadow: 0 0 15px rgba(251,191,36,0.8);"></div>
+    </div>
+    <div class="mt-3 small fw-bold" style="color: #fff; font-size: 0.9rem;">Discover More</div>
+  </div>
+</section>
+
+<style>
+.gallery-item:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+}
+
+.gallery-item:hover .hover-zoom {
+  transform: scale(1.15);
+}
+
+.info-item:hover .icon-wrapper {
+  transform: scale(1.15);
+  background: rgba(251,191,36,0.35) !important;
+}
+
+.badge-item:hover {
+  transform: translateY(-5px) scale(1.05);
+  background: rgba(255,255,255,0.3) !important;
+}
+
+/* Mobile specific adjustments */
+@media (max-width: 768px) {
+  .hero-bg {
+    background-attachment: scroll !important;
+  }
+  
+  .scroll-indicator {
+    display: none;
+  }
+  
+  .workshop-showcase-premium {
+    margin-top: 20px;
+  }
+  
+  .gallery-item {
+    height: 100px !important;
+  }
+  
+  .main-image img {
+    height: 250px !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .trust-badges {
+    gap: 8px !important;
+  }
+  
+  .badge-item {
+    padding: 8px 14px !important;
+    font-size: 0.75rem !important;
+  }
+  
+  .quick-info {
+    padding: 1rem !important;
+  }
+  
+  .gallery-item {
+    height: 80px !important;
+    border-radius: 12px !important;
+    border: 2px solid rgba(255,255,255,0.2) !important;
+  }
+  
+  .main-image {
+    border-radius: 15px !important;
+    border: 2px solid rgba(255,255,255,0.2) !important;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .gallery-item:active {
+    transform: scale(0.98);
+  }
+  
+  .badge-item:active {
+    transform: scale(0.95);
+  }
+  
+  .btn:active {
+    transform: scale(0.97);
+  }
+}
+</style>
+    </div>
+  </div>
+</section>
+
+<!-- Vibrant Stats Section -->
+<div class="container px-3 px-md-4" style="margin-top: -40px; position: relative; z-index: 100;">
+  <div class="row g-3 g-md-4">
+    <div class="col-md-3 col-6">
+      <div class="stat-card p-3 p-md-4 rounded-4 shadow-lg text-center h-100" style="background: linear-gradient(135deg, #3b82f6, #2563eb); border: 2px solid rgba(59,130,246,0.3); box-shadow: 0 15px 40px rgba(59,130,246,0.4);">
+        <div class="stat-icon mb-3">
+          <i class="fas fa-car fa-3x" style="color: #fff;"></i>
+        </div>
+        <h3 class="fw-bold mb-1" style="color: #fff;">5000+</h3>
+        <p class="mb-0 small" style="color: rgba(255,255,255,0.9);">Cars Serviced</p>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="stat-card p-4 rounded-4 shadow-lg text-center h-100" style="background: linear-gradient(135deg, #22c55e, #16a34a); border: 3px solid rgba(34,197,94,0.3); box-shadow: 0 20px 50px rgba(34,197,94,0.4);">
+        <div class="stat-icon mb-3">
+          <i class="fas fa-user-cog fa-3x" style="color: #fff;"></i>
+        </div>
+        <h3 class="fw-bold mb-1" style="color: #fff;">10+</h3>
+        <p class="mb-0 small" style="color: rgba(255,255,255,0.9);">Expert Mechanics</p>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="stat-card p-4 rounded-4 shadow-lg text-center h-100" style="background: linear-gradient(135deg, #ec4899, #db2777); border: 3px solid rgba(236,72,153,0.3); box-shadow: 0 20px 50px rgba(236,72,153,0.4);">
+        <div class="stat-icon mb-3">
+          <i class="fas fa-star fa-3x" style="color: #fff;"></i>
+        </div>
+        <h3 class="fw-bold mb-1" style="color: #fff;">4.9/5</h3>
+        <p class="mb-0 small" style="color: rgba(255,255,255,0.9);">Customer Rating</p>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="stat-card p-4 rounded-4 shadow-lg text-center h-100" style="background: linear-gradient(135deg, #f59e0b, #d97706); border: 3px solid rgba(245,158,11,0.3); box-shadow: 0 20px 50px rgba(245,158,11,0.4);">
+        <div class="stat-icon mb-3">
+          <i class="fas fa-calendar-check fa-3x" style="color: #fff;"></i>
+        </div>
+        <h3 class="fw-bold mb-1" style="color: #fff;">15+</h3>
+        <p class="mb-0 small" style="color: rgba(255,255,255,0.9);">Years Experience</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Advanced Workshop Features Section -->
+<div class="workshop-features-section py-5 my-5" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <div class="position-relative">
+          <img src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&q=80" alt="Modern Auto Workshop" class="img-fluid rounded-4 shadow-lg" style="border: 5px solid rgba(59,130,246,0.2);">
+          <div class="position-absolute" style="top: -20px; right: -20px; background: linear-gradient(135deg, #ef4444, #dc2626); color: white; padding: 22px; border-radius: 22px; box-shadow: 0 15px 40px rgba(239,68,68,0.5);">
+            <i class="fas fa-tools fa-3x"></i>
+          </div>
+          <div class="position-absolute bottom-0 start-0 m-4 p-3 rounded-3" style="background: linear-gradient(135deg, rgba(59,130,246,0.95), rgba(37,99,235,0.95)); backdrop-filter: blur(10px);">
+            <div class="text-white">
+              <h5 class="mb-0 fw-bold"><i class="fas fa-award me-2"></i>Premium Equipment</h5>
+              <small>Latest Technology</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <span class="badge px-4 py-2 mb-3" style="background: linear-gradient(135deg, #ef4444, #dc2626); color: white; font-size: 0.9rem;">
+          <i class="fas fa-wrench me-2"></i>ADVANCED SERVICES
+        </span>
+        <h2 class="fw-bold mb-4 display-5" style="color: #1e293b;">
+          State-of-the-Art Workshop Facilities
+        </h2>
+        <p class="lead mb-4" style="color: #64748b;">
+          Experience professional automotive care with cutting-edge technology and expert craftsmanship
+        </p>
+        <div class="features-list">
+          <div class="feature-item mb-4 p-4 rounded-3" style="background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(37,99,235,0.05)); border-left: 5px solid #3b82f6; box-shadow: 0 4px 15px rgba(59,130,246,0.1);">
+            <h5 class="fw-bold mb-2" style="color: #1e293b;">
+              <i class="fas fa-microchip me-2" style="color: #3b82f6;"></i>Advanced Diagnostics
+            </h5>
+            <p class="mb-0" style="color: #64748b;">Computer-based diagnostics with the latest OBD2 technology for accurate problem detection</p>
+          </div>
+          <div class="feature-item mb-4 p-4 rounded-3" style="background: linear-gradient(135deg, rgba(34,197,94,0.1), rgba(22,163,74,0.05)); border-left: 5px solid #22c55e; box-shadow: 0 4px 15px rgba(34,197,94,0.1);">
+            <h5 class="fw-bold mb-2" style="color: #1e293b;">
+              <i class="fas fa-certificate me-2" style="color: #22c55e;"></i>Certified Technicians
+            </h5>
+            <p class="mb-0" style="color: #64748b;">Team of factory-trained experts with years of experience in all car brands</p>
+          </div>
+          <div class="feature-item mb-4 p-4 rounded-3" style="background: linear-gradient(135deg, rgba(251,191,36,0.1), rgba(245,158,11,0.05)); border-left: 5px solid #fbbf24; box-shadow: 0 4px 15px rgba(251,191,36,0.1);">
+            <h5 class="fw-bold mb-2" style="color: #1e293b;">
+              <i class="fas fa-shield-check me-2" style="color: #fbbf24;"></i>Quality Assurance
+            </h5>
+            <p class="mb-0" style="color: #64748b;">100% genuine parts with comprehensive warranty on all repairs and services</p>
+          </div>
+          <div class="feature-item mb-4 p-4 rounded-3" style="background: linear-gradient(135deg, rgba(168,85,247,0.1), rgba(147,51,234,0.05)); border-left: 5px solid #a855f7; box-shadow: 0 4px 15px rgba(168,85,247,0.1);">
+            <h5 class="fw-bold mb-2" style="color: #1e293b;">
+              <i class="fas fa-clock me-2" style="color: #a855f7;"></i>Express Service
+            </h5>
+            <p class="mb-0" style="color: #64748b;">Quick turnaround time with same-day service for most repairs and maintenance</p>
+          </div>
+          <div class="feature-item mb-4 p-4 rounded-3" style="background: linear-gradient(135deg, rgba(236,72,153,0.1), rgba(219,39,119,0.05)); border-left: 5px solid #ec4899; box-shadow: 0 4px 15px rgba(236,72,153,0.1);">
+            <h5 class="fw-bold mb-2" style="color: #1e293b;">
+              <i class="fas fa-car-side me-2" style="color: #ec4899;"></i>Courtesy Vehicle
+            </h5>
+            <p class="mb-0" style="color: #64748b;">Complimentary loaner vehicle available during major repairs and servicing</p>
+          </div>
+          <div class="feature-item mb-4 p-4 rounded-3" style="background: linear-gradient(135deg, rgba(6,182,212,0.1), rgba(14,165,233,0.05)); border-left: 5px solid #06b6d4; box-shadow: 0 4px 15px rgba(6,182,212,0.1);">
+            <h5 class="fw-bold mb-2" style="color: #1e293b;">
+              <i class="fas fa-wifi me-2" style="color: #06b6d4;"></i>Comfortable Waiting Area
+            </h5>
+            <p class="mb-0" style="color: #64748b;">AC waiting lounge with WiFi, refreshments, and live service tracking on screens</p>
+          </div>
+        </div>
+        <div class="d-flex flex-wrap gap-3 mt-4">
+          <a href="{{ url_for('services') }}" class="btn btn-lg px-5 py-3" style="background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff; border: none; border-radius: 50px; box-shadow: 0 10px 30px rgba(239,68,68,0.4); transition: all 0.3s;">
+            <i class="fas fa-arrow-right me-2"></i>Explore All Services
+          </a>
+          <a href="https://wa.me/919997612579?text=Hi%20Gaurav%20Motors!%20I%20would%20like%20to%20book%20a%20service%20appointment%20for%20my%20vehicle." target="_blank" class="btn btn-lg px-5 py-3" style="background: linear-gradient(135deg, #25d366, #128c7e); color: #fff; border: none; border-radius: 50px; box-shadow: 0 10px 30px rgba(37,211,102,0.4); transition: all 0.3s;">
+            <i class="fab fa-whatsapp me-2"></i>Book via WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Mission Quote with Vibrant Design -->
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="mission-card bg-gradient p-5 rounded-4 shadow-lg text-center position-relative overflow-hidden" style="background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #3b82f6 100%); border: 4px solid rgba(255,255,255,0.2);">
+        <div class="position-absolute top-0 start-0 w-100 h-100" style="background: url('https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=1200&q=80') center/cover; opacity: 0.12;"></div>
+        <div class="position-relative">
+          <i class="fas fa-quote-left fa-4x text-white mb-4" style="opacity: 0.4; filter: drop-shadow(0 0 20px rgba(255,255,255,0.5));"></i>
+          <h3 class="text-white fw-bold mb-4 display-5" style="text-shadow: 0 4px 15px rgba(0,0,0,0.3);">Our Commitment to Excellence</h3>
+          <p class="text-white fs-4 mb-4" style="line-height: 1.9; max-width: 900px; margin: 0 auto; text-shadow: 0 2px 10px rgba(0,0,0,0.2); font-weight: 500;">
+            "Delivering premium automotive care with cutting-edge technology, certified expertise, and unwavering dedication to customer satisfaction. Your vehicle deserves the best."
+          </p>
+          <p class="text-white mb-5 fs-5" style="opacity: 0.95;"><em>- Team Gaurav Motors Lohaghat</em></p>
+          <div class="d-flex flex-wrap justify-content-center gap-5 mt-5">
+            <div class="text-white mission-stat" style="transition: all 0.3s;">
+              <div class="mb-3" style="width: 70px; height: 70px; margin: 0 auto; background: rgba(255,255,255,0.2); border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255,255,255,0.3);">
+                <i class="fas fa-award fa-2x"></i>
+              </div>
+              <div class="fw-bold fs-4">15+ Years</div>
+              <small style="opacity: 0.9;">Industry Experience</small>
+            </div>
+            <div class="text-white mission-stat" style="transition: all 0.3s;">
+              <div class="mb-3" style="width: 70px; height: 70px; margin: 0 auto; background: rgba(255,255,255,0.2); border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255,255,255,0.3);">
+                <i class="fas fa-users fa-2x"></i>
+              </div>
+              <div class="fw-bold fs-4">5000+</div>
+              <small style="opacity: 0.9;">Satisfied Clients</small>
+            </div>
+            <div class="text-white mission-stat" style="transition: all 0.3s;">
+              <div class="mb-3" style="width: 70px; height: 70px; margin: 0 auto; background: rgba(255,255,255,0.2); border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255,255,255,0.3);">
+                <i class="fas fa-wrench fa-2x"></i>
+              </div>
+              <div class="fw-bold fs-4">10+</div>
+              <small style="opacity: 0.9;">Certified Experts</small>
+            </div>
+            <div class="text-white mission-stat" style="transition: all 0.3s;">
+              <div class="mb-3" style="width: 70px; height: 70px; margin: 0 auto; background: rgba(255,255,255,0.2); border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255,255,255,0.3);">
+                <i class="fas fa-star fa-2x"></i>
+              </div>
+              <div class="fw-bold fs-4">4.9/5</div>
+              <small style="opacity: 0.9;">Excellence Rating</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Premium Facilities Showcase -->
+<div class="facilities-section py-5" style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="badge px-4 py-2 mb-3" style="background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; font-size: 0.9rem;">
+        <i class="fas fa-building me-2"></i>WORLD-CLASS FACILITIES
+      </span>
+      <h2 class="fw-bold display-5 mb-3" style="color: #1e293b;">Premium Amenities & Services</h2>
+      <p class="lead text-muted" style="max-width: 700px; margin: 0 auto;">
+        Experience luxury and comfort while your vehicle receives expert care
+      </p>
+    </div>
+
+    <div class="row g-4">
+      <!-- Facility Card 1 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="facility-card h-100 p-4 rounded-4 shadow-sm" style="background: white; border: 2px solid rgba(59,130,246,0.1); transition: all 0.3s;">
+          <div class="facility-icon mb-4" style="width: 80px; height: 80px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(59,130,246,0.3);">
+            <i class="fas fa-couch fa-2x text-white"></i>
+          </div>
+          <h4 class="fw-bold mb-3" style="color: #1e293b;">Premium Waiting Lounge</h4>
+          <ul class="list-unstyled text-muted">
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Fully AC comfort seating</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>High-speed WiFi access</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Complimentary tea & coffee</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Entertainment TV & magazines</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Mobile charging stations</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Facility Card 2 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="facility-card h-100 p-4 rounded-4 shadow-sm" style="background: white; border: 2px solid rgba(34,197,94,0.1); transition: all 0.3s;">
+          <div class="facility-icon mb-4" style="width: 80px; height: 80px; background: linear-gradient(135deg, #22c55e, #16a34a); border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(34,197,94,0.3);">
+            <i class="fas fa-tools fa-2x text-white"></i>
+          </div>
+          <h4 class="fw-bold mb-3" style="color: #1e293b;">Advanced Equipment</h4>
+          <ul class="list-unstyled text-muted">
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Latest diagnostic computers</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Hydraulic vehicle lifts</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Wheel alignment machines</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>AC gas charging station</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Paint booth & denting tools</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Facility Card 3 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="facility-card h-100 p-4 rounded-4 shadow-sm" style="background: white; border: 2px solid rgba(251,191,36,0.1); transition: all 0.3s;">
+          <div class="facility-icon mb-4" style="width: 80px; height: 80px; background: linear-gradient(135deg, #fbbf24, #f59e0b); border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(251,191,36,0.3);">
+            <i class="fas fa-car fa-2x text-white"></i>
+          </div>
+          <h4 class="fw-bold mb-3" style="color: #1e293b;">Customer Convenience</h4>
+          <ul class="list-unstyled text-muted">
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Free pickup & drop service</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Courtesy vehicle available</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Live service status updates</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>24/7 emergency assistance</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Online appointment booking</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Facility Card 4 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="facility-card h-100 p-4 rounded-4 shadow-sm" style="background: white; border: 2px solid rgba(168,85,247,0.1); transition: all 0.3s;">
+          <div class="facility-icon mb-4" style="width: 80px; height: 80px; background: linear-gradient(135deg, #a855f7, #9333ea); border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(168,85,247,0.3);">
+            <i class="fas fa-shield-alt fa-2x text-white"></i>
+          </div>
+          <h4 class="fw-bold mb-3" style="color: #1e293b;">Safety & Security</h4>
+          <ul class="list-unstyled text-muted">
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>24/7 CCTV surveillance</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Secure vehicle parking</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Insured workshop facility</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Fire safety equipment</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Trained safety personnel</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Facility Card 5 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="facility-card h-100 p-4 rounded-4 shadow-sm" style="background: white; border: 2px solid rgba(236,72,153,0.1); transition: all 0.3s;">
+          <div class="facility-icon mb-4" style="width: 80px; height: 80px; background: linear-gradient(135deg, #ec4899, #db2777); border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(236,72,153,0.3);">
+            <i class="fas fa-certificate fa-2x text-white"></i>
+          </div>
+          <h4 class="fw-bold mb-3" style="color: #1e293b;">Quality Standards</h4>
+          <ul class="list-unstyled text-muted">
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>100% genuine spare parts</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Factory-trained technicians</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Multi-brand expertise</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Extended warranty coverage</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Quality assurance guarantee</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Facility Card 6 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="facility-card h-100 p-4 rounded-4 shadow-sm" style="background: white; border: 2px solid rgba(6,182,212,0.1); transition: all 0.3s;">
+          <div class="facility-icon mb-4" style="width: 80px; height: 80px; background: linear-gradient(135deg, #06b6d4, #0891b2); border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(6,182,212,0.3);">
+            <i class="fas fa-credit-card fa-2x text-white"></i>
+          </div>
+          <h4 class="fw-bold mb-3" style="color: #1e293b;">Easy Payments</h4>
+          <ul class="list-unstyled text-muted">
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>All cards accepted</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>UPI/Digital payments</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>EMI options available</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Cash on service</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Digital invoicing</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="text-center mt-5">
+      <div class="p-5 rounded-4" style="background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(37,99,235,0.05));">
+        <h3 class="fw-bold mb-3" style="color: #1e293b;">Experience the Gaurav Motors Difference</h3>
+        <p class="lead text-muted mb-4">Visit our state-of-the-art facility or book your service online today!</p>
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+          <a href="https://wa.me/919997612579?text=Hi!%20I%20would%20like%20to%20schedule%20a%20visit%20to%20your%20facility." target="_blank" class="btn btn-lg px-5 py-3" style="background: linear-gradient(135deg, #25d366, #128c7e); color: white; border: none; border-radius: 50px; box-shadow: 0 8px 25px rgba(37,211,102,0.4);">
+            <i class="fab fa-whatsapp me-2"></i>Schedule a Visit
+          </a>
+          <a href="{{ url_for('contact') }}" class="btn btn-lg px-5 py-3" style="background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; border-radius: 50px; box-shadow: 0 8px 25px rgba(59,130,246,0.4);">
+            <i class="fas fa-calendar-check me-2"></i>Book Service
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.facility-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15) !important;
+  border-color: rgba(59,130,246,0.3) !important;
+}
+
+.facility-icon {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+</style>
+
+<style>
+.mission-stat:hover {
+  transform: translateY(-10px);
+}
+
+.mission-stat:hover > div:first-child {
+  background: rgba(255,255,255,0.35) !important;
+  transform: scale(1.1) rotate(5deg);
+}
+
+.parts-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15) !important;
+}
+
+.parts-card:hover img {
+  transform: scale(1.1);
+}
+
+.parts-card:hover .position-absolute {
+  opacity: 1 !important;
+}
+</style>
+
+<!-- Premium Testimonials Section -->
+<div class="testimonials-section py-5 my-5 position-relative overflow-hidden" style="background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 50%, #0846aa 100%);">
+  <div class="position-absolute w-100 h-100" style="top: 0; left: 0; background: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1440 320\"><path fill=\"rgba(255,255,255,0.05)\" d=\"M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z\"></path></svg>') bottom center/cover no-repeat; opacity: 0.3;"></div>
+  
+  <div class="container position-relative" style="z-index: 10;">
+    <div class="text-center mb-5">
+      <span class="badge px-4 py-2 mb-3" style="background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); color: white; font-size: 0.9rem; border: 2px solid rgba(255,255,255,0.3);">
+        <i class="fas fa-star me-2" style="color: #fbbf24;"></i>CUSTOMER REVIEWS
+      </span>
+      <h2 class="fw-bold display-5 text-white mb-3">What Our Clients Say</h2>
+      <p class="lead text-white" style="opacity: 0.9; max-width: 700px; margin: 0 auto;">
+        Trusted by thousands of satisfied customers across Uttarakhand
+      </p>
+    </div>
+
+    <div class="row g-4">
+      <!-- Testimonial Card 1 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="testimonial-card h-100 p-4 rounded-4" style="background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 15px 40px rgba(0,0,0,0.2); transition: all 0.4s;">
+          <div class="d-flex align-items-center mb-3">
+            <div class="avatar-wrapper" style="width: 60px; height: 60px; background: linear-gradient(135deg, #fbbf24, #f59e0b); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: white; box-shadow: 0 5px 15px rgba(251,191,36,0.4);">
+              RK
+            </div>
+            <div class="ms-3">
+              <h5 class="mb-0 fw-bold" style="color: #1e293b;">Rajesh Kumar</h5>
+              <div class="text-warning">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <p class="text-muted mb-3" style="line-height: 1.8; font-style: italic;">
+            "Outstanding service! Got my Maruti Suzuki serviced here and the experience was exceptional. Professional staff, transparent pricing, and quality work. Highly recommended!"
+          </p>
+          <div class="small text-muted">
+            <i class="fas fa-car me-2" style="color: #0d6efd;"></i>Maruti Swift Owner
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonial Card 2 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="testimonial-card h-100 p-4 rounded-4" style="background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 15px 40px rgba(0,0,0,0.2); transition: all 0.4s;">
+          <div class="d-flex align-items-center mb-3">
+            <div class="avatar-wrapper" style="width: 60px; height: 60px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: white; box-shadow: 0 5px 15px rgba(59,130,246,0.4);">
+              PS
+            </div>
+            <div class="ms-3">
+              <h5 class="mb-0 fw-bold" style="color: #1e293b;">Priya Sharma</h5>
+              <div class="text-warning">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <p class="text-muted mb-3" style="line-height: 1.8; font-style: italic;">
+            "Best auto workshop in Uttarakhand! The team is knowledgeable, honest, and customer-focused. They fixed my car's AC issue quickly. Will definitely come back again!"
+          </p>
+          <div class="small text-muted">
+            <i class="fas fa-car me-2" style="color: #0d6efd;"></i>Hyundai i20 Owner
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonial Card 3 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="testimonial-card h-100 p-4 rounded-4" style="background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 15px 40px rgba(0,0,0,0.2); transition: all 0.4s;">
+          <div class="d-flex align-items-center mb-3">
+            <div class="avatar-wrapper" style="width: 60px; height: 60px; background: linear-gradient(135deg, #22c55e, #16a34a); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: white; box-shadow: 0 5px 15px rgba(34,197,94,0.4);">
+              AS
+            </div>
+            <div class="ms-3">
+              <h5 class="mb-0 fw-bold" style="color: #1e293b;">Amit Singh</h5>
+              <div class="text-warning">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <p class="text-muted mb-3" style="line-height: 1.8; font-style: italic;">
+            "Exceptional service and genuine parts. Got my Honda City's major service done here and couldn't be happier. Fair pricing and excellent customer care!"
+          </p>
+          <div class="small text-muted">
+            <i class="fas fa-car me-2" style="color: #0d6efd;"></i>Honda City Owner
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonial Card 4 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="testimonial-card h-100 p-4 rounded-4" style="background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 15px 40px rgba(0,0,0,0.2); transition: all 0.4s;">
+          <div class="d-flex align-items-center mb-3">
+            <div class="avatar-wrapper" style="width: 60px; height: 60px; background: linear-gradient(135deg, #ec4899, #db2777); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: white; box-shadow: 0 5px 15px rgba(236,72,153,0.4);">
+              NK
+            </div>
+            <div class="ms-3">
+              <h5 class="mb-0 fw-bold" style="color: #1e293b;">Neha Kapoor</h5>
+              <div class="text-warning">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <p class="text-muted mb-3" style="line-height: 1.8; font-style: italic;">
+            "Very professional and trustworthy. They explained everything clearly and completed the work on time. The waiting lounge is comfortable too. Highly satisfied!"
+          </p>
+          <div class="small text-muted">
+            <i class="fas fa-car me-2" style="color: #0d6efd;"></i>Tata Nexon Owner
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonial Card 5 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="testimonial-card h-100 p-4 rounded-4" style="background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 15px 40px rgba(0,0,0,0.2); transition: all 0.4s;">
+          <div class="d-flex align-items-center mb-3">
+            <div class="avatar-wrapper" style="width: 60px; height: 60px; background: linear-gradient(135deg, #a855f7, #9333ea); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: white; box-shadow: 0 5px 15px rgba(168,85,247,0.4);">
+              VG
+            </div>
+            <div class="ms-3">
+              <h5 class="mb-0 fw-bold" style="color: #1e293b;">Vikram Gupta</h5>
+              <div class="text-warning">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <p class="text-muted mb-3" style="line-height: 1.8; font-style: italic;">
+            "Fantastic experience! They use latest diagnostic equipment and only genuine parts. My Toyota runs like brand new after their service. Worth every penny!"
+          </p>
+          <div class="small text-muted">
+            <i class="fas fa-car me-2" style="color: #0d6efd;"></i>Toyota Fortuner Owner
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonial Card 6 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="testimonial-card h-100 p-4 rounded-4" style="background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 15px 40px rgba(0,0,0,0.2); transition: all 0.4s;">
+          <div class="d-flex align-items-center mb-3">
+            <div class="avatar-wrapper" style="width: 60px; height: 60px; background: linear-gradient(135deg, #06b6d4, #0891b2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: white; box-shadow: 0 5px 15px rgba(6,182,212,0.4);">
+              SC
+            </div>
+            <div class="ms-3">
+              <h5 class="mb-0 fw-bold" style="color: #1e293b;">Sanjay Chauhan</h5>
+              <div class="text-warning">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <p class="text-muted mb-3" style="line-height: 1.8; font-style: italic;">
+            "Superb service center! Emergency breakdown support was quick and efficient. The team went above and beyond to help. This is now my go-to workshop!"
+          </p>
+          <div class="small text-muted">
+            <i class="fas fa-car me-2" style="color: #0d6efd;"></i>Mahindra XUV Owner
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trust Stats -->
+    <div class="text-center mt-5 pt-4">
+      <div class="row g-4">
+        <div class="col-md-3 col-6">
+          <div class="stat-box p-4 rounded-4" style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.2);">
+            <h2 class="fw-bold text-white mb-2" style="font-size: 3rem;">4.9</h2>
+            <div class="text-warning mb-2">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <p class="text-white mb-0" style="opacity: 0.9;">Average Rating</p>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="stat-box p-4 rounded-4" style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.2);">
+            <h2 class="fw-bold text-white mb-2" style="font-size: 3rem;">5000+</h2>
+            <p class="text-white mb-0" style="opacity: 0.9;">Happy Customers</p>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="stat-box p-4 rounded-4" style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.2);">
+            <h2 class="fw-bold text-white mb-2" style="font-size: 3rem;">98%</h2>
+            <p class="text-white mb-0" style="opacity: 0.9;">Customer Satisfaction</p>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="stat-box p-4 rounded-4" style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.2);">
+            <h2 class="fw-bold text-white mb-2" style="font-size: 3rem;">15+</h2>
+            <p class="text-white mb-0" style="opacity: 0.9;">Years Experience</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.testimonial-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonial-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(251,191,36,0.1), transparent);
+  transform: rotate(45deg);
+  transition: all 0.6s;
+}
+
+.testimonial-card:hover::before {
+  right: 150%;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3) !important;
+}
+
+.avatar-wrapper {
+  transition: all 0.4s;
+}
+
+.testimonial-card:hover .avatar-wrapper {
+  transform: scale(1.1) rotate(360deg);
+}
+
+.stat-box {
+  transition: all 0.4s;
+}
+
+.stat-box:hover {
+  transform: scale(1.05);
+  background: rgba(255,255,255,0.25) !important;
+}
+</style>
+
+<!-- Founder Section -->
+<div class="founder-section py-5 my-5" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="badge px-4 py-2 mb-3" style="background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #1e293b; font-size: 0.9rem; border-radius: 25px;">
+        <i class="fas fa-user-tie me-2"></i>Meet Our Founder
+      </span>
+      <h2 class="fw-bold display-5" style="color: #0d6efd;">Leadership & Vision</h2>
+    </div>
+    
+    <div class="row align-items-center g-5">
+      <div class="col-lg-5">
+        <div class="founder-image-wrapper position-relative">
+          <div class="position-relative rounded-4 overflow-hidden shadow-lg" style="border: 5px solid #0d6efd;">
+            <img src="{{ url_for('static', filename='images/owner.jpg') }}" alt="Madan Mohan Chilkoti - Founder" class="img-fluid" style="width: 100%; height: 500px; object-fit: cover;">
+            <div class="position-absolute bottom-0 start-0 w-100 p-4" style="background: linear-gradient(to top, rgba(13,110,253,0.95), transparent);">
+              <h4 class="text-white fw-bold mb-1">Madan Mohan Chilkoti</h4>
+              <p class="text-white mb-0" style="opacity: 0.95;"><i class="fas fa-star me-2" style="color: #fbbf24;"></i>Founder & Proprietor</p>
+            </div>
+          </div>
+          <div class="position-absolute" style="top: -20px; right: -20px; width: 100px; height: 100px; background: linear-gradient(135deg, #fbbf24, #f59e0b); border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(251,191,36,0.4);">
+            <i class="fas fa-award fa-3x text-white"></i>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-7">
+        <div class="founder-content">
+          <h3 class="fw-bold mb-4" style="color: #0d6efd;">
+            <i class="fas fa-quote-left me-3" style="color: #fbbf24;"></i>Building Trust Through Excellence
+          </h3>
+          <p class="lead text-muted mb-4" style="line-height: 1.8;">
+            With over 15 years of dedication to automotive excellence, Madan Mohan Chilkoti founded Gaurav Motors 
+            in 2010 with a vision to bring world-class car care services to Lohaghat, Uttarakhand.
+          </p>
+          <p class="text-secondary mb-4" style="line-height: 1.8;">
+            Under his leadership, Gaurav Motors has grown from a small workshop to Uttarakhand's most trusted 
+            automotive service center, serving over 5,000 satisfied customers. His commitment to quality, 
+            transparency, and customer satisfaction has set new standards in the region.
+          </p>
+          
+          <div class="row g-4 mb-4">
+            <div class="col-md-6">
+              <div class="feature-box p-4 rounded-3" style="background: rgba(13,110,253,0.05); border-left: 4px solid #0d6efd;">
+                <i class="fas fa-lightbulb fa-2x mb-3" style="color: #fbbf24;"></i>
+                <h5 class="fw-bold" style="color: #0d6efd;">Vision</h5>
+                <p class="text-muted mb-0 small">To be Uttarakhand's most trusted automotive care provider through innovation and excellence.</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="feature-box p-4 rounded-3" style="background: rgba(251,191,36,0.05); border-left: 4px solid #fbbf24;">
+                <i class="fas fa-heart fa-2x mb-3" style="color: #0d6efd;"></i>
+                <h5 class="fw-bold" style="color: #0d6efd;">Mission</h5>
+                <p class="text-muted mb-0 small">Delivering honest, reliable, and premium automotive services that exceed customer expectations.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="founder-contact p-4 rounded-4" style="background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);">
+            <div class="row align-items-center">
+              <div class="col-md-8">
+                <h5 class="text-white fw-bold mb-2">
+                  <i class="fas fa-phone-alt me-2" style="color: #fbbf24;"></i>Connect with Our Founder
+                </h5>
+                <p class="text-white mb-0" style="opacity: 0.9;">Direct line for premium service inquiries and partnerships</p>
+              </div>
+              <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <a href="tel:+919997612579" class="btn btn-light btn-lg fw-bold" style="border-radius: 25px;">
+                  <i class="fas fa-phone me-2"></i>Call Now
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Car Brands We Service -->
+<div class="car-brands-section py-5" style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="badge bg-primary px-4 py-2 mb-3"><i class="fas fa-car me-2"></i>BRANDS WE SERVICE</span>
+      <h2 class="fw-bold mb-3 display-5">
+        Expert Service for All Major Brands
+      </h2>
+      <p class="lead text-muted">We specialize in servicing all popular car brands with certified expertise</p>
+    </div>
+    
+    <div class="row g-4 mb-4">
+      <div class="col-6 col-md-3">
+        <div class="brand-card bg-white p-4 rounded-4 shadow-sm text-center h-100 hover-lift" style="border: 2px solid #f0f0f0;">
+          <div class="brand-icon mb-3" style="height: 80px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-car fa-3x text-primary"></i>
+          </div>
+          <h5 class="fw-bold mb-2">Maruti Suzuki</h5>
+          <p class="text-muted small mb-0">Swift, Baleno, Dzire & All Models</p>
+        </div>
+      </div>
+      
+      <div class="col-6 col-md-3">
+        <div class="brand-card bg-white p-4 rounded-4 shadow-sm text-center h-100 hover-lift" style="border: 2px solid #f0f0f0;">
+          <div class="brand-icon mb-3" style="height: 80px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-car-side fa-3x text-danger"></i>
+          </div>
+          <h5 class="fw-bold mb-2">Hyundai</h5>
+          <p class="text-muted small mb-0">i20, Creta, Venue & All Models</p>
+        </div>
+      </div>
+      
+      <div class="col-6 col-md-3">
+        <div class="brand-card bg-white p-4 rounded-4 shadow-sm text-center h-100 hover-lift" style="border: 2px solid #f0f0f0;">
+          <div class="brand-icon mb-3" style="height: 80px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-car-alt fa-3x text-info"></i>
+          </div>
+          <h5 class="fw-bold mb-2">Tata Motors</h5>
+          <p class="text-muted small mb-0">Nexon, Harrier, Tiago & All Models</p>
+        </div>
+      </div>
+      
+      <div class="col-6 col-md-3">
+        <div class="brand-card bg-white p-4 rounded-4 shadow-sm text-center h-100 hover-lift" style="border: 2px solid #f0f0f0;">
+          <div class="brand-icon mb-3" style="height: 80px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-shuttle-van fa-3x text-success"></i>
+          </div>
+          <h5 class="fw-bold mb-2">Mahindra</h5>
+          <p class="text-muted small mb-0">Scorpio, XUV, Thar & All Models</p>
+        </div>
+      </div>
+      
+      <div class="col-6 col-md-3">
+        <div class="brand-card bg-white p-4 rounded-4 shadow-sm text-center h-100 hover-lift" style="border: 2px solid #f0f0f0;">
+          <div class="brand-icon mb-3" style="height: 80px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-truck fa-3x text-warning"></i>
+          </div>
+          <h5 class="fw-bold mb-2">Honda</h5>
+          <p class="text-muted small mb-0">City, Amaze, Jazz & All Models</p>
+        </div>
+      </div>
+      
+      <div class="col-6 col-md-3">
+        <div class="brand-card bg-white p-4 rounded-4 shadow-sm text-center h-100 hover-lift" style="border: 2px solid #f0f0f0;">
+          <div class="brand-icon mb-3" style="height: 80px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-car-crash fa-3x text-secondary"></i>
+          </div>
+          <h5 class="fw-bold mb-2">Toyota</h5>
+          <p class="text-muted small mb-0">Fortuner, Innova & All Models</p>
+        </div>
+      </div>
+      
+      <div class="col-6 col-md-3">
+        <div class="brand-card bg-white p-4 rounded-4 shadow-sm text-center h-100 hover-lift" style="border: 2px solid #f0f0f0;">
+          <div class="brand-icon mb-3" style="height: 80px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-taxi fa-3x" style="color: #0b84d9;"></i>
+          </div>
+          <h5 class="fw-bold mb-2">Renault</h5>
+          <p class="text-muted small mb-0">Kwid, Duster & All Models</p>
+        </div>
+      </div>
+      
+      <div class="col-6 col-md-3">
+        <div class="brand-card bg-white p-4 rounded-4 shadow-sm text-center h-100 hover-lift" style="border: 2px solid #f0f0f0;">
+          <div class="brand-icon mb-3" style="height: 80px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-truck-pickup fa-3x" style="color: #764ba2;"></i>
+          </div>
+          <h5 class="fw-bold mb-2">All Brands</h5>
+          <p class="text-muted small mb-0">Ford, Nissan, VW & Many More</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="text-center">
+      <a href="{{ url_for('list_doctors') }}" class="btn btn-primary btn-lg px-5 py-3 rounded-pill">
+        <i class="fas fa-calendar-check me-2"></i>Book Service for Your Car
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Premium Services Section -->
+<div class="premium-services-section py-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); position: relative; overflow: hidden;">
+  <div class="position-absolute w-100 h-100 top-0 start-0" style="background: url('https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=1600&q=80') center/cover; opacity: 0.1;"></div>
+  <div class="container position-relative" style="z-index: 10;">
+    <div class="text-center mb-5">
+      <span class="badge bg-warning text-dark px-4 py-2 mb-3"><i class="fas fa-crown me-2"></i>PREMIUM SERVICES</span>
+      <h2 class="fw-bold mb-3 display-5 text-white">
+        Exclusive Premium Care Packages
+      </h2>
+      <p class="lead text-white" style="opacity: 0.9;">Experience luxury car care with our premium service packages</p>
+    </div>
+    
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="premium-card bg-white p-4 rounded-4 shadow-lg h-100 text-center" style="border-top: 5px solid #ffc107;">
+          <div class="premium-icon mb-3" style="width: 80px; height: 80px; margin: 0 auto; background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-spray-can fa-2x text-white"></i>
+          </div>
+          <h5 class="fw-bold mb-3">Paint Protection</h5>
+          <p class="text-muted small mb-3">Ceramic coating & paint protection film for lasting shine</p>
+          <ul class="list-unstyled text-start small mb-3">
+            <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>Ceramic Coating</li>
+            <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>PPF Installation</li>
+            <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>Polish & Wax</li>
+          </ul>
+          <a href="{{ url_for('list_doctors') }}" class="btn btn-warning btn-sm rounded-pill px-4">Book Now</a>
+        </div>
+      </div>
+      
+      <div class="col-md-6 col-lg-3">
+        <div class="premium-card bg-white p-4 rounded-4 shadow-lg h-100 text-center" style="border-top: 5px solid #0d6efd;">
+          <div class="premium-icon mb-3" style="width: 80px; height: 80px; margin: 0 auto; background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-water fa-2x text-white"></i>
+          </div>
+          <h5 class="fw-bold mb-3">Deep Detailing</h5>
+          <p class="text-muted small mb-3">Complete interior & exterior deep cleaning service</p>
+          <ul class="list-unstyled text-start small mb-3">
+            <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Interior Shampooing</li>
+            <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Exterior Wash</li>
+            <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Engine Bay Clean</li>
+          </ul>
+          <a href="{{ url_for('list_doctors') }}" class="btn btn-primary btn-sm rounded-pill px-4">Book Now</a>
+        </div>
+      </div>
+      
+      <div class="col-md-6 col-lg-3">
+        <div class="premium-card bg-white p-4 rounded-4 shadow-lg h-100 text-center" style="border-top: 5px solid #198754;">
+          <div class="premium-icon mb-3" style="width: 80px; height: 80px; margin: 0 auto; background: linear-gradient(135deg, #198754 0%, #146c43 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-car-battery fa-2x text-white"></i>
+          </div>
+          <h5 class="fw-bold mb-3">Performance Tuning</h5>
+          <p class="text-muted small mb-3">ECU remapping & performance enhancement services</p>
+          <ul class="list-unstyled text-start small mb-3">
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>ECU Remapping</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Chip Tuning</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Dyno Testing</li>
+          </ul>
+          <a href="{{ url_for('list_doctors') }}" class="btn btn-success btn-sm rounded-pill px-4">Book Now</a>
+        </div>
+      </div>
+      
+      <div class="col-md-6 col-lg-3">
+        <div class="premium-card bg-white p-4 rounded-4 shadow-lg h-100 text-center" style="border-top: 5px solid #dc3545;">
+          <div class="premium-icon mb-3" style="width: 80px; height: 80px; margin: 0 auto; background: linear-gradient(135deg, #dc3545 0%, #bb2d3b 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-shield-alt fa-2x text-white"></i>
+          </div>
+          <h5 class="fw-bold mb-3">Annual Maintenance</h5>
+          <p class="text-muted small mb-3">Comprehensive yearly maintenance package with warranty</p>
+          <ul class="list-unstyled text-start small mb-3">
+            <li class="mb-2"><i class="fas fa-check text-danger me-2"></i>4 Free Services</li>
+            <li class="mb-2"><i class="fas fa-check text-danger me-2"></i>Priority Booking</li>
+            <li class="mb-2"><i class="fas fa-check text-danger me-2"></i>Parts Discount</li>
+          </ul>
+          <a href="{{ url_for('list_doctors') }}" class="btn btn-danger btn-sm rounded-pill px-4">Book Now</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="text-center mt-5">
+      <p class="text-white h5 mb-4"><i class="fas fa-gift me-2"></i>Special offer: Get 20% off on all premium packages this month!</p>
+      <a href="{{ url_for('services') }}" class="btn btn-light btn-lg px-5 py-3 rounded-pill shadow-lg">
+        <i class="fas fa-list me-2"></i>View All Premium Services
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Why Choose Us Section -->
+<div class="why-choose-section py-5" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="badge bg-warning text-dark px-4 py-2 mb-3"><i class="fas fa-star me-2"></i>WHY CHOOSE US</span>
+      <h2 class="fw-bold mb-3 display-5">
+        The Gaurav Motors Advantage
+      </h2>
+      <p class="lead text-muted">Experience the difference with our professional car care services</p>
+    </div>
+    
+    <div class="row g-4 mb-5">
+      <div class="col-md-6 col-lg-3">
+        <div class="feature-box text-center p-4 h-100 bg-white rounded-4 shadow-sm hover-lift">
+          <div class="feature-icon mb-3" style="width: 80px; height: 80px; margin: 0 auto; background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-certificate fa-2x text-white"></i>
+          </div>
+          <h5 class="fw-bold mb-3">Certified Mechanics</h5>
+          <p class="text-muted small">Our team of certified professionals brings years of expertise to every service.</p>
+        </div>
+      </div>
+      
+      <div class="col-md-6 col-lg-3">
+        <div class="feature-box text-center p-4 h-100 bg-white rounded-4 shadow-sm hover-lift">
+          <div class="feature-icon mb-3" style="width: 80px; height: 80px; margin: 0 auto; background: linear-gradient(135deg, #198754 0%, #146c43 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-clock fa-2x text-white"></i>
+          </div>
+          <h5 class="fw-bold mb-3">Quick Service</h5>
+          <p class="text-muted small">Fast turnaround times without compromising on quality or attention to detail.</p>
+        </div>
+      </div>
+      
+      <div class="col-md-6 col-lg-3">
+        <div class="feature-box text-center p-4 h-100 bg-white rounded-4 shadow-sm hover-lift">
+          <div class="feature-icon mb-3" style="width: 80px; height: 80px; margin: 0 auto; background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-money-bill-wave fa-2x text-white"></i>
+          </div>
+          <h5 class="fw-bold mb-3">Fair Pricing</h5>
+          <p class="text-muted small">Transparent pricing with no hidden charges. You only pay for what you need.</p>
+        </div>
+      </div>
+      
+      <div class="col-md-6 col-lg-3">
+        <div class="feature-box text-center p-4 h-100 bg-white rounded-4 shadow-sm hover-lift">
+          <div class="feature-icon mb-3" style="width: 80px; height: 80px; margin: 0 auto; background: linear-gradient(135deg, #dc3545 0%, #bb2d3b 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-shield-alt fa-2x text-white"></i>
+          </div>
+          <h5 class="fw-bold mb-3">Warranty Guarantee</h5>
+          <p class="text-muted small">All our services come with warranty coverage for your peace of mind.</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Additional Features -->
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="bg-white p-4 rounded-4 shadow-sm h-100">
+          <div class="d-flex align-items-center mb-3">
+            <div class="flex-shrink-0">
+              <i class="fas fa-tools fa-2x text-primary"></i>
+            </div>
+            <div class="flex-grow-1 ms-3">
+              <h6 class="fw-bold mb-1">Modern Equipment</h6>
+              <small class="text-muted">Latest diagnostic tools & machinery</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-4">
+        <div class="bg-white p-4 rounded-4 shadow-sm h-100">
+          <div class="d-flex align-items-center mb-3">
+            <div class="flex-shrink-0">
+              <i class="fas fa-box fa-2x text-success"></i>
+            </div>
+            <div class="flex-grow-1 ms-3">
+              <h6 class="fw-bold mb-1">Genuine Parts</h6>
+              <small class="text-muted">Only authentic OEM & quality parts</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-4">
+        <div class="bg-white p-4 rounded-4 shadow-sm h-100">
+          <div class="d-flex align-items-center mb-3">
+            <div class="flex-shrink-0">
+              <i class="fas fa-headset fa-2x text-warning"></i>
+            </div>
+            <div class="flex-grow-1 ms-3">
+              <h6 class="fw-bold mb-1">24/7 Support</h6>
+              <small class="text-muted">Always available for emergencies</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Our Services Section -->
+<div class="services-section py-5" style="background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="badge bg-primary px-4 py-2 mb-3"><i class="fas fa-cogs me-2"></i>WHAT WE OFFER</span>
+      <h2 class="fw-bold mb-3 display-5">
+        Our Premium Services
+      </h2>
+      <p class="lead text-muted">Complete automotive care delivered by expert mechanics</p>
+    </div>
+    
+    <div class="row g-4 mb-5">
+    <div class="col-md-4">
+      <div class="card h-100 border-0 shadow-lg service-card-modern">
+        <div class="service-image-wrapper" style="height: 200px; overflow: hidden; border-radius: 16px 16px 0 0;">
+          <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80" class="w-100 h-100" style="object-fit: cover;" alt="Engine Service">
+          <div class="service-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, rgba(13,110,253,0.9), rgba(11,132,217,0.9)); opacity: 0; transition: opacity 0.3s;">
+            <i class="fas fa-cog fa-4x text-white"></i>
+          </div>
+        </div>
+        <div class="card-body p-4">
+          <h5 class="card-title fw-bold mb-3">Engine Service & Repair</h5>
+          <p class="card-text text-muted mb-4">
+            Complete engine diagnostics, repair, and maintenance with advanced equipment.
+          </p>
+          <div class="d-flex align-items-center text-primary">
+            <i class="fas fa-check-circle me-2"></i>
+            <small>Expert Diagnostics</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="card h-100 border-0 shadow-lg service-card-modern">
+        <div class="service-image-wrapper" style="height: 200px; overflow: hidden; border-radius: 16px 16px 0 0;">
+          <img src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=600&q=80" class="w-100 h-100" style="object-fit: cover;" alt="Brake Service">
+          <div class="service-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, rgba(220,53,69,0.9), rgba(200,35,51,0.9)); opacity: 0; transition: opacity 0.3s;">
+            <i class="fas fa-circle-stop fa-4x text-white"></i>
+          </div>
+        </div>
+        <div class="card-body p-4">
+          <h5 class="card-title fw-bold mb-3">Brake System Service</h5>
+          <p class="card-text text-muted mb-4">
+            Complete brake inspection, repair, and maintenance for safe driving.
+          </p>
+          <div class="d-flex align-items-center text-danger">
+            <i class="fas fa-check-circle me-2"></i>
+            <small>Safety Guaranteed</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="card h-100 border-0 shadow-lg service-card-modern">
+        <div class="service-image-wrapper" style="height: 200px; overflow: hidden; border-radius: 16px 16px 0 0;">
+          <img src="https://images.unsplash.com/photo-1625047509168-a7026f36de04?w=600&q=80" class="w-100 h-100" style="object-fit: cover;" alt="Electrical Service">
+          <div class="service-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, rgba(255,193,7,0.9), rgba(255,152,0,0.9)); opacity: 0; transition: opacity 0.3s;">
+            <i class="fas fa-bolt fa-4x text-white"></i>
+          </div>
+        </div>
+        <div class="card-body p-4">
+          <h5 class="card-title fw-bold mb-3">Electrical & Diagnostics</h5>
+          <p class="card-text text-muted mb-4">
+            Expert electrical system diagnostics and repair with modern equipment.
+          </p>
+          <div class="d-flex align-items-center text-warning">
+            <i class="fas fa-check-circle me-2"></i>
+            <small>Modern Technology</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- Book Your Service Section -->
+<div class="container my-5">
+  <div class="text-center mb-5">
+    <div class="d-flex align-items-center justify-content-center gap-3 mb-3">
+      <!-- Logo Zoom Effect -->
+      <div class="logo-zoom-container" style="width: 90px; height: 90px; background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); border-radius: 25px; padding: 12px; box-shadow: 0 15px 50px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+        <div class="logo-shine" style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.5), transparent); transform: rotate(45deg);"></div>
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Gaurav Motors Logo" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2;">
+      </div>
+      <div class="text-start">
+        <h2 class="fw-bold mb-0 text-primary" style="font-size: 2.5rem; letter-spacing: 1px;">
+          <i class="fas fa-wrench me-2"></i>Quick Service Booking
+        </h2>
+        <p class="text-muted mb-0">Fast, easy, and hassle-free appointment scheduling</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row g-4 justify-content-center">
+    <!-- Quick Service Card -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 border-0 shadow-lg service-card position-relative overflow-hidden" style="border-top: 4px solid #0d6efd !important;">
+        <div class="position-absolute top-0 end-0 p-3">
+          <span class="badge bg-success">Most Popular</span>
+        </div>
+        <div class="card-body text-center p-5">
+          <div class="service-icon mb-4">
+            <i class="fas fa-tachometer-alt fa-4x text-primary"></i>
+          </div>
+          <h5 class="card-title fw-bold mb-3 text-primary">Quick Service</h5>
+          <p class="card-text text-muted mb-4">
+            Fast routine maintenance and basic repairs. Perfect for oil changes, tire rotation, and general checkups.
+          </p>
+          <ul class="list-unstyled mt-4 text-start">
+            <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Same Day Service</li>
+            <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>No Appointment Wait</li>
+            <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Express Lane Available</li>
+            <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>30-60 Min Duration</li>
+          </ul>
+          <div class="mt-4 p-3 bg-primary bg-opacity-10 rounded-3">
+            <small class="text-primary"><i class="fas fa-clock me-2"></i>Usually completed within 1 hour</small>
+          </div>
+        </div>
+        <div class="card-footer bg-transparent border-0 text-center pb-4">
+          <a href="{{ url_for('list_doctors') }}" class="btn btn-primary btn-lg px-5 rounded-pill">
+            <i class="fas fa-calendar-check me-2"></i>Book Now
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Full Service Card -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 border-0 shadow-lg service-card position-relative overflow-hidden" style="border-top: 4px solid #ffc107 !important;">
+        <div class="position-absolute top-0 end-0 p-3">
+          <span class="badge bg-warning text-dark">Recommended</span>
+        </div>
+        <div class="card-body text-center p-5">
+          <div class="service-icon mb-4">
+            <i class="fas fa-tools fa-4x text-warning"></i>
+          </div>
+          <h5 class="card-title fw-bold mb-3 text-warning">Full Service</h5>
+          <p class="card-text text-muted mb-4">
+            Comprehensive inspection and maintenance. Includes detailed diagnostics and complete car health check.
+          </p>
+          <ul class="list-unstyled mt-4 text-start">
+            <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>Complete Inspection</li>
+            <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>Advanced Diagnostics</li>
+            <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>Detailed Report</li>
+            <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>2-3 Hours Duration</li>
+          </ul>
+          <div class="mt-4 p-3 bg-warning bg-opacity-10 rounded-3">
+            <small class="text-warning"><i class="fas fa-star me-2"></i>Includes 50-point inspection</small>
+          </div>
+        </div>
+        <div class="card-footer bg-transparent border-0 text-center pb-4">
+          <a href="{{ url_for('list_doctors') }}" class="btn btn-warning btn-lg px-5 rounded-pill text-dark">
+            <i class="fas fa-calendar-check me-2"></i>Book Now
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Emergency Service Card -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 border-0 shadow-lg service-card position-relative overflow-hidden" style="border-top: 4px solid #dc3545 !important;">
+        <div class="position-absolute top-0 end-0 p-3">
+          <span class="badge bg-danger"><i class="fas fa-ambulance me-1"></i>24/7</span>
+        </div>
+        <div class="card-body text-center p-5">
+          <div class="service-icon mb-4">
+            <i class="fas fa-life-ring fa-4x text-danger"></i>
+          </div>
+          <h5 class="card-title fw-bold mb-3 text-danger">Emergency Service</h5>
+          <p class="card-text text-muted mb-4">
+            Immediate roadside assistance and urgent repairs. Available 24/7 for breakdowns and emergencies.
+          </p>
+          <ul class="list-unstyled mt-4 text-start">
+            <li class="mb-2"><i class="fas fa-check text-danger me-2"></i>24/7 Availability</li>
+            <li class="mb-2"><i class="fas fa-check text-danger me-2"></i>Roadside Assistance</li>
+            <li class="mb-2"><i class="fas fa-check text-danger me-2"></i>Towing Service</li>
+            <li class="mb-2"><i class="fas fa-check text-danger me-2"></i>Priority Response</li>
+          </ul>
+          <div class="mt-4 p-3 bg-danger bg-opacity-10 rounded-3">
+            <small class="text-danger"><i class="fas fa-phone me-2"></i>Call: +91 9997612579</small>
+          </div>
+        </div>
+        <div class="card-footer bg-transparent border-0 text-center pb-4">
+          <a href="tel:+919876543210" class="btn btn-danger btn-lg px-5 rounded-pill">
+            <i class="fas fa-phone me-2"></i>Call Now
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="text-center mt-5">
+    <p class="text-muted mb-3">
+      <i class="fas fa-info-circle me-2"></i>Not sure which service you need? Our experts are here to help
+    </p>
+    <a href="{{ url_for('contact') }}" class="btn px-5 py-3 rounded-pill" style="background: linear-gradient(135deg, #8b7355, #cd853f); color: white; border: none; box-shadow: 0 8px 25px rgba(139,115,85,0.3);">
+      <i class="fas fa-comments me-2"></i>Chat with Expert
+    </a>
+  </div>
+</div>
+
+<!-- Genuine Spare Parts Section -->
+<div class="spare-parts-section py-5 my-5" style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="badge px-4 py-2 mb-3" style="background: linear-gradient(135deg, #0d6efd, #0a58ca); color: white; font-size: 0.9rem; border-radius: 25px;">
+        <i class="fas fa-cogs me-2"></i>Genuine Parts Inventory
+      </span>
+      <h2 class="fw-bold display-4 mb-3" style="color: #0d6efd;">Premium Quality Spare Parts</h2>
+      <p class="lead text-muted">Original and certified aftermarket parts for all major car brands</p>
+    </div>
+
+    <div class="row g-4">
+      <!-- Engine Parts -->
+      <div class="col-md-6 col-lg-3">
+        <div class="parts-card card border-0 h-100 shadow-sm position-relative overflow-hidden" style="transition: all 0.3s ease;">
+          <div class="position-relative overflow-hidden" style="height: 250px;">
+            <img src="https://images.unsplash.com/photo-1486262715619-e3bc71683773?w=500&q=80" alt="Engine Parts" class="img-fluid w-100 h-100" style="object-fit: cover; transition: transform 0.3s ease;">
+            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, transparent 60%, rgba(13,110,253,0.9) 100%); opacity: 0; transition: opacity 0.3s ease;">
+              <div class="position-absolute bottom-0 start-0 p-3 w-100">
+                <span class="badge bg-white text-primary">In Stock</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-3">
+              <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; background: rgba(13,110,253,0.1);">
+                <i class="fas fa-engine fa-lg" style="color: #0d6efd;"></i>
+              </div>
+              <h5 class="fw-bold mb-0" style="color: #0d6efd;">Engine Parts</h5>
+            </div>
+            <p class="text-muted small mb-3">Complete range of engine components including pistons, crankshafts, valves, timing belts, gaskets, and cylinder heads. OEM quality guaranteed.</p>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <span class="badge bg-light text-dark small">Pistons</span>
+              <span class="badge bg-light text-dark small">Timing Belts</span>
+              <span class="badge bg-light text-dark small">Gaskets</span>
+            </div>
+            <a href="{{ url_for('list_doctors') }}" class="btn btn-outline-primary btn-sm w-100 rounded-pill">
+              <i class="fas fa-shopping-cart me-2"></i>Inquire Now
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Brake Systems -->
+      <div class="col-md-6 col-lg-3">
+        <div class="parts-card card border-0 h-100 shadow-sm position-relative overflow-hidden" style="transition: all 0.3s ease;">
+          <div class="position-relative overflow-hidden" style="height: 250px;">
+            <img src="https://images.unsplash.com/photo-1625047509168-a7026f36de04?w=500&q=80" alt="Brake Systems" class="img-fluid w-100 h-100" style="object-fit: cover; transition: transform 0.3s ease;">
+            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, transparent 60%, rgba(220,53,69,0.9) 100%); opacity: 0; transition: opacity 0.3s ease;">
+              <div class="position-absolute bottom-0 start-0 p-3 w-100">
+                <span class="badge bg-white text-danger">In Stock</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-3">
+              <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; background: rgba(220,53,69,0.1);">
+                <i class="fas fa-circle-notch fa-lg" style="color: #dc3545;"></i>
+              </div>
+              <h5 class="fw-bold mb-0" style="color: #dc3545;">Brake Systems</h5>
+            </div>
+            <p class="text-muted small mb-3">Premium brake pads, rotors, calipers, drums, and hydraulic components. Safety-certified parts from trusted manufacturers.</p>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <span class="badge bg-light text-dark small">Brake Pads</span>
+              <span class="badge bg-light text-dark small">Rotors</span>
+              <span class="badge bg-light text-dark small">Calipers</span>
+            </div>
+            <a href="{{ url_for('list_doctors') }}" class="btn btn-outline-danger btn-sm w-100 rounded-pill">
+              <i class="fas fa-shopping-cart me-2"></i>Inquire Now
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters & Fluids -->
+      <div class="col-md-6 col-lg-3">
+        <div class="parts-card card border-0 h-100 shadow-sm position-relative overflow-hidden" style="transition: all 0.3s ease;">
+          <div class="position-relative overflow-hidden" style="height: 250px;">
+            <img src="https://images.unsplash.com/photo-1632823469620-fef1e4c85ab0?w=500&q=80" alt="Filters and Fluids" class="img-fluid w-100 h-100" style="object-fit: cover; transition: transform 0.3s ease;">
+            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, transparent 60%, rgba(25,135,84,0.9) 100%); opacity: 0; transition: opacity 0.3s ease;">
+              <div class="position-absolute bottom-0 start-0 p-3 w-100">
+                <span class="badge bg-white text-success">In Stock</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-3">
+              <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; background: rgba(25,135,84,0.1);">
+                <i class="fas fa-filter fa-lg" style="color: #198754;"></i>
+              </div>
+              <h5 class="fw-bold mb-0" style="color: #198754;">Filters & Fluids</h5>
+            </div>
+            <p class="text-muted small mb-3">Oil filters, air filters, cabin filters, fuel filters, engine oils, coolants, brake fluids, and transmission fluids. Genuine quality assured.</p>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <span class="badge bg-light text-dark small">Oil Filters</span>
+              <span class="badge bg-light text-dark small">Air Filters</span>
+              <span class="badge bg-light text-dark small">Coolants</span>
+            </div>
+            <a href="{{ url_for('list_doctors') }}" class="btn btn-outline-success btn-sm w-100 rounded-pill">
+              <i class="fas fa-shopping-cart me-2"></i>Inquire Now
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Electrical Components -->
+      <div class="col-md-6 col-lg-3">
+        <div class="parts-card card border-0 h-100 shadow-sm position-relative overflow-hidden" style="transition: all 0.3s ease;">
+          <div class="position-relative overflow-hidden" style="height: 250px;">
+            <img src="https://images.unsplash.com/photo-1621939514649-280e2ee25f60?w=500&q=80" alt="Electrical Components" class="img-fluid w-100 h-100" style="object-fit: cover; transition: transform 0.3s ease;">
+            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, transparent 60%, rgba(255,193,7,0.9) 100%); opacity: 0; transition: opacity 0.3s ease;">
+              <div class="position-absolute bottom-0 start-0 p-3 w-100">
+                <span class="badge bg-white text-warning">In Stock</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-3">
+              <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; background: rgba(255,193,7,0.1);">
+                <i class="fas fa-bolt fa-lg" style="color: #ffc107;"></i>
+              </div>
+              <h5 class="fw-bold mb-0" style="color: #ffc107;">Electrical Parts</h5>
+            </div>
+            <p class="text-muted small mb-3">Batteries, alternators, starters, spark plugs, ignition coils, sensors, fuses, and complete wiring harnesses. Premium brands available.</p>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <span class="badge bg-light text-dark small">Batteries</span>
+              <span class="badge bg-light text-dark small">Alternators</span>
+              <span class="badge bg-light text-dark small">Sensors</span>
+            </div>
+            <a href="{{ url_for('list_doctors') }}" class="btn btn-outline-warning btn-sm w-100 rounded-pill">
+              <i class="fas fa-shopping-cart me-2"></i>Inquire Now
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Suspension Parts -->
+      <div class="col-md-6 col-lg-3">
+        <div class="parts-card card border-0 h-100 shadow-sm position-relative overflow-hidden" style="transition: all 0.3s ease;">
+          <div class="position-relative overflow-hidden" style="height: 250px;">
+            <img src="https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=500&q=80" alt="Suspension Systems" class="img-fluid w-100 h-100" style="object-fit: cover; transition: transform 0.3s ease;">
+            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, transparent 60%, rgba(111,66,193,0.9) 100%); opacity: 0; transition: opacity 0.3s ease;">
+              <div class="position-absolute bottom-0 start-0 p-3 w-100">
+                <span class="badge bg-white text-purple">In Stock</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-3">
+              <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; background: rgba(111,66,193,0.1);">
+                <i class="fas fa-car-side fa-lg" style="color: #6f42c1;"></i>
+              </div>
+              <h5 class="fw-bold mb-0" style="color: #6f42c1;">Suspension</h5>
+            </div>
+            <p class="text-muted small mb-3">Shock absorbers, struts, springs, control arms, bushings, ball joints, and sway bars. Smooth ride comfort guaranteed.</p>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <span class="badge bg-light text-dark small">Shock Absorbers</span>
+              <span class="badge bg-light text-dark small">Struts</span>
+              <span class="badge bg-light text-dark small">Springs</span>
+            </div>
+            <a href="{{ url_for('list_doctors') }}" class="btn btn-outline-primary btn-sm w-100 rounded-pill" style="border-color: #6f42c1; color: #6f42c1;">
+              <i class="fas fa-shopping-cart me-2"></i>Inquire Now
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transmission Parts -->
+      <div class="col-md-6 col-lg-3">
+        <div class="parts-card card border-0 h-100 shadow-sm position-relative overflow-hidden" style="transition: all 0.3s ease;">
+          <div class="position-relative overflow-hidden" style="height: 250px;">
+            <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=500&q=80" alt="Transmission Parts" class="img-fluid w-100 h-100" style="object-fit: cover; transition: transform 0.3s ease;">
+            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, transparent 60%, rgba(253,126,20,0.9) 100%); opacity: 0; transition: opacity 0.3s ease;">
+              <div class="position-absolute bottom-0 start-0 p-3 w-100">
+                <span class="badge bg-white text-dark">In Stock</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-3">
+              <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; background: rgba(253,126,20,0.1);">
+                <i class="fas fa-cog fa-lg" style="color: #fd7e14;"></i>
+              </div>
+              <h5 class="fw-bold mb-0" style="color: #fd7e14;">Transmission</h5>
+            </div>
+            <p class="text-muted small mb-3">Clutch kits, transmission fluid, gearboxes, torque converters, drive shafts, and CV joints. Manual & automatic parts available.</p>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <span class="badge bg-light text-dark small">Clutch Kits</span>
+              <span class="badge bg-light text-dark small">Gearboxes</span>
+              <span class="badge bg-light text-dark small">CV Joints</span>
+            </div>
+            <a href="{{ url_for('list_doctors') }}" class="btn btn-outline-warning btn-sm w-100 rounded-pill" style="border-color: #fd7e14; color: #fd7e14;">
+              <i class="fas fa-shopping-cart me-2"></i>Inquire Now
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Body & Exterior Parts -->
+      <div class="col-md-6 col-lg-3">
+        <div class="parts-card card border-0 h-100 shadow-sm position-relative overflow-hidden" style="transition: all 0.3s ease;">
+          <div class="position-relative overflow-hidden" style="height: 250px;">
+            <img src="https://images.unsplash.com/photo-1615906655593-ad0386982a0f?w=500&q=80" alt="Body and Exterior Parts" class="img-fluid w-100 h-100" style="object-fit: cover; transition: transform 0.3s ease;">
+            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, transparent 60%, rgba(32,201,151,0.9) 100%); opacity: 0; transition: opacity 0.3s ease;">
+              <div class="position-absolute bottom-0 start-0 p-3 w-100">
+                <span class="badge bg-white text-info">In Stock</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-3">
+              <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; background: rgba(32,201,151,0.1);">
+                <i class="fas fa-car fa-lg" style="color: #20c997;"></i>
+              </div>
+              <h5 class="fw-bold mb-0" style="color: #20c997;">Body & Exterior</h5>
+            </div>
+            <p class="text-muted small mb-3">Bumpers, fenders, hoods, doors, mirrors, grills, headlights, taillights, and windshields. Perfect-fit body panels guaranteed.</p>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <span class="badge bg-light text-dark small">Bumpers</span>
+              <span class="badge bg-light text-dark small">Headlights</span>
+              <span class="badge bg-light text-dark small">Mirrors</span>
+            </div>
+            <a href="{{ url_for('list_doctors') }}" class="btn btn-outline-info btn-sm w-100 rounded-pill">
+              <i class="fas fa-shopping-cart me-2"></i>Inquire Now
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interior Parts -->
+      <div class="col-md-6 col-lg-3">
+        <div class="parts-card card border-0 h-100 shadow-sm position-relative overflow-hidden" style="transition: all 0.3s ease;">
+          <div class="position-relative overflow-hidden" style="height: 250px;">
+            <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=500&q=80" alt="Interior Parts" class="img-fluid w-100 h-100" style="object-fit: cover; transition: transform 0.3s ease;">
+            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, transparent 60%, rgba(13,110,253,0.9) 100%); opacity: 0; transition: opacity 0.3s ease;">
+              <div class="position-absolute bottom-0 start-0 p-3 w-100">
+                <span class="badge bg-white text-primary">In Stock</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-3">
+              <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; background: rgba(13,110,253,0.1);">
+                <i class="fas fa-couch fa-lg" style="color: #0d6efd;"></i>
+              </div>
+              <h5 class="fw-bold mb-0" style="color: #0d6efd;">Interior Parts</h5>
+            </div>
+            <p class="text-muted small mb-3">Seat covers, dashboard components, door panels, floor mats, steering wheels, and trim pieces. Premium comfort materials.</p>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <span class="badge bg-light text-dark small">Seat Covers</span>
+              <span class="badge bg-light text-dark small">Dashboard</span>
+              <span class="badge bg-light text-dark small">Floor Mats</span>
+            </div>
+            <a href="{{ url_for('list_doctors') }}" class="btn btn-outline-primary btn-sm w-100 rounded-pill">
+              <i class="fas fa-shopping-cart me-2"></i>Inquire Now
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Parts Guarantee Section -->
+    <div class="row mt-5">
+      <div class="col-12">
+        <div class="p-5 rounded-4 shadow-lg" style="background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h3 class="text-white fw-bold mb-3">
+                <i class="fas fa-shield-alt me-3" style="color: #fbbf24;"></i>Quality Guarantee on All Parts
+              </h3>
+              <p class="text-white mb-0" style="opacity: 0.95; line-height: 1.8;">
+                All spare parts come with manufacturer warranty and quality certification. We stock genuine OEM parts 
+                and premium aftermarket brands. Get expert installation and support from our certified mechanics.
+              </p>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+              <a href="tel:+919997612579" class="btn btn-light btn-lg fw-bold mb-2 w-100" style="border-radius: 25px;">
+                <i class="fas fa-phone me-2"></i>+91 9997612579
+              </a>
+              <small class="text-white d-block"><i class="fas fa-clock me-2"></i>Mon-Sat: 9:00 AM - 7:00 PM</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Customer Testimonials Section with Mountain Theme -->
+<div class="testimonials-section py-5" style="background: linear-gradient(180deg, #f5f5dc 0%, #d2b48c 100%);">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="badge px-4 py-2 mb-3" style="background: linear-gradient(135deg, #8b7355, #cd853f); color: white;"><i class="fas fa-quote-left me-2"></i>TESTIMONIALS</span>
+      <h2 class="fw-bold mb-3 display-5" style="color: #2e5440;">
+        What Our Customers Say
+      </h2>
+      <p class="lead" style="color: #8b7355;">Real feedback from satisfied customers across Uttarakhand</p>
+    </div>
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card border-0 h-100 shadow-sm">
+        <div class="card-body text-center p-4">
+          <i class="fas fa-quote-left fa-2x text-primary mb-3"></i>
+          <p class="fw-bold">"Excellent service and honest pricing. Gaurav Motors is my trusted workshop for all car needs."</p>
+          <div class="d-flex align-items-center justify-content-center mt-3">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" class="rounded-circle me-2" style="width:50px;height:50px;object-fit:cover;" alt="Customer">
+            <div class="text-start">
+              <p class="mb-0 fw-bold small">Rajesh Kumar</p>
+              <div class="text-warning small"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-0 h-100 shadow-sm">
+        <div class="card-body text-center p-4">
+          <i class="fas fa-quote-left fa-2x text-primary mb-3"></i>
+          <p class="fw-bold">"Modern equipment and expert mechanics. Best car service in Lohaghat! Highly recommended."</p>
+          <div class="d-flex align-items-center justify-content-center mt-3">
+            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" class="rounded-circle me-2" style="width:50px;height:50px;object-fit:cover;" alt="Customer">
+            <div class="text-start">
+              <p class="mb-0 fw-bold small">Priya Sharma</p>
+              <div class="text-warning small"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-0 h-100 shadow-sm">
+        <div class="card-body text-center p-4">
+          <i class="fas fa-quote-left fa-2x text-primary mb-3"></i>
+          <p class="fw-bold">"Quick service, thorough inspection, and genuine care for my vehicle. Very satisfied!"</p>
+          <div class="d-flex align-items-center justify-content-center mt-3">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80" class="rounded-circle me-2" style="width:50px;height:50px;object-fit:cover;" alt="Customer">
+            <div class="text-start">
+              <p class="mb-0 fw-bold small">Amit Singh</p>
+              <div class="text-warning small"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Call to Action -->
+<div class="container my-5 py-5 rounded-4 shadow-lg" style="background: linear-gradient(135deg, #0d6efd 0%, #0b84d9 100%);">
+  <div class="row align-items-center">
+    <div class="col-md-8 text-white">
+      <h3 class="fw-bold mb-3">
+        <i class="fas fa-calendar-check me-2"></i>
+        Ready to Experience Quality Car Service?
+      </h3>
+      <p class="mb-0 fs-5">
+        Join hundreds of satisfied customers who trust Gaurav Motors Lohaghat for their automotive needs. 
+        Book your service today and experience the difference.
+      </p>
+      <p class="mt-3"><i class="fas fa-clock me-2"></i>Mon-Sat 9AM-7PM • Easy online booking • Expert mechanics</p>
+    </div>
+    <div class="col-md-4 text-end">
+      <a class="btn btn-light btn-lg shadow-lg px-5 py-3" href="{{ url_for('list_doctors') }}">
+        <i class="fas fa-calendar-check me-2"></i>Book Service
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Performance Metrics -->
+<div class="container my-5">
+  <div class="text-center mb-4">
+    <h3 class="fw-bold text-primary">
+      <i class="fas fa-award me-2"></i>Our Track Record
+    </h3>
+    <p class="text-muted">Commitment to excellence in automotive service</p>
+  </div>
+  <div class="row text-center g-4">
+    <div class="col-md-3">
+      <div class="metric-card p-4 rounded-4 shadow-sm bg-white border-0">
+        <i class="fas fa-car fa-3x text-primary mb-3"></i>
+        <h3 class="fw-bold text-primary">5000+</h3>
+        <p class="text-muted mb-2">Cars Serviced</p>
+        <small class="text-primary"><i class="fas fa-chart-line me-1"></i>Growing daily</small>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="metric-card p-4 rounded-4 shadow-sm bg-white border-0">
+        <i class="fas fa-user-cog fa-3x text-primary mb-3"></i>
+        <h3 class="fw-bold text-primary">10+</h3>
+        <p class="text-muted mb-2">Expert Mechanics</p>
+        <small class="text-primary"><i class="fas fa-certificate me-1"></i>Certified</small>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="metric-card p-4 rounded-4 shadow-sm bg-white border-0">
+        <i class="fas fa-star fa-3x text-warning mb-3"></i>
+        <h3 class="fw-bold text-primary">4.9/5</h3>
+        <p class="text-muted mb-2">Customer Rating</p>
+        <small class="text-primary"><i class="fas fa-thumbs-up me-1"></i>Highly rated</small>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="metric-card p-4 rounded-4 shadow-sm bg-white border-0">
+        <i class="fas fa-calendar fa-3x text-primary mb-3"></i>
+        <h3 class="fw-bold text-primary">15+</h3>
+        <p class="text-muted mb-2">Years Experience</p>
+        <small class="text-primary"><i class="fas fa-award me-1"></i>Trusted</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Final Call to Action -->
+<div class="container my-5">
+  <div class="alert text-center py-5 shadow-lg border-0 rounded-4" style="background: linear-gradient(135deg, #0d6efd 0%, #0b84d9 100%);">
+    <h4 class="fw-bold text-white mb-3">
+      <i class="fas fa-car me-2"></i>Your Car, Our Priority
+    </h4>
+    <p class="text-white mb-4 fs-5">
+      Experience quality automotive service with skilled professionals dedicated to your vehicle's performance. 
+      Modern equipment meets honest service at Gaurav Motors Lohaghat.
+    </p>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+      <span class="badge bg-white text-primary fs-6 px-4 py-3 rounded-pill"><i class="fas fa-shield-alt me-2"></i>Trusted Service</span>
+      <span class="badge bg-white text-primary fs-6 px-4 py-3 rounded-pill"><i class="fas fa-award me-2"></i>Quality Parts</span>
+      <span class="badge bg-white text-primary fs-6 px-4 py-3 rounded-pill"><i class="fas fa-wrench me-2"></i>Expert Mechanics</span>
+      <span class="badge bg-white text-primary fs-6 px-4 py-3 rounded-pill"><i class="fas fa-rupee-sign me-2"></i>Honest Pricing</span>
+    </div>
+  </div>
+</div>
+
+<!-- Photo Gallery -->
+<div class="container my-5">
+  <h3 class="fw-bold text-center mb-4 text-primary">Our Workshop</h3>
+  <div class="row g-2 gallery">
+    {% for img in ['gm1.jpg','gm2.jpg','gm3.jpg','gm4.jpg','gm5.jpg','car1.svg'] %}
+      <div class="col-6 col-md-2">
+        <div class="gallery-item rounded shadow-sm overflow-hidden">
+          <img src="{{ url_for('static', filename='images/' + img) }}" class="img-fluid" alt="Workshop" style="height:150px; object-fit:cover; width:100%;">
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  /* Hero Section Styles */
+  .hero-banner {
+    position: relative;
+    animation: fadeInDown 1s ease-out;
+  }
+  
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .hero-content {
+    animation: fadeInUp 1s ease-out 0.3s both;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .btn-warning:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 30px rgba(255, 193, 7, 0.4) !important;
+  }
+  
+  .btn-outline-light:hover {
+    background: white;
+    color: #0d6efd;
+    transform: translateY(-3px);
+  }
+  
+  /* Stats Cards */
+  .stat-card {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: fadeInUp 0.6s ease-out both;
+  }
+  
+  .stat-card:nth-child(1) { animation-delay: 0.1s; }
+  .stat-card:nth-child(2) { animation-delay: 0.2s; }
+  .stat-card:nth-child(3) { animation-delay: 0.3s; }
+  .stat-card:nth-child(4) { animation-delay: 0.4s; }
+  
+  .stat-card:hover {
+    transform: translateY(-15px) scale(1.05);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15) !important;
+  }
+  
+  .stat-icon {
+    transition: transform 0.4s ease;
+  }
+  
+  .stat-card:hover .stat-icon {
+    transform: scale(1.2) rotate(5deg);
+  }
+  
+  /* Mission Card */
+  .mission-card {
+    animation: fadeIn 1s ease-out;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .mission-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+  }
+  
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  /* Service Cards */
+  .service-card-modern {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  
+  .service-card-modern:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 25px 50px rgba(13, 110, 253, 0.2) !important;
+  }
+  
+  .service-card-modern:hover .service-overlay {
+    opacity: 1 !important;
+  }
+  
+  .service-image-wrapper img {
+    transition: transform 0.5s ease;
+  }
+  
+  .service-card-modern:hover .service-image-wrapper img {
+    transform: scale(1.1);
+  }
+  
+  /* Customer/Mechanic/Admin Cards */
+  .service-card {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 16px;
+  }
+  
+  .service-card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 25px 50px rgba(13, 110, 253, 0.2) !important;
+  }
+  
+  .service-icon {
+    transition: transform 0.4s ease;
+  }
+  
+  .service-card:hover .service-icon {
+    transform: scale(1.2) rotate(-5deg);
+  }
+  
+  /* Testimonial Cards */
+  .card {
+    transition: all 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  /* Metric Cards */
+  .metric-card {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid rgba(13,110,253,0.08);
+  }
+  
+  .metric-card:hover {
+    transform: translateY(-12px) scale(1.05);
+    border-color: #0d6efd;
+    box-shadow: 0 20px 45px rgba(13, 110, 253, 0.15) !important;
+  }
+  
+  /* Gallery */
+  .gallery-item {
+    transition: transform 0.4s ease;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+  
+  .gallery-item:hover {
+    transform: scale(1.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+  .gallery-item img {
+    transition: transform 0.4s ease;
+  }
+  
+  .gallery-item:hover img {
+    transform: scale(1.15);
+  }
+  
+  /* Smooth Scroll */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Modern Hero Section Styles */
+  .hero-section {
+    position: relative;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 50%, #0a58ca 100%);
+    overflow: hidden;
+  }
+  
+  .hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1600&q=80') center/cover no-repeat;
+    opacity: 0.15;
+    animation: slowZoom 20s infinite alternate;
+  }
+  
+  @keyframes slowZoom {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
+  }
+  
+  .hero-content {
+    position: relative;
+    z-index: 2;
+  }
+  
+  .hero-badge {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    animation: fadeInDown 1s ease-out;
+  }
+  
+  .hero-title {
+    animation: fadeInUp 1s ease-out 0.2s both;
+    text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .hero-subtitle {
+    animation: fadeInUp 1s ease-out 0.4s both;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  }
+  
+  .feature-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    animation: fadeInUp 1s ease-out 0.6s both;
+  }
+  
+  .pill {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s;
+  }
+  
+  .pill:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+  }
+  
+  .hero-buttons {
+    animation: fadeInUp 1s ease-out 0.8s both;
+  }
+  
+  .hero-image {
+    animation: fadeInRight 1s ease-out 0.5s both;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .hero-image img {
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s;
+  }
+  
+  .hero-image img:hover {
+    transform: scale(1.05);
+  }
+  
+  .scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 2rem;
+    animation: bounce 2s infinite;
+    z-index: 2;
+  }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-20px); }
+  }
+  
+  /* Button Improvements */
+  .btn-warning {
+    background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+    border: none;
+    transition: all 0.3s;
+  }
+  
+  .btn-warning:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(255, 193, 7, 0.4) !important;
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  }
+  
+  .btn-outline-light:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+      font-size: 1.2rem;
+    }
+    
+    .feature-pills {
+      font-size: 0.8rem;
+    }
+    
+    .hero-buttons .btn {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  
+  /* NEW: Enhanced Animations and Interactions */
+  
+  /* Bounce animation for scroll */
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+  
+  /* Premium Hero Animations */
+  @keyframes float {
+    0%, 100% { 
+      transform: translate(0, 0); 
+      opacity: 0.3;
+    }
+    50% { 
+      transform: translate(50px, -50px); 
+      opacity: 0.8;
+    }
+  }
+  
+  @keyframes scrollDot {
+    0% { top: 10px; opacity: 1; }
+    100% { top: 35px; opacity: 0; }
+  }
+  
+  /* Gallery Hover Effects */
+  .gallery-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6) !important;
+  }
+  
+  .gallery-item:hover .hover-zoom {
+    transform: scale(1.15);
+  }
+  
+  /* Button Shine Animation */
+  .btn-warning:hover .btn-shine {
+    animation: shine 1.5s infinite;
+  }
+  
+  @keyframes shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(200%); }
+  }
+  
+  /* Trust Badges Hover */
+  .badge-item {
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+  
+  .badge-item:hover {
+    transform: translateY(-5px);
+    background: rgba(255,255,255,0.2) !important;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.3) !important;
+  }
+  
+  /* Quick Info Animation */
+  .info-item {
+    transition: all 0.3s ease;
+  }
+  
+  .info-item:hover {
+    transform: scale(1.1);
+  }
+  
+  .info-item:hover i {
+    transform: rotateY(360deg);
+    transition: transform 0.6s ease;
+  }
+  
+  /* Enhanced Button Hovers */
+  .btn-warning:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 45px rgba(255,193,7,0.6) !important;
+  }
+  
+  .btn-light:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 45px rgba(255,255,255,0.4) !important;
+  }
+  
+  /* Spin animation for service icons */
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Service Card Hover Effects */
+  .service-card:hover {
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 25px 70px rgba(13, 110, 253, 0.25) !important;
+  }
+  
+  .service-card:hover .service-image-wrapper img {
+    transform: scale(1.15);
+  }
+  
+  .service-card:hover .service-overlay {
+    opacity: 1 !important;
+  }
+  
+  .service-card-modern {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    border-radius: 16px !important;
+    overflow: hidden;
+  }
+  
+  .service-card-modern:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15) !important;
+  }
+  
+  .service-card-modern:hover .service-image-wrapper img {
+    transform: scale(1.1);
+  }
+  
+  .service-card-modern .service-image-wrapper {
+    position: relative;
+  }
+  
+  .service-card-modern .service-image-wrapper img {
+    transition: transform 0.5s ease;
+  }
+  
+  .service-card-modern:hover .service-overlay {
+    opacity: 1 !important;
+  }
+  
+  /* Stats Cards */
+  .stat-card {
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.8s ease-out;
+  }
+  
+  .stat-card:hover {
+    transform: translateY(-10px) rotate(2deg);
+    box-shadow: 0 20px 50px rgba(13, 110, 253, 0.2) !important;
+  }
+  
+  .stat-card:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  
+  .stat-card:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .stat-card:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  
+  .stat-card:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+  
+  /* Gallery Hover */
+  .gallery-item {
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  
+  .gallery-item:hover {
+    transform: scale(1.05);
+    z-index: 10;
+  }
+  
+  /* Button Enhancements */
+  .btn {
+    transition: all 0.3s ease !important;
+  }
+  
+  .btn:hover {
+    transform: translateY(-3px);
+  }
+  
+  .btn-warning:hover {
+    box-shadow: 0 15px 40px rgba(255, 193, 7, 0.5) !important;
+  }
+  
+  .btn-outline-light:hover {
+    background: rgba(255, 255, 255, 0.25) !important;
+    border-color: white !important;
+  }
+  
+  /* Feature Badges Hover */
+  .feature-badge {
+    transition: all 0.3s;
+    cursor: default;
+  }
+  
+  .feature-badge:hover {
+    background: rgba(255, 255, 255, 0.25) !important;
+    transform: translateY(-3px);
+  }
+  
+  /* Workshop Showcase */
+  .workshop-showcase .main-image:hover {
+    transform: rotate(0deg) scale(1.05);
+  }
+  
+  /* Logo Showcase */
+  .logo-showcase {
+    animation: pulse 2s ease-in-out infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+    50% {
+      box-shadow: 0 15px 50px rgba(255,193,7,0.5);
+    }
+  }
+  
+  /* Smooth Scroll */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Mission Card Animation */
+  .mission-card {
+    animation: fadeIn 1s ease-out;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .mission-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+    animation: shine 3s infinite;
+  }
+  
+  /* Hover Lift Effect */
+  .hover-lift {
+    transition: all 0.3s ease;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15) !important;
+  }
+  
+  /* Feature Icon Animation */
+  .feature-icon {
+    transition: all 0.3s ease;
+  }
+  
+  .hover-lift:hover .feature-icon {
+    transform: scale(1.1) rotate(5deg);
+  }
+  
+  /* Stats Animation on Scroll */
+  .mission-card > div > div {
+    animation: fadeInUp 0.8s ease-out;
+  }
+  
+  .mission-card > div > div:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  
+  .mission-card > div > div:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .mission-card > div > div:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  
+  .mission-card > div > div:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+  
+  /* Logo Zoom Container */
+  .logo-zoom-container {
+    animation: logoFloat 3s ease-in-out infinite, logoPulse 2s ease-in-out infinite;
+    transition: all 0.3s ease;
+  }
+  
+  .logo-zoom-container:hover {
+    transform: scale(1.15) rotate(5deg);
+    box-shadow: 0 20px 60px rgba(13, 110, 253, 0.3) !important;
+  }
+  
+  .logo-zoom-container:hover img {
+    transform: scale(1.1);
+  }
+  
+  .logo-zoom-container img {
+    transition: transform 0.5s ease;
+  }
+  
+  @keyframes logoFloat {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  @keyframes logoPulse {
+    0%, 100% {
+      box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+    }
+    50% {
+      box-shadow: 0 20px 60px rgba(255,193,7,0.4);
+    }
+  }
+  
+  /* Logo Shine Animation */
+  .logo-shine {
+    animation: logoShine 3s infinite;
+  }
+  
+  @keyframes logoShine {
+    0% {
+      transform: rotate(45deg) translateX(-200%);
+    }
+    50% {
+      transform: rotate(45deg) translateX(200%);
+    }
+    100% {
+      transform: rotate(45deg) translateX(200%);
+    }
+  }
+  
+  /* Brand Cards Animation */
+  .brand-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .brand-card:hover {
+    transform: translateY(-8px);
+    border-color: #0d6efd !important;
+    box-shadow: 0 15px 40px rgba(13, 110, 253, 0.2) !important;
+  }
+  
+  .brand-card:hover .brand-icon i {
+    transform: scale(1.2) rotate(10deg);
+  }
+  
+  .brand-icon i {
+    transition: all 0.4s ease;
+  }
+  
+  /* Premium Cards */
+  .premium-card {
+    transition: all 0.4s ease;
+    cursor: pointer;
+  }
+  
+  .premium-card:hover {
+    transform: translateY(-10px) rotate(2deg);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.2) !important;
+  }
+  
+  .premium-icon {
+    transition: all 0.4s ease;
+  }
+  
+  .premium-card:hover .premium-icon {
+    transform: scale(1.15) rotate(-10deg);
+  }
+  
+  /* Service Card Enhancements */
+  .service-card {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    animation: fadeInUp 0.8s ease-out;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .service-card:hover {
+    transform: translateY(-20px) scale(1.03);
+    box-shadow: 0 30px 70px rgba(13, 110, 253, 0.3) !important;
+  }
+  
+  .service-icon i {
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+  
+  .service-card:hover .service-icon i {
+    transform: scale(1.3) rotate(360deg);
+  }
+  
+  /* Shimmer effect on hover */
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+    animation: shine 3s infinite;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .service-card:hover::before {
+    opacity: 1;
+  }
+  
+  @keyframes shine {
+    0% {
+      transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+    100% {
+      transform: translateX(100%) translateY(100%) rotate(45deg);
+    }
+  }
+  
+  /* Staggered card animations */
+  .service-card:nth-child(1) { animation-delay: 0.1s; }
+  .service-card:nth-child(2) { animation-delay: 0.2s; }
+  .service-card:nth-child(3) { animation-delay: 0.3s; }
+  .service-card:nth-child(4) { animation-delay: 0.4s; }
+  
+  /* Enhanced image zoom */
+  .service-card img {
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .service-card:hover img {
+    transform: scale(1.15) rotate(2deg);
+    filter: brightness(1.1);
+  }
+  
+  /* Hero Content Animations */
+  .hero-content-wrapper {
+    animation: fadeInLeft 1s ease-out;
+  }
+  
+  .workshop-showcase {
+    animation: fadeInRight 1s ease-out;
+  }
+  
+  @keyframes fadeInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes fadeInRight {
+    from {
+      opacity: 0;
+      transform: translateX(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* Mobile Responsive Improvements */
+  @media (max-width: 992px) {
+    .display-1 {
+      font-size: 3rem !important;
+    }
+    
+    .logo-showcase {
+      width: 60px !important;
+      height: 60px !important;
+    }
+    
+    .workshop-showcase .main-image {
+      height: 300px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .display-1 {
+      font-size: 2.5rem !important;
+    }
+    
+    .lead {
+      font-size: 1.1rem !important;
+    }
+    
+    .feature-badge {
+      font-size: 0.85rem;
+      padding: 8px 15px !important;
+    }
+  }
+
+  /* Premium Enhancements */
+  .badge-item:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3) !important;
+    background: rgba(251,191,36,0.3) !important;
+  }
+
+  .btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4) !important;
+  }
+
+  .info-item:hover .icon-wrapper {
+    transform: scale(1.2) rotate(360deg);
+    background: rgba(251,191,36,0.4) !important;
+  }
+
+  /* Smooth Animations */
+  .hero-content-wrapper {
+    animation: fadeInUp 1.2s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Premium Gradient Background Animation */
+  .hero-bg {
+    animation: subtleZoom 20s ease-in-out infinite alternate;
+  }
+
+  @keyframes subtleZoom {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.05);
+    }
+  }
+
+  /* Icon Wrapper Transition */
+  .icon-wrapper {
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  /* Shimmer Effect for Badges */
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  .badge-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shimmer 3s infinite;
+  }
+
+  .badge-item {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Premium Card Hover Effects */
+  .card {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .card:hover {
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.2) !important;
+  }
+
+  /* Facility Card Enhanced */
+  .facility-card {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .facility-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%);
+    transform: scale(0);
+    transition: transform 0.6s;
+  }
+
+  .facility-card:hover::before {
+    transform: scale(1);
+  }
+
+  /* Premium Scroll Animations */
+  @keyframes slideInFromLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-100px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideInFromRight {
+    from {
+      opacity: 0;
+      transform: translateX(100px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Add stagger animation to features */
+  .feature-item:nth-child(1) { animation: slideInFromLeft 0.8s ease-out; }
+  .feature-item:nth-child(2) { animation: slideInFromLeft 0.8s ease-out 0.2s both; }
+  .feature-item:nth-child(3) { animation: slideInFromLeft 0.8s ease-out 0.4s both; }
+  .feature-item:nth-child(4) { animation: slideInFromLeft 0.8s ease-out 0.6s both; }
+  .feature-item:nth-child(5) { animation: slideInFromLeft 0.8s ease-out 0.8s both; }
+  .feature-item:nth-child(6) { animation: slideInFromLeft 0.8s ease-out 1s both; }
+
+  /* Premium Button Effects */
+  .btn {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+    z-index: -1;
+  }
+
+  .btn:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  /* Floating Animation for Icons */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+  }
+
+  .facility-icon {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .facility-card:nth-child(2) .facility-icon {
+    animation-delay: 0.5s;
+  }
+
+  .facility-card:nth-child(3) .facility-icon {
+    animation-delay: 1s;
+  }
+
+  .facility-card:nth-child(4) .facility-icon {
+    animation-delay: 1.5s;
+  }
+
+  .facility-card:nth-child(5) .facility-icon {
+    animation-delay: 2s;
+  }
+
+  .facility-card:nth-child(6) .facility-icon {
+    animation-delay: 2.5s;
+  }
+
+  /* Premium Glow Effect */
+  @keyframes glow {
+    0%, 100% {
+      box-shadow: 0 0 5px rgba(251,191,36,0.5), 0 0 10px rgba(251,191,36,0.3);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(251,191,36,0.8), 0 0 30px rgba(251,191,36,0.5);
+    }
+  }
+
+  .logo-showcase {
+    animation: glow 2s ease-in-out infinite;
+  }
+
+  /* Smooth Scroll Behavior */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Premium Text Gradient */
+  .text-gradient {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b, #fbbf24);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 3s ease infinite;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+</style>
+
+<!-- Premium JavaScript Enhancements -->
+<script>
+  // Parallax Effect
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const parallaxElements = document.querySelectorAll('.hero-bg');
+    parallaxElements.forEach(el => {
+      el.style.transform = `translateY(${scrolled * 0.5}px)`;
+    });
+  });
+
+  // Smooth Scroll for Links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+
+  // Intersection Observer for Scroll Animations
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, observerOptions);
+
+  // Observe all cards and sections
+  document.addEventListener('DOMContentLoaded', () => {
+    const animatedElements = document.querySelectorAll('.card, .facility-card, .feature-item');
+    animatedElements.forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      el.style.transition = 'all 0.8s ease-out';
+      observer.observe(el);
+    });
+
+    // Counter Animation
+    const counters = document.querySelectorAll('.mission-stat .fw-bold');
+    counters.forEach(counter => {
+      const target = counter.textContent;
+      const isNumber = /\d+/.test(target);
+      
+      if (isNumber) {
+        const number = parseInt(target.match(/\d+/)[0]);
+        let current = 0;
+        const increment = number / 100;
+        const suffix = target.replace(/\d+/, '');
+        
+        const updateCounter = () => {
+          if (current < number) {
+            current += increment;
+            counter.textContent = Math.ceil(current) + suffix;
+            setTimeout(updateCounter, 20);
+          } else {
+            counter.textContent = target;
+          }
+        };
+        
+        const counterObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              updateCounter();
+              counterObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.5 });
+        
+        counterObserver.observe(counter.closest('.mission-stat'));
+      }
+    });
+
+    // Add ripple effect to buttons
+    const buttons = document.querySelectorAll('.btn');
+    buttons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        ripple.classList.add('ripple');
+        this.appendChild(ripple);
+        
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        ripple.style.position = 'absolute';
+        ripple.style.background = 'rgba(255,255,255,0.5)';
+        ripple.style.borderRadius = '50%';
+        ripple.style.transform = 'scale(0)';
+        ripple.style.animation = 'ripple-animation 0.6s ease-out';
+        
+        setTimeout(() => ripple.remove(), 600);
+      });
+    });
+  });
+
+  // Add CSS for ripple animation
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes ripple-animation {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+</script>
+{% endblock %}

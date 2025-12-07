@@ -1,0 +1,180 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+<div class="login-page" style="min-height: 80vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 60px 0; position: relative; overflow: hidden;">
+  <!-- Background Pattern -->
+  <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1600&q=80'); background-size: cover; background-position: center; opacity: 0.1;"></div>
+  
+  <div class="container position-relative">
+    <div class="row justify-content-center align-items-center">
+      <!-- Login Form -->
+      <div class="col-lg-5 col-md-6">
+        <div class="card shadow-lg border-0 rounded-4 overflow-hidden" style="backdrop-filter: blur(10px);">
+          <div class="card-header text-white text-center py-4 position-relative" style="background: linear-gradient(135deg, rgba(13,110,253,0.95) 0%, rgba(11,132,217,0.95) 100%); border: none;">
+            <div class="position-absolute" style="top: 0; left: 0; right: 0; bottom: 0; background: url('https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&q=80') center/cover; opacity: 0.1;"></div>
+            <div class="position-relative">
+              <div class="logo-wrapper mx-auto mb-3" style="width: 80px; height: 80px; background: white; border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 30px rgba(0,0,0,0.2);">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="GM Logo" style="width: 65px; height: 65px; object-fit: contain;">
+              </div>
+              <h3 class="mb-2 fw-bold">
+                Welcome Back!
+              </h3>
+              <p class="mb-0 small" style="opacity: 0.9;"><i class="fas fa-car me-2"></i>Gaurav Motors Dashboard</p>
+            </div>
+          </div>
+          <div class="card-body p-5">
+            <form method="post" id="loginForm">
+              <div class="mb-4">
+                <label class="form-label fw-semibold text-dark">
+                  <i class="fas fa-user me-2 text-primary"></i>Username
+                </label>
+                <input 
+                  class="form-control form-control-lg shadow-sm" 
+                  name="username" 
+                  id="username"
+                  placeholder="Enter your username"
+                  autocomplete="username"
+                  style="border: 2px solid #e3f2fd; border-radius: 12px; padding: 12px 20px;"
+                  required>
+              </div>
+              <div class="mb-4">
+                <label class="form-label fw-semibold text-dark">
+                  <i class="fas fa-lock me-2 text-primary"></i>Password
+                </label>
+                <div class="input-group input-group-lg">
+                  <input 
+                    class="form-control shadow-sm" 
+                    name="password" 
+                    id="password"
+                    type="password" 
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    style="border: 2px solid #e3f2fd; border-radius: 12px 0 0 12px; padding: 12px 20px;"
+                    required>
+                  <button class="btn btn-outline-primary" type="button" id="togglePassword" style="border-radius: 0 12px 12px 0; border: 2px solid #e3f2fd; border-left: none;">
+                    <i class="fas fa-eye" id="toggleIcon"></i>
+                  </button>
+                </div>
+              </div>
+              
+              <!-- Credentials Helper -->
+              <div class="alert border-0 mb-4" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-radius: 12px;">
+                <p class="mb-2 fw-bold text-primary"><i class="fas fa-info-circle me-2"></i>Demo Credentials:</p>
+                <div class="small text-dark">
+                  <div class="mb-1"><span class="badge bg-primary">Admin</span> admin / admin</div>
+                  <div class="mb-1"><span class="badge bg-success">Mechanic</span> drjohn / doctor</div>
+                  <div><span class="badge bg-info">Customer</span> kar / kar123</div>
+                </div>
+              </div>
+
+              <div class="d-grid gap-2 mb-4">
+                <button class="btn btn-lg shadow-lg fw-bold" type="submit" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; color: white; border-radius: 12px; padding: 14px; transition: all 0.3s;">
+                  <i class="fas fa-sign-in-alt me-2"></i>Login to Dashboard
+                </button>
+              </div>
+              
+              <div class="text-center">
+                <p class="mb-0 text-muted">New customer? 
+                  <a href="{{ url_for('register') }}" class="text-decoration-none fw-bold" style="color: #667eea;">
+                    <i class="fas fa-user-plus me-1"></i>Register Now
+                  </a>
+                </p>
+              </div>
+            </form>
+          </div>
+          <div class="card-footer text-center py-4 border-0" style="background: #f8f9fa;">
+            <div class="d-flex justify-content-center align-items-center gap-4 flex-wrap">
+              <small class="text-muted"><i class="fas fa-shield-alt me-1 text-success"></i>Secure Login</small>
+              <small class="text-muted"><i class="fas fa-lock me-1 text-primary"></i>Encrypted</small>
+              <small class="text-muted"><i class="fas fa-check-circle me-1 text-info"></i>Trusted</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Info Card -->
+      <div class="col-lg-4 col-md-6 d-none d-md-block">
+        <div class="info-card text-white p-5 rounded-4" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px);">
+          <h4 class="fw-bold mb-4"><i class="fas fa-car me-2"></i>Gaurav Motors</h4>
+          <p class="mb-4">Your trusted partner for complete automotive care in Lohaghat, Uttarakhand.</p>
+          
+          <div class="mb-4">
+            <h6 class="fw-bold mb-3"><i class="fas fa-tools me-2"></i>Our Services</h6>
+            <ul class="list-unstyled">
+              <li class="mb-2"><i class="fas fa-check me-2"></i>Engine Service & Repair</li>
+              <li class="mb-2"><i class="fas fa-check me-2"></i>Brake System Service</li>
+              <li class="mb-2"><i class="fas fa-check me-2"></i>Electrical Diagnostics</li>
+              <li class="mb-2"><i class="fas fa-check me-2"></i>AC Service</li>
+            </ul>
+          </div>
+          
+          <div class="p-3 rounded-3" style="background: rgba(255, 255, 255, 0.1);">
+            <p class="mb-2 small"><i class="fas fa-phone me-2"></i>+91 9997612579</p>
+            <p class="mb-0 small"><i class="fas fa-clock me-2"></i>Mon-Sat: 9AM-7PM</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Toggle password visibility
+  document.getElementById('togglePassword').addEventListener('click', function() {
+    const passwordInput = document.getElementById('password');
+    const toggleIcon = document.getElementById('toggleIcon');
+    
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      toggleIcon.classList.remove('fa-eye');
+      toggleIcon.classList.add('fa-eye-slash');
+    } else {
+      passwordInput.type = 'password';
+      toggleIcon.classList.remove('fa-eye-slash');
+      toggleIcon.classList.add('fa-eye');
+    }
+  });
+
+  // Add shake animation on error
+  {% if get_flashed_messages(category_filter=['danger']) %}
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('.card');
+    form.classList.add('shake-animation');
+    setTimeout(() => form.classList.remove('shake-animation'), 500);
+  });
+  {% endif %}
+</script>
+
+<style>
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+  }
+  
+  .shake-animation {
+    animation: shake 0.5s;
+  }
+  
+  .card {
+    border-radius: 15px;
+    overflow: hidden;
+  }
+  
+  .form-control:focus {
+    border-color: #4caf50 !important;
+    box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25) !important;
+  }
+  
+  .btn-success {
+    background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+    border: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+    background: linear-gradient(135deg, #388e3c 0%, #4caf50 100%);
+  }
+</style>
+{% endblock %}

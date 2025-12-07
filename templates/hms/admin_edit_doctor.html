@@ -1,0 +1,10 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+<h2>Edit Doctor</h2>
+<form method="post">
+  <div class="mb-3"><label class="form-label">Full name</label><input class="form-control" name="name" value="{{ doc.name }}" required></div>
+  <div class="mb-3"><label class="form-label">Specialization</label><input class="form-control" name="specialization" value="{{ doc.specialization }}" required></div>
+  <button class="btn btn-primary">Save</button>
+  <a class="btn btn-secondary" href="{{ url_for('admin_dashboard') }}">Cancel</a>
+</form>
+{% endblock %}

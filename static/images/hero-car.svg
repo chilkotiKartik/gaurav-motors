@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1929;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#0d6efd;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#64b5f6;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="10"/>
+      <feOffset dx="0" dy="10" result="offsetblur"/>
+      <feFlood flood-color="#000000" flood-opacity="0.3"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bg1)"/>
+  
+  <!-- Grid Pattern -->
+  <g opacity="0.1">
+    <line x1="0" y1="150" x2="800" y2="150" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="300" x2="800" y2="300" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="450" x2="800" y2="450" stroke="white" stroke-width="1"/>
+    <line x1="200" y1="0" x2="200" y2="600" stroke="white" stroke-width="1"/>
+    <line x1="400" y1="0" x2="400" y2="600" stroke="white" stroke-width="1"/>
+    <line x1="600" y1="0" x2="600" y2="600" stroke="white" stroke-width="1"/>
+  </g>
+  
+  <!-- Modern Car Illustration -->
+  <g transform="translate(400, 300)" filter="url(#shadow)">
+    <!-- Car Body -->
+    <ellipse cx="0" cy="80" rx="180" ry="20" fill="#000000" opacity="0.3"/>
+    
+    <path d="M -150,50 L -140,20 L -80,-10 L 80,-10 L 140,20 L 150,50 L 150,70 L -150,70 Z" 
+          fill="#1a4d7a" stroke="#64b5f6" stroke-width="3"/>
+    
+    <!-- Windows -->
+    <path d="M -130,25 L -120,0 L -60,0 L -70,25 Z" fill="#0d6efd" opacity="0.6"/>
+    <path d="M -50,25 L -40,0 L 40,0 L 50,25 Z" fill="#0d6efd" opacity="0.6"/>
+    <path d="M 60,25 L 70,0 L 120,0 L 130,25 Z" fill="#0d6efd" opacity="0.6"/>
+    
+    <!-- Headlights -->
+    <ellipse cx="-140" cy="50" rx="10" ry="8" fill="#64b5f6" opacity="0.9"/>
+    <ellipse cx="140" cy="50" rx="10" ry="8" fill="#64b5f6" opacity="0.9"/>
+    
+    <!-- Wheels -->
+    <g transform="translate(-90, 70)">
+      <circle r="30" fill="#1a1a1a" stroke="#64b5f6" stroke-width="4"/>
+      <circle r="15" fill="#0d6efd"/>
+      <circle r="8" fill="#64b5f6"/>
+    </g>
+    <g transform="translate(90, 70)">
+      <circle r="30" fill="#1a1a1a" stroke="#64b5f6" stroke-width="4"/>
+      <circle r="15" fill="#0d6efd"/>
+      <circle r="8" fill="#64b5f6"/>
+    </g>
+    
+    <!-- Details -->
+    <line x1="-150" y1="60" x2="150" y2="60" stroke="#64b5f6" stroke-width="2"/>
+    <rect x="-20" y="55" width="40" height="8" fill="#0d6efd" rx="2"/>
+  </g>
+  
+  <!-- Sparkles -->
+  <circle cx="150" cy="100" r="3" fill="#64b5f6" opacity="0.8"/>
+  <circle cx="650" cy="150" r="4" fill="#64b5f6" opacity="0.6"/>
+  <circle cx="200" cy="500" r="3" fill="#0d6efd" opacity="0.7"/>
+  <circle cx="700" cy="450" r="5" fill="#64b5f6" opacity="0.8"/>
+  
+  <!-- Text -->
+  <text x="400" y="550" font-family="Orbitron, Arial, sans-serif" font-size="36" font-weight="900" 
+        fill="white" text-anchor="middle" opacity="0.9">PREMIUM CAR SERVICE</text>
+</svg>
