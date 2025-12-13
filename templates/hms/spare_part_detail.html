@@ -1,0 +1,153 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+
+<div class="container my-5">
+    <div class="row">
+        <!-- Product Images -->
+        <div class="col-lg-5 mb-4">
+            <div class="card border-0 shadow-lg">
+                <div class="card-body text-center p-5 bg-light">
+                    <i class="fas fa-cog fa-5x text-danger mb-3"></i>
+                    {% if part.is_oem %}
+                    <span class="badge bg-success position-absolute top-0 end-0 m-3">Original Equipment</span>
+                    {% endif %}
+                    {% if part.is_featured %}
+                    <span class="badge bg-warning position-absolute top-0 start-0 m-3">
+                        <i class="fas fa-star"></i> Featured
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-lg-7">
+            <div class="mb-3">
+                <span class="badge bg-secondary mb-2">{{ part.category.name }}</span>
+                <h2 class="fw-bold">{{ part.name }}</h2>
+                <p class="text-muted">{{ part.description }}</p>
+            </div>
+
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <strong>Brand:</strong> {{ part.brand }}
+                        </div>
+                        <div class="col-6">
+                            <strong>Part Number:</strong> {{ part.part_number }}
+                        </div>
+                        <div class="col-6">
+                            <strong>Warranty:</strong> {{ part.warranty_months }} months
+                        </div>
+                        <div class="col-6">
+                            <strong>Stock:</strong> 
+                            {% if part.stock_quantity > 10 %}
+                                <span class="badge bg-success">In Stock ({{ part.stock_quantity }})</span>
+                            {% elif part.stock_quantity > 0 %}
+                                <span class="badge bg-warning">Low Stock ({{ part.stock_quantity }})</span>
+                            {% else %}
+                                <span class="badge bg-danger">Out of Stock</span>
+                            {% endif %}
+                        </div>
+                        {% if part.compatible_brands %}
+                        <div class="col-12">
+                            <strong>Compatible with:</strong> {{ part.compatible_brands }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pricing -->
+            <div class="card border-0 shadow-sm mb-4 bg-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3 class="mb-0">₹{{ part.price }}</h3>
+                            <small class="opacity-75">Per unit</small>
+                        </div>
+                        <div class="text-end">
+                            <p class="mb-0"><strong>50% Advance</strong></p>
+                            <h5 class="mb-0">₹{{ (part.price * 0.5)|int }}</h5>
+                            <small class="opacity-75">Rest on delivery</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add to Cart Form -->
+            {% if part.stock_quantity > 0 %}
+            <form action="{{ url_for('add_to_cart', part_id=part.id) }}" method="POST">
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <label class="form-label"><strong>Quantity</strong></label>
+                        <input type="number" name="quantity" class="form-control" value="1" 
+                               min="1" max="{{ part.stock_quantity }}" required>
+                    </div>
+                    <div class="col-md-8 d-flex align-items-end">
+                        <button type="submit" class="btn btn-danger btn-lg w-100">
+                            <i class="fas fa-cart-plus"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </form>
+            {% else %}
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle"></i> This item is currently out of stock. 
+                Please check back later or contact us.
+            </div>
+            {% endif %}
+
+            <!-- Features -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3"><i class="fas fa-check-circle text-success"></i> Why Buy From Us?</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> 50% advance, rest on delivery</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> {{ part.warranty_months }} months warranty</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Genuine {{ 'OEM' if part.is_oem else 'quality' }} parts</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Professional installation available</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Free delivery within city</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    {% if related_parts %}
+    <div class="row mt-5">
+        <div class="col-12">
+            <h4 class="fw-bold mb-4">Related Products</h4>
+        </div>
+        {% for related in related_parts %}
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <div class="card h-100 shadow-sm hover-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-cog fa-3x text-danger mb-3"></i>
+                    <h6 class="fw-bold">{{ related.name }}</h6>
+                    <p class="text-muted small mb-2">{{ related.brand }}</p>
+                    <h5 class="text-primary">₹{{ related.price }}</h5>
+                    <a href="{{ url_for('spare_part_detail', part_id=related.id) }}" class="btn btn-outline-primary btn-sm">
+                        View Details
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+
+<style>
+.hover-card {
+    transition: all 0.3s ease;
+}
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+}
+</style>
+
+{% endblock %}

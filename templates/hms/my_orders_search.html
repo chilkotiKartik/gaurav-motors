@@ -1,0 +1,38 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h3 class="mb-0"><i class="fas fa-box"></i> Track Your Orders</h3>
+                </div>
+                <div class="card-body p-5">
+                    <form method="GET">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Enter Your Phone Number</label>
+                            <input type="tel" name="phone" class="form-control form-control-lg" 
+                                   placeholder="+91-XXXXXXXXXX" required>
+                            <small class="text-muted">Enter the phone number used during order</small>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-search"></i> View My Orders
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card mt-4 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <p class="mb-2"><strong><i class="fas fa-info-circle text-info"></i> Need Help?</strong></p>
+                    <p class="text-muted mb-0">Call us at: <strong>+91-XXXXXXXXXX</strong> | Email: <strong>support@gmmotors.com</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

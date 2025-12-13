@@ -1,0 +1,312 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+
+<div class="container-fluid my-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="fw-bold">
+                    <i class="fas fa-chart-line text-primary"></i> Advanced Analytics Dashboard
+                </h2>
+                <div class="btn-group">
+                    <a href="{{ url_for('export_appointments') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-download"></i> Export Appointments
+                    </a>
+                    <a href="{{ url_for('export_revenue') }}" class="btn btn-outline-success">
+                        <i class="fas fa-download"></i> Export Revenue
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Metrics Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm h-100 bg-gradient" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <div class="card-body text-white">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="mb-1 opacity-75">Total Revenue</p>
+                            <h2 class="fw-bold mb-0">₹<span id="totalRevenue">0</span></h2>
+                            <small class="opacity-75">This Month: ₹<span id="monthlyRevenue">0</span></small>
+                        </div>
+                        <div class="bg-white bg-opacity-25 p-3 rounded-3">
+                            <i class="fas fa-rupee-sign fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm h-100 bg-gradient" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <div class="card-body text-white">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="mb-1 opacity-75">Total Appointments</p>
+                            <h2 class="fw-bold mb-0"><span id="totalAppointments">0</span></h2>
+                            <small class="opacity-75">This Month: <span id="monthlyAppointments">0</span></small>
+                        </div>
+                        <div class="bg-white bg-opacity-25 p-3 rounded-3">
+                            <i class="fas fa-calendar-check fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm h-100 bg-gradient" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                <div class="card-body text-white">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="mb-1 opacity-75">Total Patients</p>
+                            <h2 class="fw-bold mb-0"><span id="totalPatients">0</span></h2>
+                            <small class="opacity-75">Total Doctors: <span id="totalDoctors">0</span></small>
+                        </div>
+                        <div class="bg-white bg-opacity-25 p-3 rounded-3">
+                            <i class="fas fa-users fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm h-100 bg-gradient" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                <div class="card-body text-white">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="mb-1 opacity-75">Average Rating</p>
+                            <h2 class="fw-bold mb-0"><span id="averageRating">0.0</span> ⭐</h2>
+                            <small class="opacity-75">Pending: <span id="pendingAppointments">0</span></small>
+                        </div>
+                        <div class="bg-white bg-opacity-25 p-3 rounded-3">
+                            <i class="fas fa-star fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white border-bottom py-3">
+                    <h5 class="mb-0 fw-bold"><i class="fas fa-chart-bar text-primary"></i> Monthly Appointments Trend</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="appointmentsChart" style="max-height: 350px;"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white border-bottom py-3">
+                    <h5 class="mb-0 fw-bold"><i class="fas fa-chart-pie text-success"></i> Appointment Status</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="statusChart" style="max-height: 350px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-lg-7">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white border-bottom py-3">
+                    <h5 class="mb-0 fw-bold"><i class="fas fa-chart-line text-success"></i> Monthly Revenue Trend</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="revenueChart" style="max-height: 350px;"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white border-bottom py-3">
+                    <h5 class="mb-0 fw-bold"><i class="fas fa-trophy text-warning"></i> Top Rated Doctors</h5>
+                </div>
+                <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                    <div id="topDoctorsList">
+                        <div class="text-center py-4 text-muted">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Stats -->
+    <div class="row g-4">
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h6 class="fw-bold text-muted mb-3">Service Bookings</h6>
+                    <h3 class="fw-bold text-primary mb-0"><span id="serviceBookings">0</span></h3>
+                    <small class="text-muted">Pending: <span id="pendingServiceBookings">0</span></small>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h6 class="fw-bold text-muted mb-3">Spare Parts Orders</h6>
+                    <h3 class="fw-bold text-warning mb-0"><span id="sparePartsOrders">0</span></h3>
+                    <small class="text-muted">Total orders placed</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h6 class="fw-bold text-muted mb-3">Today's Appointments</h6>
+                    <h3 class="fw-bold text-success mb-0"><span id="todaysAppointments">0</span></h3>
+                    <small class="text-muted">Completed: <span id="completedAppointments">0</span></small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+// Load analytics data
+async function loadAnalytics() {
+    try {
+        // Load dashboard stats
+        const statsResponse = await fetch('/api/analytics/dashboard');
+        const stats = await statsResponse.json();
+        
+        // Update stat cards
+        document.getElementById('totalRevenue').textContent = stats.total_revenue.toLocaleString();
+        document.getElementById('monthlyRevenue').textContent = stats.monthly_revenue.toLocaleString();
+        document.getElementById('totalAppointments').textContent = stats.total_appointments.toLocaleString();
+        document.getElementById('monthlyAppointments').textContent = stats.monthly_appointments.toLocaleString();
+        document.getElementById('totalPatients').textContent = stats.total_patients.toLocaleString();
+        document.getElementById('totalDoctors').textContent = stats.total_doctors.toLocaleString();
+        document.getElementById('averageRating').textContent = stats.average_rating.toFixed(1);
+        document.getElementById('pendingAppointments').textContent = stats.pending_appointments.toLocaleString();
+        document.getElementById('serviceBookings').textContent = stats.service_bookings.toLocaleString();
+        document.getElementById('pendingServiceBookings').textContent = stats.pending_service_bookings.toLocaleString();
+        document.getElementById('sparePartsOrders').textContent = stats.spare_parts_orders.toLocaleString();
+        document.getElementById('todaysAppointments').textContent = stats.todays_appointments.toLocaleString();
+        document.getElementById('completedAppointments').textContent = stats.completed_appointments.toLocaleString();
+        
+        // Load appointments chart
+        const appointmentsData = await fetch('/api/analytics/appointments-by-month').then(r => r.json());
+        createLineChart('appointmentsChart', appointmentsData, 'Appointments', 'rgb(13, 110, 253)');
+        
+        // Load revenue chart
+        const revenueData = await fetch('/api/analytics/revenue-by-month').then(r => r.json());
+        createLineChart('revenueChart', revenueData, 'Revenue (₹)', 'rgb(25, 135, 84)');
+        
+        // Status pie chart
+        createPieChart('statusChart', {
+            labels: ['Booked', 'Completed', 'Cancelled'],
+            data: [stats.pending_appointments, stats.completed_appointments, stats.total_appointments - stats.pending_appointments - stats.completed_appointments]
+        });
+        
+        // Load top doctors
+        const topDoctors = await fetch('/api/analytics/top-doctors').then(r => r.json());
+        displayTopDoctors(topDoctors);
+        
+    } catch (error) {
+        console.error('Error loading analytics:', error);
+    }
+}
+
+function createLineChart(canvasId, data, label, color) {
+    new Chart(document.getElementById(canvasId), {
+        type: 'line',
+        data: {
+            labels: data.labels,
+            datasets: [{
+                label: label,
+                data: data.data,
+                borderColor: color,
+                backgroundColor: color + '20',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: { display: true }
+            },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+}
+
+function createPieChart(canvasId, data) {
+    new Chart(document.getElementById(canvasId), {
+        type: 'doughnut',
+        data: {
+            labels: data.labels,
+            datasets: [{
+                data: data.data,
+                backgroundColor: [
+                    'rgb(255, 193, 7)',
+                    'rgb(25, 135, 84)',
+                    'rgb(220, 53, 69)'
+                ],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: { position: 'bottom' }
+            }
+        }
+    });
+}
+
+function displayTopDoctors(doctors) {
+    const container = document.getElementById('topDoctorsList');
+    if (doctors.length === 0) {
+        container.innerHTML = '<p class="text-muted text-center">No ratings yet</p>';
+        return;
+    }
+    
+    container.innerHTML = doctors.map((doctor, index) => `
+        <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+            <div class="me-3">
+                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" 
+                     style="width: 40px; height: 40px; font-weight: bold;">
+                    ${index + 1}
+                </div>
+            </div>
+            <div class="flex-grow-1">
+                <h6 class="mb-1 fw-bold">${doctor.name}</h6>
+                <small class="text-muted">${doctor.specialization}</small>
+            </div>
+            <div class="text-end">
+                <div class="fw-bold text-warning">${doctor.rating.toFixed(1)} ⭐</div>
+                <small class="text-muted">${doctor.reviews} reviews</small>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Load analytics on page load
+document.addEventListener('DOMContentLoaded', loadAnalytics);
+</script>
+
+{% endblock %}

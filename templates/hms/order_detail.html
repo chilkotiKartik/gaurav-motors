@@ -1,0 +1,270 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Order Header -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <h4 class="fw-bold mb-1">Order {{ order.order_number }}</h4>
+                            <p class="text-muted mb-0">Placed on {{ order.order_date.strftime('%B %d, %Y at %I:%M %p') }}</p>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            {% if order.order_status == 'Pending' %}
+                                <span class="badge bg-warning fs-6 px-3 py-2">Pending</span>
+                            {% elif order.order_status == 'Confirmed' %}
+                                <span class="badge bg-info fs-6 px-3 py-2">Confirmed</span>
+                            {% elif order.order_status == 'Processing' %}
+                                <span class="badge bg-primary fs-6 px-3 py-2">Processing</span>
+                            {% elif order.order_status == 'Shipped' %}
+                                <span class="badge bg-info fs-6 px-3 py-2">Shipped</span>
+                            {% elif order.order_status == 'Delivered' %}
+                                <span class="badge bg-success fs-6 px-3 py-2">Delivered</span>
+                            {% else %}
+                                <span class="badge bg-danger fs-6 px-3 py-2">{{ order.order_status }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Progress -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-4"><i class="fas fa-truck text-primary"></i> Order Progress</h5>
+                    <div class="order-progress">
+                        <div class="progress-step {% if order.order_status in ['Pending', 'Confirmed', 'Processing', 'Shipped', 'Delivered'] %}completed{% endif %}">
+                            <div class="step-icon"><i class="fas fa-check"></i></div>
+                            <div class="step-label">Order Placed</div>
+                        </div>
+                        <div class="progress-step {% if order.order_status in ['Confirmed', 'Processing', 'Shipped', 'Delivered'] %}completed{% endif %}">
+                            <div class="step-icon"><i class="fas fa-check-circle"></i></div>
+                            <div class="step-label">Confirmed</div>
+                        </div>
+                        <div class="progress-step {% if order.order_status in ['Processing', 'Shipped', 'Delivered'] %}completed{% endif %}">
+                            <div class="step-icon"><i class="fas fa-cog"></i></div>
+                            <div class="step-label">Processing</div>
+                        </div>
+                        <div class="progress-step {% if order.order_status in ['Shipped', 'Delivered'] %}completed{% endif %}">
+                            <div class="step-icon"><i class="fas fa-shipping-fast"></i></div>
+                            <div class="step-label">Shipped</div>
+                        </div>
+                        <div class="progress-step {% if order.order_status == 'Delivered' %}completed{% endif %}">
+                            <div class="step-icon"><i class="fas fa-home"></i></div>
+                            <div class="step-label">Delivered</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Details -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-4"><i class="fas fa-box text-primary"></i> Product Details</h5>
+                    <div class="row">
+                        <div class="col-md-3">
+                            {% if order.part.image_url %}
+                            <img src="{{ order.part.image_url }}" alt="{{ order.part.name }}" class="img-fluid rounded">
+                            {% else %}
+                            <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 120px;">
+                                <i class="fas fa-cog fa-3x text-muted"></i>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-9">
+                            <h6 class="fw-bold">{{ order.part.name }}</h6>
+                            <p class="text-muted mb-1">Brand: {{ order.part.brand }}</p>
+                            <p class="text-muted mb-1">Category: {{ order.part.category }}</p>
+                            <p class="text-muted mb-1">Part Number: {{ order.part.part_number }}</p>
+                            <p class="mb-0">Quantity: <strong>{{ order.quantity }}</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Summary -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-4"><i class="fas fa-credit-card text-primary"></i> Payment Summary</h5>
+                    <div class="row mb-2">
+                        <div class="col-6">Unit Price</div>
+                        <div class="col-6 text-end">₹{{ order.part.price|int }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6">Quantity</div>
+                        <div class="col-6 text-end">{{ order.quantity }}</div>
+                    </div>
+                    <hr>
+                    <div class="row mb-2">
+                        <div class="col-6 fw-bold">Total Amount</div>
+                        <div class="col-6 text-end fw-bold">₹{{ order.total_price|int }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6 text-success">Advance Paid (50%)</div>
+                        <div class="col-6 text-end text-success">₹{{ order.advance_amount|int }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6 {% if order.payment_status == 'Fully Paid' %}text-muted{% else %}text-danger{% endif %}">
+                            Remaining Amount
+                        </div>
+                        <div class="col-6 text-end {% if order.payment_status == 'Fully Paid' %}text-muted{% else %}text-danger{% endif %}">
+                            ₹{{ order.remaining_amount|int }}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6">Payment Status</div>
+                        <div class="col-6 text-end">
+                            {% if order.payment_status == 'Fully Paid' %}
+                                <span class="badge bg-success">Fully Paid</span>
+                            {% elif order.payment_status == 'Advance Paid' %}
+                                <span class="badge bg-warning">Advance Paid</span>
+                            {% else %}
+                                <span class="badge bg-danger">Pending</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% if order.payment_method %}
+                    <div class="row mt-2">
+                        <div class="col-6">Payment Method</div>
+                        <div class="col-6 text-end">{{ order.payment_method }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Customer & Delivery Info -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-4"><i class="fas fa-user text-primary"></i> Customer & Delivery Information</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold">Customer Details</h6>
+                            <p class="mb-1">{{ order.customer_name }}</p>
+                            <p class="mb-1"><i class="fas fa-phone text-muted"></i> {{ order.customer_phone }}</p>
+                            <p class="mb-0"><i class="fas fa-envelope text-muted"></i> {{ order.customer_email or 'N/A' }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="fw-bold">Delivery Address</h6>
+                            <p class="mb-0">{{ order.delivery_address }}</p>
+                        </div>
+                    </div>
+                    {% if order.vehicle_details %}
+                    <hr>
+                    <h6 class="fw-bold">Vehicle Details</h6>
+                    <p class="mb-0">{{ order.vehicle_details }}</p>
+                    {% endif %}
+                    {% if order.installation_required %}
+                    <hr>
+                    <div class="alert alert-info mb-0">
+                        <i class="fas fa-tools"></i> Installation service requested
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if order.special_instructions %}
+            <!-- Special Instructions -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3"><i class="fas fa-comment-dots text-primary"></i> Special Instructions</h5>
+                    <p class="mb-0">{{ order.special_instructions }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Action Buttons -->
+            <div class="text-center">
+                <a href="{{ url_for('my_part_orders_search') }}" class="btn btn-outline-primary">
+                    <i class="fas fa-arrow-left"></i> Back to Orders
+                </a>
+                {% if order.order_status not in ['Delivered', 'Cancelled'] %}
+                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal">
+                    <i class="fas fa-times"></i> Cancel Order
+                </button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cancel Order Modal -->
+<div class="modal fade" id="cancelModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cancel Order</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to cancel this order?</p>
+                <p class="text-muted">Order: {{ order.order_number }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, Keep Order</button>
+                <a href="{{ url_for('cancel_part_order', order_id=order.id) }}" class="btn btn-danger">Yes, Cancel Order</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.order-progress {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    padding: 20px 0;
+}
+
+.order-progress::before {
+    content: '';
+    position: absolute;
+    top: 35px;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: #dee2e6;
+    z-index: 0;
+}
+
+.progress-step {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    flex: 1;
+}
+
+.step-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #f8f9fa;
+    border: 2px solid #dee2e6;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    color: #6c757d;
+}
+
+.progress-step.completed .step-icon {
+    background: #198754;
+    border-color: #198754;
+    color: white;
+}
+
+.step-label {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.progress-step.completed .step-label {
+    color: #198754;
+    font-weight: 600;
+}
+</style>
+
+{% endblock %}

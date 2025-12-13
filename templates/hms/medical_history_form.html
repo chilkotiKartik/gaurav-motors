@@ -1,0 +1,108 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-gradient bg-primary text-white py-4">
+                    <h3 class="mb-0"><i class="fas fa-notes-medical"></i> Medical History Form</h3>
+                    <p class="mb-0 opacity-75">Help us provide you with better healthcare</p>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST">
+                        <div class="row g-4">
+                            <!-- Basic Information -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Blood Type</label>
+                                <select name="blood_type" class="form-select">
+                                    <option value="">Select Blood Type</option>
+                                    <option value="A+" {% if history and history.blood_type == 'A+' %}selected{% endif %}>A+</option>
+                                    <option value="A-" {% if history and history.blood_type == 'A-' %}selected{% endif %}>A-</option>
+                                    <option value="B+" {% if history and history.blood_type == 'B+' %}selected{% endif %}>B+</option>
+                                    <option value="B-" {% if history and history.blood_type == 'B-' %}selected{% endif %}>B-</option>
+                                    <option value="AB+" {% if history and history.blood_type == 'AB+' %}selected{% endif %}>AB+</option>
+                                    <option value="AB-" {% if history and history.blood_type == 'AB-' %}selected{% endif %}>AB-</option>
+                                    <option value="O+" {% if history and history.blood_type == 'O+' %}selected{% endif %}>O+</option>
+                                    <option value="O-" {% if history and history.blood_type == 'O-' %}selected{% endif %}>O-</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Emergency Contact Name</label>
+                                <input type="text" name="emergency_contact" class="form-control" 
+                                       value="{{ history.emergency_contact if history else '' }}" 
+                                       placeholder="Full name">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Emergency Contact Phone</label>
+                                <input type="tel" name="emergency_phone" class="form-control" 
+                                       value="{{ history.emergency_phone if history else '' }}" 
+                                       placeholder="+1234567890">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Insurance Provider</label>
+                                <input type="text" name="insurance_provider" class="form-control" 
+                                       value="{{ history.insurance_provider if history else '' }}" 
+                                       placeholder="Insurance company name">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Insurance Number</label>
+                                <input type="text" name="insurance_number" class="form-control" 
+                                       value="{{ history.insurance_number if history else '' }}" 
+                                       placeholder="Policy number">
+                            </div>
+
+                            <!-- Medical Details -->
+                            <div class="col-12">
+                                <label class="form-label fw-bold text-warning">
+                                    <i class="fas fa-exclamation-triangle"></i> Allergies
+                                </label>
+                                <textarea name="allergies" class="form-control" rows="3" 
+                                          placeholder="List any known allergies (medications, foods, environmental)">{{ history.allergies if history else '' }}</textarea>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-bold text-info">
+                                    <i class="fas fa-heartbeat"></i> Chronic Conditions
+                                </label>
+                                <textarea name="chronic_conditions" class="form-control" rows="3" 
+                                          placeholder="List any chronic conditions (Diabetes, Hypertension, Asthma, etc.)">{{ history.chronic_conditions if history else '' }}</textarea>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-bold text-success">
+                                    <i class="fas fa-pills"></i> Current Medications
+                                </label>
+                                <textarea name="current_medications" class="form-control" rows="3" 
+                                          placeholder="List current medications with dosage">{{ history.current_medications if history else '' }}</textarea>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-bold text-danger">
+                                    <i class="fas fa-procedures"></i> Past Surgeries
+                                </label>
+                                <textarea name="past_surgeries" class="form-control" rows="3" 
+                                          placeholder="List any previous surgeries and dates">{{ history.past_surgeries if history else '' }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 d-flex justify-content-between">
+                            <a href="{{ url_for('patient_medical_records') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Back
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save"></i> Save Medical History
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

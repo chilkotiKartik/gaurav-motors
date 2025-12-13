@@ -4,7 +4,7 @@
 <!-- Premium Hero Section with Clean Blue Theme -->
 <section class="hero-wrapper position-relative overflow-hidden" style="min-height: 100vh;">
   <!-- Clean Blue Gradient Background with Workshop Image -->
-  <div class="hero-bg position-absolute w-100 h-100" style="background: linear-gradient(135deg, rgba(13,110,253,0.95) 0%, rgba(10,88,202,0.92) 50%, rgba(8,70,170,0.95) 100%), url('https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=1920&q=80') center/cover no-repeat; z-index: 0; background-attachment: scroll;"></div>
+  <div class="hero-bg position-absolute w-100 h-100" style="background: linear-gradient(135deg, rgba(13,110,253,0.95) 0%, rgba(10,88,202,0.92) 50%, rgba(8,70,170,0.95) 100%), url('https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=1920&q=80') center/cover no-repeat; z-index: 0; background-attachment: fixed;"></div>
   
   <!-- Bottom Overlay -->
   <div class="mountain-overlay position-absolute w-100" style="bottom: 0; left: 0; height: 300px; background: linear-gradient(to top, rgba(8,70,170,0.8), transparent); z-index: 1;"></div>
@@ -59,7 +59,7 @@
 
           <!-- Clean CTA Buttons -->
           <div class="d-flex gap-4 flex-wrap">
-            <a href="{{ url_for('list_doctors') }}" class="btn btn-lg px-6 py-3 fw-bold position-relative overflow-hidden" style="background: linear-gradient(135deg, #fbbf24, #f59e0b); border: none; border-radius: 50px; box-shadow: 0 15px 45px rgba(251,191,36,0.5); color: #1e293b; transition: all 0.4s;">
+            <a href="{{ url_for('book_car_service') }}" class="btn btn-lg px-6 py-3 fw-bold position-relative overflow-hidden" style="background: linear-gradient(135deg, #fbbf24, #f59e0b); border: none; border-radius: 50px; box-shadow: 0 15px 45px rgba(251,191,36,0.5); color: #1e293b; transition: all 0.4s;">
               <span class="position-relative" style="z-index: 2;"><i class="fas fa-calendar-check me-2"></i>Book Service Now</span>
             </a>
             <a href="tel:+919997612579" class="btn btn-lg px-6 py-3 fw-bold position-relative" style="background: rgba(255,255,255,0.95); border: none; border-radius: 50px; box-shadow: 0 15px 45px rgba(255,255,255,0.3); color: #0d6efd; transition: all 0.4s;">
@@ -1070,7 +1070,7 @@
             <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>PPF Installation</li>
             <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>Polish & Wax</li>
           </ul>
-          <a href="{{ url_for('list_doctors') }}" class="btn btn-warning btn-sm rounded-pill px-4">Book Now</a>
+          <a href="{{ url_for('book_car_service') }}" class="btn btn-warning btn-sm rounded-pill px-4">Book Now</a>
         </div>
       </div>
       
@@ -1086,7 +1086,7 @@
             <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Exterior Wash</li>
             <li class="mb-2"><i class="fas fa-check text-primary me-2"></i>Engine Bay Clean</li>
           </ul>
-          <a href="{{ url_for('list_doctors') }}" class="btn btn-primary btn-sm rounded-pill px-4">Book Now</a>
+          <a href="{{ url_for('book_car_service') }}" class="btn btn-primary btn-sm rounded-pill px-4">Book Now</a>
         </div>
       </div>
       
@@ -1102,7 +1102,7 @@
             <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Chip Tuning</li>
             <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Dyno Testing</li>
           </ul>
-          <a href="{{ url_for('list_doctors') }}" class="btn btn-success btn-sm rounded-pill px-4">Book Now</a>
+          <a href="{{ url_for('book_car_service') }}" class="btn btn-success btn-sm rounded-pill px-4">Book Now</a>
         </div>
       </div>
       
@@ -1118,7 +1118,7 @@
             <li class="mb-2"><i class="fas fa-check text-danger me-2"></i>Priority Booking</li>
             <li class="mb-2"><i class="fas fa-check text-danger me-2"></i>Parts Discount</li>
           </ul>
-          <a href="{{ url_for('list_doctors') }}" class="btn btn-danger btn-sm rounded-pill px-4">Book Now</a>
+          <a href="{{ url_for('book_car_service') }}" class="btn btn-danger btn-sm rounded-pill px-4">Book Now</a>
         </div>
       </div>
     </div>
@@ -1354,7 +1354,7 @@
           </div>
         </div>
         <div class="card-footer bg-transparent border-0 text-center pb-4">
-          <a href="{{ url_for('list_doctors') }}" class="btn btn-primary btn-lg px-5 rounded-pill">
+          <a href="{{ url_for('book_car_service') }}" class="btn btn-primary btn-lg px-5 rounded-pill">
             <i class="fas fa-calendar-check me-2"></i>Book Now
           </a>
         </div>
@@ -1386,7 +1386,7 @@
           </div>
         </div>
         <div class="card-footer bg-transparent border-0 text-center pb-4">
-          <a href="{{ url_for('list_doctors') }}" class="btn btn-warning btn-lg px-5 rounded-pill text-dark">
+          <a href="{{ url_for('book_car_service') }}" class="btn btn-warning btn-lg px-5 rounded-pill text-dark">
             <i class="fas fa-calendar-check me-2"></i>Book Now
           </a>
         </div>
@@ -1723,6 +1723,141 @@
     </div>
   </div>
 </div>
+
+<!-- Car Accessories Section -->
+<div class="accessories-section py-5 my-5" style="background: linear-gradient(135deg, #fff5f5 0%, #ffe6e6 100%);">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="badge px-4 py-2 mb-3" style="background: linear-gradient(135deg, #dc3545, #c82333); color: white; font-size: 0.9rem; border-radius: 25px;">
+        <i class="fas fa-car-side me-2"></i>Premium Accessories
+      </span>
+      <h2 class="fw-bold display-4 mb-3" style="color: #dc3545;">Upgrade Your Ride</h2>
+      <p class="lead text-muted">Transform your car with our premium accessories collection</p>
+    </div>
+
+    <div class="row g-4 mb-5">
+      <!-- Interior Accessories -->
+      <div class="col-md-6 col-lg-4">
+        <div class="accessory-card card border-0 h-100 shadow-lg" style="transition: all 0.4s;">
+          <div class="position-relative overflow-hidden" style="height: 280px;">
+            <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=600&q=80" alt="Interior" class="w-100 h-100" style="object-fit: cover; transition: transform 0.5s;">
+            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, transparent 40%, rgba(220,53,69,0.9) 100%);">
+              <div class="position-absolute bottom-0 start-0 p-4 w-100">
+                <h4 class="text-white fw-bold mb-2">Interior Accessories</h4>
+                <p class="text-white mb-0 small">Leather seat covers, floor mats, steering covers</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="badge bg-danger-subtle text-danger px-3 py-2">50+ Products</span>
+              <span class="text-muted small"><i class="fas fa-star text-warning"></i> 4.5/5</span>
+            </div>
+            <ul class="list-unstyled small mb-3">
+              <li class="mb-2"><i class="fas fa-check-circle text-danger me-2"></i>Premium leather seat covers</li>
+              <li class="mb-2"><i class="fas fa-check-circle text-danger me-2"></i>7D car floor mats</li>
+              <li class="mb-2"><i class="fas fa-check-circle text-danger me-2"></i>Steering wheel covers</li>
+            </ul>
+            <a href="{{ url_for('car_accessories') }}" class="btn btn-danger w-100 rounded-pill">
+              <i class="fas fa-shopping-bag me-2"></i>Shop Interior
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Electronics & Gadgets -->
+      <div class="col-md-6 col-lg-4">
+        <div class="accessory-card card border-0 h-100 shadow-lg" style="transition: all 0.4s;">
+          <div class="position-relative overflow-hidden" style="height: 280px;">
+            <img src="https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=600&q=80" alt="Electronics" class="w-100 h-100" style="object-fit: cover; transition: transform 0.5s;">
+            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, transparent 40%, rgba(111,66,193,0.9) 100%);">
+              <div class="position-absolute bottom-0 start-0 p-4 w-100">
+                <h4 class="text-white fw-bold mb-2">Smart Electronics</h4>
+                <p class="text-white mb-0 small">Dashcams, GPS, Bluetooth, parking sensors</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="badge bg-primary-subtle text-primary px-3 py-2">35+ Products</span>
+              <span class="text-muted small"><i class="fas fa-star text-warning"></i> 4.6/5</span>
+            </div>
+            <ul class="list-unstyled small mb-3">
+              <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i>HD dashboard cameras</li>
+              <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i>Reverse parking cameras</li>
+              <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i>Bluetooth FM transmitters</li>
+            </ul>
+            <a href="{{ url_for('car_accessories') }}" class="btn btn-primary w-100 rounded-pill">
+              <i class="fas fa-shopping-bag me-2"></i>Shop Electronics
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Safety & Performance -->
+      <div class="col-md-6 col-lg-4">
+        <div class="accessory-card card border-0 h-100 shadow-lg" style="transition: all 0.4s;">
+          <div class="position-relative overflow-hidden" style="height: 280px;">
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Safety" class="w-100 h-100" style="object-fit: cover; transition: transform 0.5s;">
+            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, transparent 40%, rgba(255,193,7,0.9) 100%);">
+              <div class="position-absolute bottom-0 start-0 p-4 w-100">
+                <h4 class="text-white fw-bold mb-2">Safety & Performance</h4>
+                <p class="text-white mb-0 small">Alarms, TPMS, air filters, exhausts</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="badge bg-warning-subtle text-dark px-3 py-2">40+ Products</span>
+              <span class="text-muted small"><i class="fas fa-star text-warning"></i> 4.7/5</span>
+            </div>
+            <ul class="list-unstyled small mb-3">
+              <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i>Car alarm systems</li>
+              <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i>Performance air filters</li>
+              <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i>Tire pressure monitors</li>
+            </ul>
+            <a href="{{ url_for('car_accessories') }}" class="btn btn-warning w-100 rounded-pill">
+              <i class="fas fa-shopping-bag me-2"></i>Shop Safety
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Banner -->
+    <div class="row">
+      <div class="col-12">
+        <div class="p-5 rounded-4 shadow-lg text-center" style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);">
+          <h3 class="text-white fw-bold mb-3">
+            <i class="fas fa-gift me-3" style="color: #ffc107;"></i>Transform Your Car Today!
+          </h3>
+          <p class="text-white mb-4" style="opacity: 0.95;">
+            Premium accessories with 50% advance payment • Free installation • 6-12 months warranty
+          </p>
+          <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="{{ url_for('car_accessories') }}" class="btn btn-warning btn-lg px-5 rounded-pill">
+              <i class="fas fa-car-side me-2"></i>Browse Accessories
+            </a>
+            <a href="https://wa.me/919997612579" target="_blank" class="btn btn-outline-light btn-lg px-5 rounded-pill">
+              <i class="fab fa-whatsapp me-2"></i>WhatsApp Us
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .accessory-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2) !important;
+  }
+  
+  .accessory-card:hover img {
+    transform: scale(1.1);
+  }
+</style>
 
 <!-- Customer Testimonials Section with Mountain Theme -->
 <div class="testimonials-section py-5" style="background: linear-gradient(180deg, #f5f5dc 0%, #d2b48c 100%);">
@@ -3102,4 +3237,83 @@
   `;
   document.head.appendChild(style);
 </script>
+
+<!-- Floating Book Service Button -->
+<a href="{{ url_for('book_car_service') }}" class="floating-book-btn" title="Book Car Service Now">
+  <i class="fas fa-calendar-check"></i>
+  <span>Book Service</span>
+</a>
+
+<style>
+  .floating-book-btn {
+    position: fixed;
+    bottom: 80px;
+    right: 30px;
+    background: linear-gradient(135deg, #0d6efd 0%, #0b84d9 100%);
+    color: white;
+    padding: 18px 28px;
+    border-radius: 50px;
+    box-shadow: 0 10px 40px rgba(13, 110, 253, 0.4);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    font-size: 16px;
+    z-index: 999;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: floatPulse 3s ease-in-out infinite;
+  }
+  
+  .floating-book-btn:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 20px 60px rgba(13, 110, 253, 0.6);
+    color: white;
+  }
+  
+  .floating-book-btn i {
+    font-size: 24px;
+    animation: ringBell 2s ease-in-out infinite;
+  }
+  
+  @keyframes floatPulse {
+    0%, 100% {
+      transform: translateY(0);
+      box-shadow: 0 10px 40px rgba(13, 110, 253, 0.4);
+    }
+    50% {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 50px rgba(13, 110, 253, 0.5);
+    }
+  }
+  
+  @keyframes ringBell {
+    0%, 100% { transform: rotate(0deg); }
+    10%, 30% { transform: rotate(-10deg); }
+    20%, 40% { transform: rotate(10deg); }
+    50% { transform: rotate(0deg); }
+  }
+  
+  @media (max-width: 768px) {
+    .floating-book-btn {
+      bottom: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      font-size: 14px;
+    }
+    
+    .floating-book-btn span {
+      display: none;
+    }
+    
+    .floating-book-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      justify-content: center;
+      padding: 0;
+    }
+  }
+</style>
+
 {% endblock %}

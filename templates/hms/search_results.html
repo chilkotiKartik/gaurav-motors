@@ -1,0 +1,160 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+
+<div class="container my-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="fw-bold mb-3">
+                <i class="fas fa-search text-primary"></i> Search Results
+                {% if query %}
+                for "{{ query }}"
+                {% endif %}
+            </h2>
+            
+            <!-- Search Form -->
+            <form method="GET" class="mb-4">
+                <div class="input-group input-group-lg">
+                    <input type="text" name="q" class="form-control" placeholder="Search doctors, services, spare parts..." 
+                           value="{{ query }}" required>
+                    <select name="category" class="form-select" style="max-width: 200px;">
+                        <option value="all" {% if category == 'all' %}selected{% endif %}>All Categories</option>
+                        <option value="doctors" {% if category == 'doctors' %}selected{% endif %}>Doctors</option>
+                        <option value="services" {% if category == 'services' %}selected{% endif %}>Services</option>
+                        <option value="parts" {% if category == 'parts' %}selected{% endif %}>Spare Parts</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% if query %}
+    <!-- Doctors Results -->
+    {% if results.doctors or category in ['all', 'doctors'] %}
+    <div class="mb-5">
+        <h4 class="fw-bold mb-3"><i class="fas fa-user-md text-primary"></i> Doctors ({{ results.doctors|length }})</h4>
+        {% if results.doctors %}
+        <div class="row">
+            {% for doctor in results.doctors %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm hover-card">
+                    <div class="card-body">
+                        <div class="text-center mb-3">
+                            <div class="rounded-circle bg-primary d-inline-flex align-items-center justify-content-center" 
+                                 style="width: 80px; height: 80px;">
+                                <i class="fas fa-user-md fa-2x text-white"></i>
+                            </div>
+                        </div>
+                        <h5 class="card-title fw-bold text-center">{{ doctor.name }}</h5>
+                        <p class="text-center text-muted mb-3">{{ doctor.specialization }}</p>
+                        <div class="d-grid gap-2">
+                            <a href="{{ url_for('doctor_reviews', doctor_id=doctor.id) }}" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-star"></i> View Reviews
+                            </a>
+                            <a href="{{ url_for('book_appointment') }}?doctor_id={{ doctor.id }}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-calendar-check"></i> Book
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="alert alert-light">No doctors found.</div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Services Results -->
+    {% if results.services or category in ['all', 'services'] %}
+    <div class="mb-5">
+        <h4 class="fw-bold mb-3"><i class="fas fa-tools text-warning"></i> Services ({{ results.services|length }})</h4>
+        {% if results.services %}
+        <div class="row">
+            {% for service in results.services %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm hover-card">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">{{ service.name }}</h5>
+                        <p class="text-muted small">{{ service.description[:100] }}...</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="h5 mb-0 text-primary">₹{{ service.price }}</span>
+                            <span class="badge bg-info">{{ service.duration_minutes }} mins</span>
+                        </div>
+                        <a href="{{ url_for('book_service') }}" class="btn btn-primary btn-sm w-100 mt-3">
+                            <i class="fas fa-calendar-plus"></i> Book Service
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="alert alert-light">No services found.</div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Spare Parts Results -->
+    {% if results.parts or category in ['all', 'parts'] %}
+    <div class="mb-5">
+        <h4 class="fw-bold mb-3"><i class="fas fa-cog text-danger"></i> Spare Parts ({{ results.parts|length }})</h4>
+        {% if results.parts %}
+        <div class="row">
+            {% for part in results.parts %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm hover-card">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">{{ part.name }}</h5>
+                        <p class="text-muted small mb-1"><strong>Brand:</strong> {{ part.brand }}</p>
+                        <p class="text-muted small mb-1"><strong>Part #:</strong> {{ part.part_number }}</p>
+                        {% if part.stock_quantity > 0 %}
+                        <span class="badge bg-success">In Stock</span>
+                        {% else %}
+                        <span class="badge bg-danger">Out of Stock</span>
+                        {% endif %}
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="h5 mb-0 text-primary">₹{{ part.price }}</span>
+                            {% if part.is_oem %}
+                            <span class="badge bg-warning">OEM</span>
+                            {% endif %}
+                        </div>
+                        {% if part.stock_quantity > 0 %}
+                        <a href="{{ url_for('order_part') }}?part_id={{ part.id }}" class="btn btn-primary btn-sm w-100 mt-3">
+                            <i class="fas fa-shopping-cart"></i> Order Now
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="alert alert-light">No spare parts found.</div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="text-center py-5 text-muted">
+        <i class="fas fa-search fa-3x mb-3"></i>
+        <p>Enter a search term to find doctors, services, or spare parts.</p>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+.hover-card {
+    transition: all 0.3s ease;
+}
+
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+}
+</style>
+
+{% endblock %}

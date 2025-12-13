@@ -1,0 +1,695 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+
+<!-- Hero Header -->
+<div class="service-booking-hero mb-5 p-5 rounded-4 shadow-lg position-relative overflow-hidden" style="background: linear-gradient(135deg, rgba(13,110,253,0.95) 0%, rgba(11,132,217,0.95) 100%), url('https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1600&q=80') center/cover;">
+  <div class="hero-overlay position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, rgba(13,110,253,0.9), rgba(11,84,217,0.9));"></div>
+  <div class="position-relative">
+    <div class="row align-items-center">
+      <div class="col-md-8">
+        <h1 class="display-5 text-white fw-bold mb-3 animate__animated animate__fadeInLeft">
+          <i class="fas fa-car-side me-3"></i>
+          Book Your Car Service
+        </h1>
+        <p class="lead text-white opacity-90 mb-0 animate__animated animate__fadeInLeft animate__delay-1s">
+          Premium car care at your convenience • Expert technicians • Quality parts • Best prices
+        </p>
+      </div>
+      <div class="col-md-4 text-end">
+        <div class="bg-white bg-opacity-10 backdrop-blur rounded-4 p-3 d-inline-block">
+          <div class="text-white">
+            <i class="fas fa-phone-alt fa-2x mb-2"></i>
+            <p class="mb-0 fw-bold">24/7 Support</p>
+            <p class="mb-0">+91-9876543210</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Service Selection -->
+<div class="row g-4 mb-5">
+  <div class="col-12">
+    <h3 class="fw-bold mb-4">
+      <i class="fas fa-tools text-primary me-2"></i>
+      Choose Your Service
+    </h3>
+  </div>
+  
+  <!-- General Service -->
+  <div class="col-md-6 col-lg-4">
+    <div class="card service-option-card border-0 shadow-lg h-100">
+      <div class="card-body p-4">
+        <div class="service-icon mb-3">
+          <i class="fas fa-wrench fa-3x text-primary"></i>
+        </div>
+        <h5 class="fw-bold mb-3">General Service</h5>
+        <ul class="list-unstyled mb-4">
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Engine Oil Change</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Oil Filter Replacement</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Air Filter Check</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Battery Check</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Tire Pressure Check</li>
+        </ul>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-muted">Starting from</span>
+          <h4 class="text-primary fw-bold mb-0">₹2,500</h4>
+        </div>
+        <button class="btn btn-primary w-100 btn-lg" onclick="selectService('general', 2500)">
+          <i class="fas fa-calendar-check me-2"></i>Book Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Brake Service -->
+  <div class="col-md-6 col-lg-4">
+    <div class="card service-option-card border-0 shadow-lg h-100">
+      <div class="card-body p-4">
+        <div class="service-icon mb-3">
+          <i class="fas fa-circle-stop fa-3x text-danger"></i>
+        </div>
+        <h5 class="fw-bold mb-3">Brake Service</h5>
+        <ul class="list-unstyled mb-4">
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Brake Pad Replacement</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Brake Fluid Check</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Rotor Inspection</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Caliper Check</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Safety Test</li>
+        </ul>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-muted">Starting from</span>
+          <h4 class="text-danger fw-bold mb-0">₹3,500</h4>
+        </div>
+        <button class="btn btn-danger w-100 btn-lg" onclick="selectService('brake', 3500)">
+          <i class="fas fa-calendar-check me-2"></i>Book Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AC Service -->
+  <div class="col-md-6 col-lg-4">
+    <div class="card service-option-card border-0 shadow-lg h-100">
+      <div class="card-body p-4">
+        <div class="service-icon mb-3">
+          <i class="fas fa-snowflake fa-3x text-info"></i>
+        </div>
+        <h5 class="fw-bold mb-3">AC Service</h5>
+        <ul class="list-unstyled mb-4">
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>AC Gas Refill</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Cooling Check</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Filter Cleaning</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Compressor Test</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Leak Detection</li>
+        </ul>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-muted">Starting from</span>
+          <h4 class="text-info fw-bold mb-0">₹2,000</h4>
+        </div>
+        <button class="btn btn-info w-100 btn-lg" onclick="selectService('ac', 2000)">
+          <i class="fas fa-calendar-check me-2"></i>Book Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Engine Service -->
+  <div class="col-md-6 col-lg-4">
+    <div class="card service-option-card border-0 shadow-lg h-100">
+      <div class="card-body p-4">
+        <div class="service-icon mb-3">
+          <i class="fas fa-cog fa-3x text-warning"></i>
+        </div>
+        <h5 class="fw-bold mb-3">Engine Service</h5>
+        <ul class="list-unstyled mb-4">
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Complete Engine Check</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Spark Plug Replacement</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Timing Belt Check</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Engine Oil Top-up</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Performance Test</li>
+        </ul>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-muted">Starting from</span>
+          <h4 class="text-warning fw-bold mb-0">₹4,500</h4>
+        </div>
+        <button class="btn btn-warning w-100 btn-lg" onclick="selectService('engine', 4500)">
+          <i class="fas fa-calendar-check me-2"></i>Book Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Electrical Service -->
+  <div class="col-md-6 col-lg-4">
+    <div class="card service-option-card border-0 shadow-lg h-100">
+      <div class="card-body p-4">
+        <div class="service-icon mb-3">
+          <i class="fas fa-bolt fa-3x text-success"></i>
+        </div>
+        <h5 class="fw-bold mb-3">Electrical Service</h5>
+        <ul class="list-unstyled mb-4">
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Battery Replacement</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Wiring Check</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Light Repair</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Alternator Test</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Fuse Box Check</li>
+        </ul>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-muted">Starting from</span>
+          <h4 class="text-success fw-bold mb-0">₹1,500</h4>
+        </div>
+        <button class="btn btn-success w-100 btn-lg" onclick="selectService('electrical', 1500)">
+          <i class="fas fa-calendar-check me-2"></i>Book Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Body Work -->
+  <div class="col-md-6 col-lg-4">
+    <div class="card service-option-card border-0 shadow-lg h-100 popular-badge">
+      <div class="ribbon">
+        <span>POPULAR</span>
+      </div>
+      <div class="card-body p-4">
+        <div class="service-icon mb-3">
+          <i class="fas fa-car-side fa-3x text-purple"></i>
+        </div>
+        <h5 class="fw-bold mb-3">Body Work & Paint</h5>
+        <ul class="list-unstyled mb-4">
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Dent Removal</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Scratch Repair</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Full Body Paint</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Polish & Coating</li>
+          <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Rust Treatment</li>
+        </ul>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-muted">Starting from</span>
+          <h4 class="text-purple fw-bold mb-0">₹5,000</h4>
+        </div>
+        <button class="btn btn-purple w-100 btn-lg" onclick="selectService('bodywork', 5000)">
+          <i class="fas fa-calendar-check me-2"></i>Book Now
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Booking Form Modal -->
+<div class="modal fade" id="bookingModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">
+          <i class="fas fa-calendar-check me-2"></i>
+          Complete Your Booking
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-4">
+        <form id="serviceBookingForm" method="POST" action="/book-service">
+          <!-- Service Info -->
+          <div class="alert alert-primary border-0 mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="mb-1 fw-bold" id="selectedServiceName">Service Name</h6>
+                <small class="text-muted">Premium car care service</small>
+              </div>
+              <div class="text-end">
+                <h4 class="mb-0 text-primary fw-bold" id="selectedServicePrice">₹0</h4>
+                <small class="text-muted">50% advance: <span id="advanceAmount">₹0</span></small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Customer Details -->
+          <div class="row g-3 mb-4">
+            <div class="col-12">
+              <h6 class="fw-bold text-primary mb-3">
+                <i class="fas fa-user me-2"></i>Customer Information
+              </h6>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Full Name *</label>
+              <input type="text" class="form-control form-control-lg" name="customer_name" required placeholder="Enter your full name">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Phone Number *</label>
+              <input type="tel" class="form-control form-control-lg" name="customer_phone" required placeholder="+91-XXXXXXXXXX">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Email Address</label>
+              <input type="email" class="form-control form-control-lg" name="customer_email" placeholder="your.email@example.com">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Preferred Date *</label>
+              <input type="date" class="form-control form-control-lg" name="preferred_date" required min="{{ today }}">
+            </div>
+          </div>
+
+          <!-- Vehicle Details -->
+          <div class="row g-3 mb-4">
+            <div class="col-12">
+              <h6 class="fw-bold text-primary mb-3">
+                <i class="fas fa-car me-2"></i>Vehicle Information
+              </h6>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Car Make *</label>
+              <select class="form-select form-select-lg" name="car_make" required>
+                <option value="">Select Make</option>
+                <option value="Maruti Suzuki">Maruti Suzuki</option>
+                <option value="Hyundai">Hyundai</option>
+                <option value="Tata">Tata</option>
+                <option value="Mahindra">Mahindra</option>
+                <option value="Honda">Honda</option>
+                <option value="Toyota">Toyota</option>
+                <option value="Kia">Kia</option>
+                <option value="Ford">Ford</option>
+                <option value="Volkswagen">Volkswagen</option>
+                <option value="Renault">Renault</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Car Model *</label>
+              <input type="text" class="form-control form-control-lg" name="car_model" required placeholder="e.g., Swift, i20, Nexon">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Registration Number *</label>
+              <input type="text" class="form-control form-control-lg" name="registration_number" required placeholder="XX-00-YY-0000" style="text-transform: uppercase;">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Manufacturing Year</label>
+              <select class="form-select form-select-lg" name="manufacture_year">
+                <option value="">Select Year</option>
+                {% for year in range(2024, 1999, -1) %}
+                <option value="{{ year }}">{{ year }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Current Mileage (km)</label>
+              <input type="number" class="form-control form-control-lg" name="mileage" placeholder="e.g., 25000">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Fuel Type *</label>
+              <select class="form-select form-select-lg" name="fuel_type" required>
+                <option value="">Select Fuel Type</option>
+                <option value="Petrol">Petrol</option>
+                <option value="Diesel">Diesel</option>
+                <option value="CNG">CNG</option>
+                <option value="Electric">Electric</option>
+                <option value="Hybrid">Hybrid</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Service Options -->
+          <div class="row g-3 mb-4">
+            <div class="col-12">
+              <h6 class="fw-bold text-primary mb-3">
+                <i class="fas fa-cogs me-2"></i>Service Options
+              </h6>
+            </div>
+            <div class="col-12">
+              <div class="form-check p-3 border rounded-3">
+                <input class="form-check-input" type="checkbox" name="pickup_service" id="pickupService">
+                <label class="form-check-label fw-bold" for="pickupService">
+                  <i class="fas fa-truck text-primary me-2"></i>Free Pick-up & Drop Service
+                  <p class="text-muted small mb-0">We'll pick up your car and deliver it back after service</p>
+                </label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-check p-3 border rounded-3">
+                <input class="form-check-input" type="checkbox" name="wash_service" id="washService">
+                <label class="form-check-label fw-bold" for="washService">
+                  <i class="fas fa-tint text-info me-2"></i>Complimentary Car Wash (+₹300)
+                  <p class="text-muted small mb-0">Interior and exterior deep cleaning</p>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Additional Notes -->
+          <div class="mb-4">
+            <label class="form-label fw-bold">
+              <i class="fas fa-comment-dots me-2"></i>Additional Notes (Optional)
+            </label>
+            <textarea class="form-control" name="additional_notes" rows="3" placeholder="Any specific issues or requirements..."></textarea>
+          </div>
+
+          <!-- Payment Method -->
+          <div class="mb-4">
+            <h6 class="fw-bold text-primary mb-3">
+              <i class="fas fa-credit-card me-2"></i>Payment Method
+            </h6>
+            <div class="row g-3">
+              <div class="col-md-4">
+                <input type="radio" class="btn-check" name="payment_method" id="paymentCOD" value="COD" checked>
+                <label class="btn btn-outline-primary w-100 py-3" for="paymentCOD">
+                  <i class="fas fa-money-bill-wave d-block mb-2 fa-2x"></i>
+                  <strong>Cash</strong>
+                  <small class="d-block">Pay after service</small>
+                </label>
+              </div>
+              <div class="col-md-4">
+                <input type="radio" class="btn-check" name="payment_method" id="paymentOnline" value="Online">
+                <label class="btn btn-outline-primary w-100 py-3" for="paymentOnline">
+                  <i class="fas fa-credit-card d-block mb-2 fa-2x"></i>
+                  <strong>Online</strong>
+                  <small class="d-block">Pay advance now</small>
+                </label>
+              </div>
+              <div class="col-md-4">
+                <input type="radio" class="btn-check" name="payment_method" id="paymentUPI" value="UPI">
+                <label class="btn btn-outline-primary w-100 py-3" for="paymentUPI">
+                  <i class="fas fa-mobile-alt d-block mb-2 fa-2x"></i>
+                  <strong>UPI</strong>
+                  <small class="d-block">Quick payment</small>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Summary -->
+          <div class="bg-light p-4 rounded-4 mb-4">
+            <h6 class="fw-bold mb-3">Booking Summary</h6>
+            <div class="d-flex justify-content-between mb-2">
+              <span>Service Charge:</span>
+              <strong id="summaryServiceCharge">₹0</strong>
+            </div>
+            <div class="d-flex justify-content-between mb-2 text-success">
+              <span>Advance (50%):</span>
+              <strong id="summaryAdvance">₹0</strong>
+            </div>
+            <div class="d-flex justify-content-between mb-2 text-muted">
+              <span>After Service (50%):</span>
+              <strong id="summaryRemaining">₹0</strong>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between">
+              <span class="fw-bold">Pay Now:</span>
+              <h5 class="text-primary fw-bold mb-0" id="summaryTotal">₹0</h5>
+            </div>
+          </div>
+
+          <input type="hidden" name="service_type" id="serviceType">
+          <input type="hidden" name="service_price" id="servicePrice">
+
+          <button type="submit" class="btn btn-primary btn-lg w-100 py-3">
+            <i class="fas fa-check-circle me-2"></i>
+            Confirm Booking & Pay Advance
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Why Choose Us -->
+<div class="row g-4 mb-5">
+  <div class="col-12">
+    <h3 class="fw-bold text-center mb-4">
+      <i class="fas fa-star text-warning me-2"></i>
+      Why Choose GM Motors?
+    </h3>
+  </div>
+  <div class="col-md-3 col-sm-6">
+    <div class="text-center p-4 feature-box">
+      <i class="fas fa-certificate fa-3x text-primary mb-3"></i>
+      <h6 class="fw-bold">Certified Technicians</h6>
+      <p class="text-muted small mb-0">Expert mechanics with years of experience</p>
+    </div>
+  </div>
+  <div class="col-md-3 col-sm-6">
+    <div class="text-center p-4 feature-box">
+      <i class="fas fa-tools fa-3x text-success mb-3"></i>
+      <h6 class="fw-bold">Quality Parts</h6>
+      <p class="text-muted small mb-0">Genuine & OEM approved spare parts</p>
+    </div>
+  </div>
+  <div class="col-md-3 col-sm-6">
+    <div class="text-center p-4 feature-box">
+      <i class="fas fa-shield-alt fa-3x text-info mb-3"></i>
+      <h6 class="fw-bold">6 Month Warranty</h6>
+      <p class="text-muted small mb-0">Comprehensive warranty on all services</p>
+    </div>
+  </div>
+  <div class="col-md-3 col-sm-6">
+    <div class="text-center p-4 feature-box">
+      <i class="fas fa-rupee-sign fa-3x text-warning mb-3"></i>
+      <h6 class="fw-bold">Best Prices</h6>
+      <p class="text-muted small mb-0">Competitive rates with no hidden charges</p>
+    </div>
+  </div>
+</div>
+
+<!-- Customer Reviews -->
+<div class="card border-0 shadow-lg mb-5">
+  <div class="card-body p-5">
+    <h3 class="fw-bold text-center mb-5">
+      <i class="fas fa-comments text-primary me-2"></i>
+      What Our Customers Say
+    </h3>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="review-card p-4 bg-light rounded-4 h-100">
+          <div class="mb-3">
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+          </div>
+          <p class="mb-3">"Excellent service! They picked up my car, serviced it perfectly, and delivered it back. Very professional."</p>
+          <div class="d-flex align-items-center">
+            <div class="avatar-circle bg-primary text-white rounded-circle me-3">RS</div>
+            <div>
+              <strong>Rajesh Sharma</strong>
+              <p class="text-muted small mb-0">2 days ago</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="review-card p-4 bg-light rounded-4 h-100">
+          <div class="mb-3">
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+          </div>
+          <p class="mb-3">"Best garage in Lohaghat! Fair pricing, quality work, and very friendly staff. Highly recommended!"</p>
+          <div class="d-flex align-items-center">
+            <div class="avatar-circle bg-success text-white rounded-circle me-3">PK</div>
+            <div>
+              <strong>Priya Kapoor</strong>
+              <p class="text-muted small mb-0">1 week ago</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="review-card p-4 bg-light rounded-4 h-100">
+          <div class="mb-3">
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star-half-alt text-warning"></i>
+          </div>
+          <p class="mb-3">"Great experience! The 50% advance payment system is very convenient. Got my AC fixed in no time."</p>
+          <div class="d-flex align-items-center">
+            <div class="avatar-circle bg-info text-white rounded-circle me-3">AM</div>
+            <div>
+              <strong>Amit Mehta</strong>
+              <p class="text-muted small mb-0">3 weeks ago</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .service-option-card {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .service-option-card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 20px 60px rgba(13, 110, 253, 0.3) !important;
+  }
+  
+  .service-icon {
+    transition: transform 0.3s ease;
+  }
+  
+  .service-option-card:hover .service-icon i {
+    transform: scale(1.2) rotate(10deg);
+  }
+  
+  .popular-badge {
+    border: 3px solid #ffc107;
+  }
+  
+  .ribbon {
+    position: absolute;
+    right: -5px;
+    top: -5px;
+    z-index: 1;
+    overflow: hidden;
+    width: 75px;
+    height: 75px;
+    text-align: right;
+  }
+  
+  .ribbon span {
+    font-size: 10px;
+    font-weight: bold;
+    color: #FFF;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 20px;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    width: 100px;
+    display: block;
+    background: linear-gradient(#ffc107 0%, #ff9800 100%);
+    box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+    position: absolute;
+    top: 19px;
+    right: -21px;
+  }
+  
+  .text-purple {
+    color: #6f42c1 !important;
+  }
+  
+  .btn-purple {
+    background: linear-gradient(135deg, #6f42c1, #5a32a3);
+    border: none;
+    color: white;
+  }
+  
+  .btn-purple:hover {
+    background: linear-gradient(135deg, #5a32a3, #4c2a8a);
+    color: white;
+  }
+  
+  .feature-box {
+    transition: all 0.3s ease;
+    border-radius: 16px;
+  }
+  
+  .feature-box:hover {
+    background: #f8f9fa;
+    transform: translateY(-10px);
+  }
+  
+  .avatar-circle {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+  
+  .review-card {
+    transition: all 0.3s ease;
+  }
+  
+  .review-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-control:focus, .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+  }
+  
+  .btn-check:checked + .btn-outline-primary {
+    background: linear-gradient(135deg, #0d6efd, #0b84d9);
+    border-color: #0d6efd;
+  }
+</style>
+
+<script>
+  const today = new Date().toISOString().split('T')[0];
+  document.querySelector('input[name="preferred_date"]').setAttribute('min', today);
+  
+  function selectService(serviceType, price) {
+    // Set service details
+    document.getElementById('serviceType').value = serviceType;
+    document.getElementById('servicePrice').value = price;
+    
+    // Update modal display
+    const serviceName = serviceType.charAt(0).toUpperCase() + serviceType.slice(1) + ' Service';
+    document.getElementById('selectedServiceName').textContent = serviceName;
+    document.getElementById('selectedServicePrice').textContent = '₹' + price.toLocaleString();
+    
+    // Calculate 50% advance
+    const advance = price * 0.5;
+    const remaining = price * 0.5;
+    
+    document.getElementById('advanceAmount').textContent = '₹' + advance.toLocaleString();
+    document.getElementById('summaryServiceCharge').textContent = '₹' + price.toLocaleString();
+    document.getElementById('summaryAdvance').textContent = '₹' + advance.toLocaleString();
+    document.getElementById('summaryRemaining').textContent = '₹' + remaining.toLocaleString();
+    document.getElementById('summaryTotal').textContent = '₹' + advance.toLocaleString();
+    
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('bookingModal'));
+    modal.show();
+  }
+  
+  // Form validation and submission
+  document.getElementById('serviceBookingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Show loading state
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalHTML = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+    submitBtn.disabled = true;
+    
+    // Simulate form submission
+    setTimeout(() => {
+      submitBtn.innerHTML = '<i class="fas fa-check-circle me-2"></i>Booking Confirmed!';
+      submitBtn.classList.remove('btn-primary');
+      submitBtn.classList.add('btn-success');
+      
+      setTimeout(() => {
+        alert('🎉 Booking Confirmed!\n\nYour service booking has been confirmed.\nWe\'ll contact you shortly for confirmation.\n\nBooking ID: SRV-' + Math.floor(Math.random() * 10000));
+        location.reload();
+      }, 1500);
+    }, 2000);
+  });
+  
+  // Add car wash to price
+  document.getElementById('washService').addEventListener('change', function() {
+    const basePrice = parseInt(document.getElementById('servicePrice').value) || 0;
+    const washCharge = this.checked ? 300 : 0;
+    const totalPrice = basePrice + washCharge;
+    const advance = totalPrice * 0.5;
+    const remaining = totalPrice * 0.5;
+    
+    document.getElementById('selectedServicePrice').textContent = '₹' + totalPrice.toLocaleString();
+    document.getElementById('summaryServiceCharge').textContent = '₹' + totalPrice.toLocaleString();
+    document.getElementById('summaryAdvance').textContent = '₹' + advance.toLocaleString();
+    document.getElementById('summaryRemaining').textContent = '₹' + remaining.toLocaleString();
+    document.getElementById('summaryTotal').textContent = '₹' + advance.toLocaleString();
+  });
+</script>
+
+{% endblock %}

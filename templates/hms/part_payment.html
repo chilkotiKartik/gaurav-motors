@@ -1,0 +1,104 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-success text-white text-center py-4">
+                    <i class="fas fa-check-circle fa-3x mb-3"></i>
+                    <h3 class="mb-0">Order Placed Successfully!</h3>
+                </div>
+                <div class="card-body p-4">
+                    <div class="alert alert-success">
+                        <h5 class="fw-bold"><i class="fas fa-money-bill-wave"></i> Payment Required</h5>
+                        <p class="mb-0">Please pay 50% advance to confirm your order(s)</p>
+                    </div>
+
+                    <!-- Orders List -->
+                    {% for order in orders %}
+                    <div class="card mb-3 border">
+                        <div class="card-body">
+                            <h6 class="fw-bold text-primary">{{ order.order_number }}</h6>
+                            <p class="mb-1"><strong>Part:</strong> {{ order.part.name }}</p>
+                            <p class="mb-1"><strong>Quantity:</strong> {{ order.quantity }}</p>
+                            <p class="mb-1"><strong>Total:</strong> ₹{{ order.total_price|int }}</p>
+                            <p class="mb-0 text-success"><strong>Advance (50%):</strong> ₹{{ order.advance_amount|int }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <!-- Total -->
+                    <div class="card bg-primary text-white mb-4">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Total Advance to Pay:</h5>
+                                <h3 class="mb-0">₹{{ total_advance|int }}</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Options -->
+                    <form action="{{ url_for('confirm_part_payment') }}" method="POST">
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3"><i class="fas fa-credit-card"></i> Select Payment Method</h6>
+                            
+                            <div class="form-check mb-3 p-3 border rounded">
+                                <input class="form-check-input" type="radio" name="payment_method" 
+                                       id="cod" value="Cash on Delivery" checked>
+                                <label class="form-check-label fw-bold" for="cod">
+                                    <i class="fas fa-money-bill-wave text-success"></i> Cash/UPI on Delivery
+                                </label>
+                                <p class="text-muted small mb-0 ms-4">Pay 50% now when our delivery person arrives</p>
+                            </div>
+
+                            <div class="form-check mb-3 p-3 border rounded">
+                                <input class="form-check-input" type="radio" name="payment_method" 
+                                       id="online" value="Online Payment">
+                                <label class="form-check-label fw-bold" for="online">
+                                    <i class="fas fa-credit-card text-primary"></i> Online Payment
+                                </label>
+                                <p class="text-muted small mb-0 ms-4">Pay securely using cards, UPI, or net banking</p>
+                            </div>
+
+                            <div class="form-check mb-3 p-3 border rounded">
+                                <input class="form-check-input" type="radio" name="payment_method" 
+                                       id="bank" value="Bank Transfer">
+                                <label class="form-check-label fw-bold" for="bank">
+                                    <i class="fas fa-university text-warning"></i> Bank Transfer
+                                </label>
+                                <p class="text-muted small mb-0 ms-4">Transfer to our account (details will be sent)</p>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> <strong>Next Steps:</strong>
+                            <ul class="mb-0 mt-2">
+                                <li>Your order will be confirmed after payment</li>
+                                <li>You'll receive order confirmation via SMS/Email</li>
+                                <li>We'll contact you for delivery arrangement</li>
+                                <li>Pay remaining 50% on delivery</li>
+                            </ul>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-check"></i> Confirm & Process Payment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="card mt-4 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <p class="mb-2"><strong><i class="fas fa-phone text-primary"></i> Need Help?</strong></p>
+                    <p class="text-muted mb-0">Call us at: <strong>+91-XXXXXXXXXX</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

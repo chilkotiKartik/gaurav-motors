@@ -1,9 +1,14 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify, send_file
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user, UserMixin
+from flask_mail import Mail, Message
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 import os
+import json
+import secrets
+from io import BytesIO
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'hmsdevsecret-change-in-production')
@@ -12,7 +17,26 @@ DB_URI = f"sqlite:///{DB_PATH.replace('\\', '/')}"
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# Email Configuration
+app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER', 'smtp.gmail.com')
+app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT', 587))
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_DEFAULT_SENDER', 'noreply@gmmotors.com')
+
+# File Upload Configuration
+UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'uploads')
+ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
+
+# Create upload folder if it doesn't exist
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
 db = SQLAlchemy(app)
+mail = Mail(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
@@ -116,19 +140,74 @@ class SparePart(db.Model):
 class PartOrder(db.Model):
     __tablename__ = 'part_order'
     id = db.Column(db.Integer, primary_key=True)
+    order_number = db.Column(db.String(20), unique=True, nullable=False)  # GM-PART-00001
     customer_name = db.Column(db.String(120), nullable=False)
     customer_phone = db.Column(db.String(20), nullable=False)
     customer_email = db.Column(db.String(120))
     part_id = db.Column(db.Integer, db.ForeignKey('spare_part.id'), nullable=False)
     quantity = db.Column(db.Integer, default=1, nullable=False)
+    unit_price = db.Column(db.Float, nullable=False)
+    subtotal = db.Column(db.Float, nullable=False)
+    advance_amount = db.Column(db.Float, nullable=False)  # 50% advance
+    remaining_amount = db.Column(db.Float, nullable=False)  # 50% on delivery
     total_price = db.Column(db.Float, nullable=False)
     car_brand = db.Column(db.String(50))
     car_model = db.Column(db.String(100))
     car_year = db.Column(db.Integer)
     installation_required = db.Column(db.Boolean, default=False)
-    status = db.Column(db.String(20), default='Pending')  # Pending/Confirmed/Completed/Cancelled
+    installation_charges = db.Column(db.Float, default=0)
+    delivery_address = db.Column(db.String(500))
+    payment_status = db.Column(db.String(20), default='Pending')  # Pending/Advance Paid/Fully Paid
+    order_status = db.Column(db.String(20), default='Pending')  # Pending/Confirmed/Processing/Shipped/Delivered/Cancelled
     order_date = db.Column(db.DateTime, default=datetime.utcnow)
+    confirmed_date = db.Column(db.DateTime)
+    delivery_date = db.Column(db.DateTime)
     notes = db.Column(db.String(500))
+    admin_notes = db.Column(db.String(500))
+
+class CartItem(db.Model):
+    __tablename__ = 'cart_item'
+    id = db.Column(db.Integer, primary_key=True)
+    session_id = db.Column(db.String(100), nullable=False)  # For guest users
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # For logged-in users
+    part_id = db.Column(db.Integer, db.ForeignKey('spare_part.id'))
+    accessory_id = db.Column(db.Integer, db.ForeignKey('car_accessory.id'))
+    quantity = db.Column(db.Integer, default=1, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    part = db.relationship('SparePart', backref='cart_items', foreign_keys=[part_id])
+    accessory = db.relationship('CarAccessory', backref='cart_items', foreign_keys=[accessory_id])
+    user = db.relationship('User', backref='cart_items')
+
+# Car Accessories Models
+class AccessoryCategory(db.Model):
+    __tablename__ = 'accessory_category'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False, unique=True)
+    icon = db.Column(db.String(50))  # Font Awesome icon name
+    color = db.Column(db.String(20))  # Hex color code
+    image_url = db.Column(db.String(500))  # Category image
+    description = db.Column(db.String(500))
+    accessories = db.relationship('CarAccessory', backref='category', lazy=True, cascade='all, delete-orphan')
+
+class CarAccessory(db.Model):
+    __tablename__ = 'car_accessory'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('accessory_category.id'), nullable=False)
+    brand = db.Column(db.String(100))
+    price = db.Column(db.Float, nullable=False)
+    stock = db.Column(db.Integer, default=0)
+    image_url = db.Column(db.String(500))
+    description = db.Column(db.String(1000))
+    features = db.Column(db.String(1000))  # JSON or comma-separated
+    compatible_cars = db.Column(db.String(300))  # Universal or specific cars
+    warranty_months = db.Column(db.Integer, default=6)
+    is_featured = db.Column(db.Boolean, default=False)
+    is_universal = db.Column(db.Boolean, default=True)  # Fits all cars
+    rating = db.Column(db.Float, default=0)
+    review_count = db.Column(db.Integer, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 # Car Service Models
 class ServiceCategory(db.Model):
@@ -184,6 +263,100 @@ class TimeSlot(db.Model):
     max_bookings = db.Column(db.Integer, default=3)  # Multiple bookings per slot
     current_bookings = db.Column(db.Integer, default=0)
 
+# Medical Records System
+class MedicalRecord(db.Model):
+    __tablename__ = 'medical_record'
+    id = db.Column(db.Integer, primary_key=True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient_profile.id'), nullable=False)
+    record_type = db.Column(db.String(50), nullable=False)  # Lab Report, X-Ray, Prescription, etc.
+    title = db.Column(db.String(200), nullable=False)
+    description = db.Column(db.Text)
+    file_path = db.Column(db.String(500))  # Path to uploaded file
+    uploaded_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    upload_date = db.Column(db.DateTime, default=datetime.utcnow)
+    patient = db.relationship('PatientProfile', backref='medical_records')
+
+# Patient Medical History
+class MedicalHistory(db.Model):
+    __tablename__ = 'medical_history'
+    id = db.Column(db.Integer, primary_key=True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient_profile.id'), nullable=False)
+    allergies = db.Column(db.Text)  # Known allergies
+    chronic_conditions = db.Column(db.Text)  # Diabetes, Hypertension, etc.
+    current_medications = db.Column(db.Text)  # Current medications
+    past_surgeries = db.Column(db.Text)  # Previous surgeries
+    blood_type = db.Column(db.String(10))  # A+, B-, O+, etc.
+    emergency_contact = db.Column(db.String(100))
+    emergency_phone = db.Column(db.String(20))
+    insurance_provider = db.Column(db.String(200))
+    insurance_number = db.Column(db.String(100))
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    patient = db.relationship('PatientProfile', backref='medical_history', uselist=False)
+
+# Doctor Reviews and Ratings
+class DoctorReview(db.Model):
+    __tablename__ = 'doctor_review'
+    id = db.Column(db.Integer, primary_key=True)
+    doctor_id = db.Column(db.Integer, db.ForeignKey('doctor_profile.id'), nullable=False)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient_profile.id'), nullable=False)
+    appointment_id = db.Column(db.Integer, db.ForeignKey('appointment.id'))
+    rating = db.Column(db.Integer, nullable=False)  # 1-5 stars
+    comment = db.Column(db.Text)
+    is_verified = db.Column(db.Boolean, default=True)  # Verified patient
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    doctor_profile = db.relationship('DoctorProfile', backref='reviews')
+    patient = db.relationship('PatientProfile', backref='reviews')
+
+# Service Reviews
+class ServiceReview(db.Model):
+    __tablename__ = 'service_review'
+    id = db.Column(db.Integer, primary_key=True)
+    booking_id = db.Column(db.Integer, db.ForeignKey('service_booking.id'), nullable=False)
+    customer_name = db.Column(db.String(120), nullable=False)
+    rating = db.Column(db.Integer, nullable=False)  # 1-5 stars
+    comment = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    booking = db.relationship('ServiceBooking', backref='review', uselist=False)
+
+# Payment Records
+class Payment(db.Model):
+    __tablename__ = 'payment'
+    id = db.Column(db.Integer, primary_key=True)
+    payment_id = db.Column(db.String(100), unique=True, nullable=False)  # Razorpay/Stripe ID
+    appointment_id = db.Column(db.Integer, db.ForeignKey('appointment.id'))
+    service_booking_id = db.Column(db.Integer, db.ForeignKey('service_booking.id'))
+    part_order_id = db.Column(db.Integer, db.ForeignKey('part_order.id'))
+    amount = db.Column(db.Float, nullable=False)
+    currency = db.Column(db.String(10), default='INR')
+    payment_method = db.Column(db.String(50))  # Card, UPI, Net Banking
+    status = db.Column(db.String(20), default='Pending')  # Pending/Success/Failed/Refunded
+    transaction_date = db.Column(db.DateTime, default=datetime.utcnow)
+    receipt_url = db.Column(db.String(500))
+
+# Notifications System
+class Notification(db.Model):
+    __tablename__ = 'notification'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    title = db.Column(db.String(200), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    notification_type = db.Column(db.String(50))  # appointment, payment, reminder, system
+    is_read = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    user = db.relationship('User', backref='notifications')
+
+# Email Queue for async sending
+class EmailQueue(db.Model):
+    __tablename__ = 'email_queue'
+    id = db.Column(db.Integer, primary_key=True)
+    recipient = db.Column(db.String(120), nullable=False)
+    subject = db.Column(db.String(200), nullable=False)
+    body = db.Column(db.Text, nullable=False)
+    is_sent = db.Column(db.Boolean, default=False)
+    attempts = db.Column(db.Integer, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    sent_at = db.Column(db.DateTime)
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -198,6 +371,90 @@ def is_doctor():
 def is_patient():
     return current_user.is_authenticated and current_user.role == 'patient'
 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def send_email(recipient, subject, body, html=True):
+    """Send email notification"""
+    try:
+        msg = Message(subject, recipients=[recipient])
+        if html:
+            msg.html = body
+        else:
+            msg.body = body
+        mail.send(msg)
+        return True
+    except Exception as e:
+        print(f"Email error: {e}")
+        # Queue for retry
+        email = EmailQueue(recipient=recipient, subject=subject, body=body)
+        db.session.add(email)
+        db.session.commit()
+        return False
+
+def send_appointment_confirmation(appointment):
+    """Send appointment confirmation email"""
+    patient_email = appointment.patient.user.email
+    subject = f"Appointment Confirmed - {appointment.date}"
+    body = f"""
+    <h2>Appointment Confirmation</h2>
+    <p>Dear {appointment.patient.name},</p>
+    <p>Your appointment has been confirmed with the following details:</p>
+    <ul>
+        <li><strong>Doctor:</strong> {appointment.doctor.name}</li>
+        <li><strong>Specialization:</strong> {appointment.doctor.specialization}</li>
+        <li><strong>Date:</strong> {appointment.date.strftime('%B %d, %Y')}</li>
+        <li><strong>Time:</strong> {appointment.time.strftime('%I:%M %p')}</li>
+    </ul>
+    <p>Please arrive 10 minutes before your scheduled time.</p>
+    <p>Best regards,<br>GM Motors Healthcare Team</p>
+    """
+    send_email(patient_email, subject, body)
+
+def create_notification(user_id, title, message, notification_type='system'):
+    """Create in-app notification"""
+    notification = Notification(
+        user_id=user_id,
+        title=title,
+        message=message,
+        notification_type=notification_type
+    )
+    db.session.add(notification)
+    db.session.commit()
+
+def calculate_doctor_rating(doctor_id):
+    """Calculate average rating for a doctor"""
+    reviews = DoctorReview.query.filter_by(doctor_id=doctor_id).all()
+    if not reviews:
+        return 0
+    total = sum(review.rating for review in reviews)
+    return round(total / len(reviews), 1)
+
+def get_dashboard_stats():
+    """Get comprehensive statistics for admin dashboard"""
+    today = datetime.now().date()
+    this_month = datetime.now().replace(day=1).date()
+    
+    stats = {
+        'total_patients': PatientProfile.query.count(),
+        'total_doctors': DoctorProfile.query.count(),
+        'total_appointments': Appointment.query.count(),
+        'todays_appointments': Appointment.query.filter_by(date=today).count(),
+        'pending_appointments': Appointment.query.filter_by(status='Booked').count(),
+        'completed_appointments': Appointment.query.filter_by(status='Completed').count(),
+        'monthly_appointments': Appointment.query.filter(Appointment.date >= this_month).count(),
+        'total_revenue': db.session.query(db.func.sum(Payment.amount)).filter_by(status='Success').scalar() or 0,
+        'monthly_revenue': db.session.query(db.func.sum(Payment.amount)).filter(
+            Payment.status == 'Success',
+            Payment.transaction_date >= datetime.now().replace(day=1)
+        ).scalar() or 0,
+        'service_bookings': ServiceBooking.query.count(),
+        'pending_service_bookings': ServiceBooking.query.filter_by(status='Pending').count(),
+        'spare_parts_orders': PartOrder.query.count(),
+        'average_rating': db.session.query(db.func.avg(DoctorReview.rating)).scalar() or 0
+    }
+    return stats
+
 # Routes
 @app.route('/')
 def index():
@@ -209,7 +466,113 @@ def about():
 
 @app.route('/services')
 def services():
-    return render_template('hms/services.html')
+    """Premium services page with modern design"""
+    return render_template('hms/services_new.html')
+
+@app.route('/book-car-service')
+def book_car_service():
+    """Enhanced car service booking page"""
+    from datetime import date
+    return render_template('hms/book_service.html', today=date.today().isoformat())
+
+@app.route('/book-service', methods=['POST'])
+def confirm_car_service():
+    """Process car service booking with 50% advance payment"""
+    try:
+        # Get form data
+        service_type = request.form.get('service_type')
+        service_price = float(request.form.get('service_price', 0))
+        customer_name = request.form.get('customer_name')
+        customer_phone = request.form.get('customer_phone')
+        customer_email = request.form.get('customer_email')
+        preferred_date = request.form.get('preferred_date')
+        car_make = request.form.get('car_make')
+        car_model = request.form.get('car_model')
+        registration_number = request.form.get('registration_number')
+        manufacture_year = request.form.get('manufacture_year')
+        mileage = request.form.get('mileage')
+        fuel_type = request.form.get('fuel_type')
+        pickup_service = 'pickup_service' in request.form
+        wash_service = 'wash_service' in request.form
+        additional_notes = request.form.get('additional_notes', '')
+        payment_method = request.form.get('payment_method', 'COD')
+        
+        # Add wash service charge if selected
+        if wash_service:
+            service_price += 300
+        
+        # Calculate 50% advance
+        advance_amount = service_price * 0.5
+        remaining_amount = service_price * 0.5
+        
+        # Generate booking number
+        import random
+        booking_number = f'SRV-{datetime.now().year}-{random.randint(1000, 9999)}'
+        
+        # Create vehicle details string
+        vehicle_details = f"{car_make} {car_model} ({registration_number})"
+        if manufacture_year:
+            vehicle_details += f" - {manufacture_year}"
+        if fuel_type:
+            vehicle_details += f" - {fuel_type}"
+        if mileage:
+            vehicle_details += f" - {mileage} km"
+        
+        # Create service booking notes
+        booking_notes = f"Service Type: {service_type.title()}\n"
+        booking_notes += f"Preferred Date: {preferred_date}\n"
+        booking_notes += f"Vehicle: {vehicle_details}\n"
+        if pickup_service:
+            booking_notes += "Pickup Service: Yes\n"
+        if wash_service:
+            booking_notes += "Car Wash: Yes (+₹300)\n"
+        if additional_notes:
+            booking_notes += f"Notes: {additional_notes}\n"
+        
+        # In a real application, save this to database
+        # For now, we'll just show success message
+        
+        # Send confirmation email if provided
+        if customer_email:
+            try:
+                subject = f"Service Booking Confirmed - {booking_number}"
+                body = f"""
+                <h2>Service Booking Confirmation</h2>
+                <p>Dear {customer_name},</p>
+                <p>Your car service booking has been confirmed!</p>
+                
+                <h3>Booking Details:</h3>
+                <ul>
+                    <li><strong>Booking Number:</strong> {booking_number}</li>
+                    <li><strong>Service Type:</strong> {service_type.title()} Service</li>
+                    <li><strong>Preferred Date:</strong> {preferred_date}</li>
+                    <li><strong>Vehicle:</strong> {vehicle_details}</li>
+                    <li><strong>Total Amount:</strong> ₹{service_price}</li>
+                    <li><strong>Advance (50%):</strong> ₹{advance_amount}</li>
+                    <li><strong>After Service (50%):</strong> ₹{remaining_amount}</li>
+                    <li><strong>Payment Method:</strong> {payment_method}</li>
+                </ul>
+                
+                {f'<p><strong>Additional Services:</strong></p><ul>' if pickup_service or wash_service else ''}
+                {f'<li>Free Pick-up & Drop Service</li>' if pickup_service else ''}
+                {f'<li>Complimentary Car Wash</li>' if wash_service else ''}
+                {'</ul>' if pickup_service or wash_service else ''}
+                
+                <p>We will contact you at {customer_phone} to confirm the appointment.</p>
+                
+                <p>Thank you for choosing GM Motors!</p>
+                <p>Best regards,<br>GM Motors Team</p>
+                """
+                send_email(customer_email, subject, body)
+            except:
+                pass
+        
+        flash(f'🎉 Service Booking Confirmed! Booking ID: {booking_number}. We will contact you shortly at {customer_phone}.', 'success')
+        return redirect(url_for('services'))
+        
+    except Exception as e:
+        flash(f'Error processing booking: {str(e)}', 'danger')
+        return redirect(url_for('book_car_service'))
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
@@ -319,19 +682,8 @@ def admin_analytics():
     if not is_admin():
         flash('Admin access required', 'danger')
         return redirect(url_for('index'))
-    num_doctors = DoctorProfile.query.count()
-    num_patients = PatientProfile.query.count()
-    num_appointments = Appointment.query.count()
-    completed = Appointment.query.filter_by(status='Completed').count()
-    booked = Appointment.query.filter_by(status='Booked').count()
-    cancelled = Appointment.query.filter_by(status='Cancelled').count()
-    return render_template('hms/admin_analytics.html', 
-                         num_doctors=num_doctors, 
-                         num_patients=num_patients, 
-                         num_appointments=num_appointments,
-                         completed=completed,
-                         booked=booked,
-                         cancelled=cancelled)
+    # Use the enhanced analytics dashboard with real-time data
+    return render_template('hms/admin_analytics_enhanced.html')
 
 
 @app.route('/admin/add_patient', methods=['GET','POST'])
@@ -525,7 +877,7 @@ def list_doctors():
     
     # Legacy support - keep doctor data for backwards compatibility
     doctors = DoctorProfile.query.all()
-    today = datetime.utcnow().date()
+    today = datetime.now().date()
     days = [today + timedelta(days=i) for i in range(7)]
     doc_avail = {}
     for d in doctors:
@@ -548,7 +900,7 @@ def book(doctor_id):
         return redirect(url_for('index'))
     doctor = DoctorProfile.query.get_or_404(doctor_id)
     # Show available slots for selected doctor
-    today = datetime.utcnow().date()
+    today = datetime.now().date()
     if request.method == 'POST':
         slot_id = int(request.form.get('slot_id'))
         slot = Availability.query.get_or_404(slot_id)
@@ -638,7 +990,7 @@ def reschedule(appointment_id):
         return redirect(url_for('patient_dashboard'))
     
     # show available slots for same doctor
-    today = datetime.utcnow().date()
+    today = datetime.now().date()
     slots = Availability.query.filter_by(doctor_id=appt.doctor_id, is_available=True).filter(Availability.date >= today).order_by(Availability.date, Availability.time).all()
     return render_template('hms/reschedule.html', appt=appt, slots=slots)
 
@@ -659,7 +1011,7 @@ def doctor_dashboard():
         flash('Doctor profile not found', 'danger')
         return redirect(url_for('index'))
     
-    today = datetime.utcnow().date()
+    today = datetime.now().date()
     upcoming = Appointment.query.filter_by(doctor_id=doc.id).filter(Appointment.status=='Booked').order_by(Appointment.date.asc(), Appointment.time.asc()).all()
     return render_template('hms/doctor_dashboard.html', doc=doc, upcoming=upcoming)
 
@@ -770,7 +1122,7 @@ def doctor_availability():
         flash('Doctor profile not found', 'danger')
         return redirect(url_for('index'))
     
-    today = datetime.utcnow().date()
+    today = datetime.now().date()
     days = [today + timedelta(days=i) for i in range(7)]
     if request.method == 'POST':
         pass  # TODO: Handle POST request
@@ -1007,8 +1359,12 @@ def chat():
 
 def get_chatbot_response(message):
     """Generate chatbot response based on user message"""
+    # Greetings
+    if any(word in message for word in ['hello', 'hi', 'hey', 'namaste', 'good morning', 'good afternoon', 'good evening']):
+        response = "👋 Hello! Welcome to Gaurav Motors!\n\nI'm your AI assistant. I can help you with:\n\n✓ Book car services\n✓ Find spare parts\n✓ Check prices\n✓ Get contact info\n✓ Learn about accessories\n✓ Emergency support\n\nWhat can I help you with today? 😊"
+    
     # Service related queries
-    if any(word in message for word in ['service', 'services', 'booking', 'book', 'appointment']):
+    elif any(word in message for word in ['service', 'services', 'repair', 'maintenance', 'fix']):
         services = CarService.query.filter_by(is_active=True).limit(5).all()
         if services:
             response = "Here are our available services:\n"
@@ -1031,22 +1387,26 @@ def get_chatbot_response(message):
 
     # Contact/About queries
     elif any(word in message for word in ['contact', 'phone', 'address', 'location']):
-        response = "You can reach us at:\n📞 Phone: +91-XXXXXXXXXX\n📧 Email: info@gmmotors.com\n📍 Location: [Your Location]\n\nVisit our contact page for more details."
+        response = "You can reach us at:\n📞 Phone: +91 9997612579\n📱 WhatsApp: +91 9997612579\n📍 Location: Lohaghat, Champawat, Uttarakhand\n⏰ Hours: Mon-Sat, 9 AM - 7 PM\n\nVisit our contact page for more details and map!"
 
-    elif any(word in message for word in ['about', 'company', 'who']):
-        response = "GM Motors is your trusted partner for all automotive needs. We provide comprehensive car services, genuine spare parts, and expert maintenance solutions. With years of experience, we ensure your vehicle gets the best care possible."
+    elif any(word in message for word in ['about', 'company', 'who', 'gaurav']):
+        response = "🏆 Gaurav Motors - Uttarakhand's #1 Auto Workshop!\n\n✓ Established 2010\n✓ ISO Certified\n✓ 5000+ Happy Customers\n✓ Expert Technicians\n✓ Genuine Parts\n✓ Lifetime Warranty\n\nWe provide complete automotive solutions - from services to spare parts to accessories!"
 
     # Appointment queries
-    elif any(word in message for word in ['appointment', 'schedule', 'time', 'slot']):
-        response = "To book an appointment:\n1. Visit our services page\n2. Choose your preferred service\n3. Select a convenient date and time\n4. Fill in your details\n\nWe offer flexible timing from 9 AM to 6 PM."
+    elif any(word in message for word in ['appointment', 'schedule', 'time', 'slot', 'booking', 'reserve']):
+        response = "📅 Book Your Appointment:\n\n1. Click 'Book Service Now' button\n2. Choose your service\n3. Fill in your vehicle details\n4. Select preferred date/time\n5. Pay 50% advance\n\n✅ Quick & Easy!\n📞 Or call: +91 9997612579"
 
     # Price/Cost queries
-    elif any(word in message for word in ['price', 'cost', 'fee', 'charge']):
-        response = "Our service prices vary based on the type of service and vehicle. Please check our services page for detailed pricing or contact us for a custom quote."
+    elif any(word in message for word in ['price', 'cost', 'fee', 'charge', 'rate']):
+        response = "💰 Our Competitive Pricing:\n\n🔧 General Service: ₹2,500\n🛑 Brake Service: ₹3,500\n❄️ AC Service: ₹2,000\n⚙️ Engine Service: ₹4,500\n⚡ Electrical: ₹1,500\n\n💳 50% advance payment accepted\n📞 Call for custom quote: 9997612579"
 
     # Emergency/Urgent queries
-    elif any(word in message for word in ['emergency', 'urgent', 'breakdown', 'tow']):
-        response = "For emergency services or breakdowns, please call our 24/7 helpline: +91-XXXXXXXXXX. We provide roadside assistance and towing services."
+    elif any(word in message for word in ['emergency', 'urgent', 'breakdown', 'tow', 'help']):
+        response = "🚨 EMERGENCY SERVICES:\n\n📞 Call NOW: +91 9997612579\n💬 WhatsApp: +91 9997612579\n\n24/7 Emergency Support Available!\nRoadside Assistance • Towing • Quick Repairs\n\nWe're here to help! 🚗"
+
+    # Accessories queries  
+    elif any(word in message for word in ['accessory', 'accessories', 'upgrade', 'interior', 'exterior']):
+        response = "🚗 Premium Car Accessories:\n\n✓ Interior: Seat covers, floor mats, steering covers\n✓ Electronics: Dashcams, GPS, Bluetooth devices\n✓ Exterior: LED lights, chrome parts, body covers\n✓ Safety: Alarms, TPMS, fire extinguishers\n✓ Performance: Air filters, exhausts\n✓ Care: Polish, wax, vacuum cleaners\n\n🛒 Shop Now! Free installation available!"
 
     # Default response
     else:
@@ -1080,6 +1440,866 @@ def appointment_detail(appointment_id):
             flash('Appointment cancelled', 'info')
             return redirect(url_for('doctor_dashboard'))
     return render_template('hms/appointment_detail.html', appt=appt)
+
+# ===== NEW ADVANCED FEATURES =====
+
+# Medical Records Routes
+@app.route('/patient/medical-records')
+@login_required
+def patient_medical_records():
+    """View patient's medical records"""
+    if not is_patient():
+        flash('Access denied', 'danger')
+        return redirect(url_for('index'))
+    
+    patient = current_user.patient_profile[0]
+    records = MedicalRecord.query.filter_by(patient_id=patient.id).order_by(MedicalRecord.upload_date.desc()).all()
+    history = MedicalHistory.query.filter_by(patient_id=patient.id).first()
+    
+    return render_template('hms/medical_records.html', records=records, history=history)
+
+@app.route('/patient/medical-history', methods=['GET', 'POST'])
+@login_required
+def update_medical_history():
+    """Update patient medical history"""
+    if not is_patient():
+        flash('Access denied', 'danger')
+        return redirect(url_for('index'))
+    
+    patient = current_user.patient_profile[0]
+    history = MedicalHistory.query.filter_by(patient_id=patient.id).first()
+    
+    if request.method == 'POST':
+        if not history:
+            history = MedicalHistory(patient_id=patient.id)
+        
+        history.blood_type = request.form.get('blood_type')
+        history.allergies = request.form.get('allergies')
+        history.chronic_conditions = request.form.get('chronic_conditions')
+        history.current_medications = request.form.get('current_medications')
+        history.past_surgeries = request.form.get('past_surgeries')
+        history.emergency_contact = request.form.get('emergency_contact')
+        history.emergency_phone = request.form.get('emergency_phone')
+        history.insurance_provider = request.form.get('insurance_provider')
+        history.insurance_number = request.form.get('insurance_number')
+        
+        db.session.add(history)
+        db.session.commit()
+        flash('Medical history updated successfully', 'success')
+        return redirect(url_for('patient_medical_records'))
+    
+    return render_template('hms/medical_history_form.html', history=history)
+
+@app.route('/upload-medical-record', methods=['POST'])
+@login_required
+def upload_medical_record():
+    """Upload medical record file"""
+    if 'file' not in request.files:
+        flash('No file provided', 'danger')
+        return redirect(request.referrer or url_for('patient_medical_records'))
+    
+    file = request.files['file']
+    if file.filename == '':
+        flash('No file selected', 'danger')
+        return redirect(request.referrer or url_for('patient_medical_records'))
+    
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f"{timestamp}_{filename}"
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+        
+        patient = current_user.patient_profile[0]
+        record = MedicalRecord(
+            patient_id=patient.id,
+            record_type=request.form.get('record_type', 'Other'),
+            title=request.form.get('title', filename),
+            description=request.form.get('description'),
+            file_path=filename,
+            uploaded_by=current_user.id
+        )
+        db.session.add(record)
+        db.session.commit()
+        
+        flash('Medical record uploaded successfully', 'success')
+    else:
+        flash('Invalid file type', 'danger')
+    
+    return redirect(url_for('patient_medical_records'))
+
+# Doctor Reviews Routes
+@app.route('/doctor/<int:doctor_id>/reviews')
+def doctor_reviews(doctor_id):
+    """View doctor reviews"""
+    doctor = DoctorProfile.query.get_or_404(doctor_id)
+    reviews = DoctorReview.query.filter_by(doctor_id=doctor_id).order_by(DoctorReview.created_at.desc()).all()
+    avg_rating = calculate_doctor_rating(doctor_id)
+    
+    return render_template('hms/doctor_reviews.html', doctor=doctor, reviews=reviews, avg_rating=avg_rating)
+
+@app.route('/appointment/<int:appointment_id>/review', methods=['GET', 'POST'])
+@login_required
+def submit_review(appointment_id):
+    """Submit review for completed appointment"""
+    if not is_patient():
+        flash('Only patients can submit reviews', 'danger')
+        return redirect(url_for('index'))
+    
+    appointment = Appointment.query.get_or_404(appointment_id)
+    
+    if appointment.status != 'Completed':
+        flash('Can only review completed appointments', 'warning')
+        return redirect(url_for('patient_dashboard'))
+    
+    # Check if already reviewed
+    existing_review = DoctorReview.query.filter_by(appointment_id=appointment_id).first()
+    if existing_review:
+        flash('You have already reviewed this appointment', 'info')
+        return redirect(url_for('patient_dashboard'))
+    
+    if request.method == 'POST':
+        rating = int(request.form.get('rating', 0))
+        comment = request.form.get('comment')
+        
+        if rating < 1 or rating > 5:
+            flash('Rating must be between 1 and 5', 'danger')
+            return redirect(request.referrer)
+        
+        patient = current_user.patient_profile[0]
+        review = DoctorReview(
+            doctor_id=appointment.doctor_id,
+            patient_id=patient.id,
+            appointment_id=appointment_id,
+            rating=rating,
+            comment=comment
+        )
+        db.session.add(review)
+        db.session.commit()
+        
+        flash('Thank you for your review!', 'success')
+        return redirect(url_for('patient_dashboard'))
+    
+    return render_template('hms/submit_review.html', appointment=appointment)
+
+# Notifications Routes
+@app.route('/api/notifications')
+@login_required
+def get_notifications():
+    """Get user notifications"""
+    notifications = Notification.query.filter_by(user_id=current_user.id).order_by(Notification.created_at.desc()).limit(20).all()
+    unread_count = Notification.query.filter_by(user_id=current_user.id, is_read=False).count()
+    
+    return jsonify({
+        'notifications': [{
+            'id': n.id,
+            'title': n.title,
+            'message': n.message,
+            'type': n.notification_type,
+            'is_read': n.is_read,
+            'created_at': n.created_at.strftime('%Y-%m-%d %H:%M:%S')
+        } for n in notifications],
+        'unread_count': unread_count
+    })
+
+@app.route('/api/notifications/<int:notification_id>/read', methods=['POST'])
+@login_required
+def mark_notification_read(notification_id):
+    """Mark notification as read"""
+    notification = Notification.query.get_or_404(notification_id)
+    if notification.user_id != current_user.id:
+        return jsonify({'error': 'Unauthorized'}), 403
+    
+    notification.is_read = True
+    db.session.commit()
+    return jsonify({'success': True})
+
+@app.route('/api/notifications/mark-all-read', methods=['POST'])
+@login_required
+def mark_all_notifications_read():
+    """Mark all notifications as read"""
+    Notification.query.filter_by(user_id=current_user.id, is_read=False).update({'is_read': True})
+    db.session.commit()
+    return jsonify({'success': True})
+
+# Advanced Search Routes
+@app.route('/search')
+def search():
+    """Universal search across doctors, services, and parts"""
+    query = request.args.get('q', '').strip()
+    category = request.args.get('category', 'all')
+    
+    results = {
+        'doctors': [],
+        'services': [],
+        'parts': []
+    }
+    
+    if query:
+        if category in ['all', 'doctors']:
+            doctors = DoctorProfile.query.filter(
+                (DoctorProfile.name.ilike(f'%{query}%')) |
+                (DoctorProfile.specialization.ilike(f'%{query}%'))
+            ).all()
+            results['doctors'] = doctors
+        
+        if category in ['all', 'services']:
+            services = CarService.query.filter(
+                CarService.is_active == True,
+                (CarService.name.ilike(f'%{query}%')) |
+                (CarService.description.ilike(f'%{query}%'))
+            ).all()
+            results['services'] = services
+        
+        if category in ['all', 'parts']:
+            parts = SparePart.query.filter(
+                (SparePart.name.ilike(f'%{query}%')) |
+                (SparePart.description.ilike(f'%{query}%')) |
+                (SparePart.brand.ilike(f'%{query}%'))
+            ).all()
+            results['parts'] = parts
+    
+    return render_template('hms/search_results.html', query=query, results=results, category=category)
+
+# Export Routes
+@app.route('/admin/export/appointments')
+@login_required
+def export_appointments():
+    """Export appointments to CSV"""
+    if not is_admin():
+        flash('Access denied', 'danger')
+        return redirect(url_for('index'))
+    
+    appointments = Appointment.query.order_by(Appointment.date.desc()).all()
+    
+    # Create CSV in memory
+    output = BytesIO()
+    output.write(b'ID,Patient,Doctor,Date,Time,Status,Created At\n')
+    
+    for appt in appointments:
+        line = f'{appt.id},{appt.patient.name},{appt.doctor.name},{appt.date},{appt.time},{appt.status},{appt.created_at}\n'
+        output.write(line.encode('utf-8'))
+    
+    output.seek(0)
+    return send_file(
+        output,
+        mimetype='text/csv',
+        as_attachment=True,
+        download_name=f'appointments_{datetime.now().strftime("%Y%m%d")}.csv'
+    )
+
+@app.route('/admin/export/revenue')
+@login_required
+def export_revenue():
+    """Export revenue data to CSV"""
+    if not is_admin():
+        flash('Access denied', 'danger')
+        return redirect(url_for('index'))
+    
+    payments = Payment.query.filter_by(status='Success').order_by(Payment.transaction_date.desc()).all()
+    
+    output = BytesIO()
+    output.write(b'ID,Payment ID,Amount,Currency,Method,Date,Type\n')
+    
+    for payment in payments:
+        payment_type = 'Appointment' if payment.appointment_id else 'Service' if payment.service_booking_id else 'Part Order'
+        line = f'{payment.id},{payment.payment_id},{payment.amount},{payment.currency},{payment.payment_method},{payment.transaction_date},{payment_type}\n'
+        output.write(line.encode('utf-8'))
+    
+    output.seek(0)
+    return send_file(
+        output,
+        mimetype='text/csv',
+        as_attachment=True,
+        download_name=f'revenue_{datetime.now().strftime("%Y%m%d")}.csv'
+    )
+
+# API Routes for Analytics
+@app.route('/api/analytics/dashboard')
+@login_required
+def analytics_dashboard():
+    """Get comprehensive dashboard analytics"""
+    if not is_admin():
+        return jsonify({'error': 'Unauthorized'}), 403
+    
+    stats = get_dashboard_stats()
+    return jsonify(stats)
+
+@app.route('/api/analytics/appointments-by-month')
+@login_required
+def appointments_by_month():
+    """Get appointments grouped by month for charts"""
+    if not is_admin():
+        return jsonify({'error': 'Unauthorized'}), 403
+    
+    # Get last 12 months data
+    monthly_data = db.session.query(
+        db.func.strftime('%Y-%m', Appointment.date).label('month'),
+        db.func.count(Appointment.id).label('count')
+    ).group_by('month').order_by('month').limit(12).all()
+    
+    return jsonify({
+        'labels': [item.month for item in monthly_data],
+        'data': [item.count for item in monthly_data]
+    })
+
+@app.route('/api/analytics/revenue-by-month')
+@login_required
+def revenue_by_month():
+    """Get revenue grouped by month for charts"""
+    if not is_admin():
+        return jsonify({'error': 'Unauthorized'}), 403
+    
+    monthly_revenue = db.session.query(
+        db.func.strftime('%Y-%m', Payment.transaction_date).label('month'),
+        db.func.sum(Payment.amount).label('total')
+    ).filter(Payment.status == 'Success').group_by('month').order_by('month').limit(12).all()
+    
+    return jsonify({
+        'labels': [item.month for item in monthly_revenue],
+        'data': [float(item.total) for item in monthly_revenue]
+    })
+
+@app.route('/api/analytics/top-doctors')
+@login_required
+def top_doctors():
+    """Get top-rated doctors"""
+    if not is_admin():
+        return jsonify({'error': 'Unauthorized'}), 403
+    
+    doctors = DoctorProfile.query.all()
+    doctor_ratings = []
+    
+    for doctor in doctors:
+        avg_rating = calculate_doctor_rating(doctor.id)
+        review_count = DoctorReview.query.filter_by(doctor_id=doctor.id).count()
+        doctor_ratings.append({
+            'name': doctor.name,
+            'specialization': doctor.specialization,
+            'rating': avg_rating,
+            'reviews': review_count
+        })
+    
+    # Sort by rating
+    doctor_ratings.sort(key=lambda x: x['rating'], reverse=True)
+    
+    return jsonify(doctor_ratings[:10])
+
+# ===== SPARE PARTS ORDERING SYSTEM (Complete with Advance Payment) =====
+
+@app.route('/spare-parts')
+def spare_parts_browse():
+    """Browse all spare parts with categories"""
+    category_id = request.args.get('category', type=int)
+    search = request.args.get('search', '')
+    brand = request.args.get('brand', '')
+    sort_by = request.args.get('sort', 'name')
+    
+    query = SparePart.query
+    
+    if category_id:
+        query = query.filter_by(category_id=category_id)
+    
+    if search:
+        query = query.filter(
+            (SparePart.name.ilike(f'%{search}%')) |
+            (SparePart.description.ilike(f'%{search}%')) |
+            (SparePart.brand.ilike(f'%{search}%'))
+        )
+    
+    if brand:
+        query = query.filter(SparePart.brand.ilike(f'%{brand}%'))
+    
+    # Sorting
+    if sort_by == 'price_low':
+        query = query.order_by(SparePart.price.asc())
+    elif sort_by == 'price_high':
+        query = query.order_by(SparePart.price.desc())
+    elif sort_by == 'popular':
+        query = query.order_by(SparePart.is_featured.desc())
+    else:
+        query = query.order_by(SparePart.name.asc())
+    
+    parts = query.all()
+    categories = SparePartCategory.query.all()
+    brands = db.session.query(SparePart.brand).distinct().all()
+    brands = [b[0] for b in brands if b[0]]
+    
+    # Get cart count
+    cart_count = 0
+    if current_user.is_authenticated:
+        cart_count = CartItem.query.filter_by(user_id=current_user.id).count()
+    
+    return render_template('hms/spare_parts_new.html', 
+                         parts=parts, 
+                         categories=categories,
+                         brands=brands,
+                         selected_category=category_id,
+                         search_query=search,
+                         cart_count=cart_count)
+
+@app.route('/spare-parts/<int:part_id>')
+def spare_part_detail(part_id):
+    """Detailed view of a spare part"""
+    part = SparePart.query.get_or_404(part_id)
+    related_parts = SparePart.query.filter(
+        SparePart.category_id == part.category_id,
+        SparePart.id != part_id
+    ).limit(4).all()
+    
+    return render_template('hms/spare_part_detail.html', part=part, related_parts=related_parts)
+
+@app.route('/cart')
+def view_cart():
+    """View shopping cart"""
+    session_id = session.get('cart_session_id')
+    if not session_id:
+        session_id = secrets.token_urlsafe(16)
+        session['cart_session_id'] = session_id
+    
+    if current_user.is_authenticated:
+        cart_items = CartItem.query.filter_by(user_id=current_user.id).all()
+    else:
+        cart_items = CartItem.query.filter_by(session_id=session_id).all()
+    
+    total = sum(item.part.price * item.quantity for item in cart_items)
+    
+    return render_template('hms/cart.html', cart_items=cart_items, total=total)
+
+@app.route('/cart/add/<int:part_id>', methods=['POST'])
+def add_to_cart(part_id):
+    """Add item to cart"""
+    part = SparePart.query.get_or_404(part_id)
+    quantity = int(request.form.get('quantity', 1))
+    
+    if quantity > part.stock_quantity:
+        flash('Not enough stock available', 'danger')
+        return redirect(request.referrer or url_for('spare_parts_browse'))
+    
+    session_id = session.get('cart_session_id')
+    if not session_id:
+        session_id = secrets.token_urlsafe(16)
+        session['cart_session_id'] = session_id
+    
+    # Check if item already in cart
+    if current_user.is_authenticated:
+        cart_item = CartItem.query.filter_by(user_id=current_user.id, part_id=part_id).first()
+    else:
+        cart_item = CartItem.query.filter_by(session_id=session_id, part_id=part_id).first()
+    
+    if cart_item:
+        cart_item.quantity += quantity
+    else:
+        cart_item = CartItem(
+            session_id=session_id,
+            user_id=current_user.id if current_user.is_authenticated else None,
+            part_id=part_id,
+            quantity=quantity
+        )
+        db.session.add(cart_item)
+    
+    db.session.commit()
+    flash(f'{part.name} added to cart!', 'success')
+    return redirect(request.referrer or url_for('spare_parts_browse'))
+
+@app.route('/cart/update/<int:item_id>', methods=['POST'])
+def update_cart_item(item_id):
+    """Update cart item quantity"""
+    cart_item = CartItem.query.get_or_404(item_id)
+    quantity = int(request.form.get('quantity', 1))
+    
+    if quantity > cart_item.part.stock_quantity:
+        flash('Not enough stock available', 'danger')
+    elif quantity < 1:
+        db.session.delete(cart_item)
+        db.session.commit()
+        flash('Item removed from cart', 'info')
+    else:
+        cart_item.quantity = quantity
+        db.session.commit()
+        flash('Cart updated', 'success')
+    
+    return redirect(url_for('view_cart'))
+
+@app.route('/cart/remove/<int:item_id>', methods=['POST'])
+def remove_cart_item(item_id):
+    """Remove item from cart"""
+    cart_item = CartItem.query.get_or_404(item_id)
+    db.session.delete(cart_item)
+    db.session.commit()
+    flash('Item removed from cart', 'success')
+    return redirect(url_for('view_cart'))
+
+@app.route('/checkout', methods=['GET', 'POST'])
+def checkout_parts():
+    """Checkout and place order"""
+    session_id = session.get('cart_session_id')
+    
+    if current_user.is_authenticated:
+        cart_items = CartItem.query.filter_by(user_id=current_user.id).all()
+    else:
+        if not session_id:
+            flash('Your cart is empty', 'warning')
+            return redirect(url_for('spare_parts_browse'))
+        cart_items = CartItem.query.filter_by(session_id=session_id).all()
+    
+    if not cart_items:
+        flash('Your cart is empty', 'warning')
+        return redirect(url_for('spare_parts_browse'))
+    
+    if request.method == 'POST':
+        # Create orders for each item
+        customer_name = request.form.get('customer_name')
+        customer_phone = request.form.get('customer_phone')
+        customer_email = request.form.get('customer_email')
+        delivery_address = request.form.get('delivery_address')
+        car_brand = request.form.get('car_brand')
+        car_model = request.form.get('car_model')
+        installation = request.form.get('installation') == 'on'
+        
+        total_amount = 0
+        orders_created = []
+        
+        for item in cart_items:
+            part = item.part
+            
+            # Check stock
+            if item.quantity > part.stock_quantity:
+                flash(f'Not enough stock for {part.name}', 'danger')
+                return redirect(url_for('view_cart'))
+            
+            # Calculate pricing
+            subtotal = part.price * item.quantity
+            installation_charges = 500 if installation else 0
+            total = subtotal + installation_charges
+            advance = total * 0.5
+            remaining = total - advance
+            
+            # Generate order number
+            last_order = PartOrder.query.order_by(PartOrder.id.desc()).first()
+            order_num = f"GM-PART-{str((last_order.id + 1) if last_order else 1).zfill(5)}"
+            
+            order = PartOrder(
+                order_number=order_num,
+                customer_name=customer_name,
+                customer_phone=customer_phone,
+                customer_email=customer_email,
+                part_id=part.id,
+                quantity=item.quantity,
+                unit_price=part.price,
+                subtotal=subtotal,
+                installation_charges=installation_charges,
+                total_price=total,
+                advance_amount=advance,
+                remaining_amount=remaining,
+                car_brand=car_brand,
+                car_model=car_model,
+                installation_required=installation,
+                delivery_address=delivery_address
+            )
+            
+            # Update stock
+            part.stock_quantity -= item.quantity
+            
+            db.session.add(order)
+            orders_created.append(order.id)
+            total_amount += advance
+        
+        # Clear cart
+        for item in cart_items:
+            db.session.delete(item)
+        
+        db.session.commit()
+        
+        # Store order IDs in session for payment
+        session['pending_part_orders'] = orders_created
+        session['total_advance'] = total_amount
+        
+        return redirect(url_for('part_orders_payment'))
+    
+    subtotal = sum(item.part.price * item.quantity for item in cart_items)
+    
+    return render_template('hms/checkout_parts.html', cart_items=cart_items, subtotal=subtotal)
+
+@app.route('/orders/payment')
+def part_orders_payment():
+    """Payment page for part orders"""
+    order_ids = session.get('pending_part_orders', [])
+    total_advance = session.get('total_advance', 0)
+    
+    if not order_ids:
+        flash('No pending orders', 'warning')
+        return redirect(url_for('spare_parts_browse'))
+    
+    orders = PartOrder.query.filter(PartOrder.id.in_(order_ids)).all()
+    
+    return render_template('hms/part_payment.html', 
+                         orders=orders, 
+                         total_advance=total_advance)
+
+@app.route('/orders/confirm-payment', methods=['POST'])
+def confirm_part_payment():
+    """Confirm payment and complete order"""
+    order_ids = session.get('pending_part_orders', [])
+    payment_method = request.form.get('payment_method', 'Cash on Delivery')
+    
+    if not order_ids:
+        return jsonify({'success': False, 'error': 'No pending orders'}), 400
+    
+    orders = PartOrder.query.filter(PartOrder.id.in_(order_ids)).all()
+    
+    for order in orders:
+        order.payment_status = 'Advance Paid'
+        order.order_status = 'Confirmed'
+        order.confirmed_date = datetime.now()
+        
+        # Create notification
+        if current_user.is_authenticated:
+            create_notification(
+                current_user.id,
+                'Order Confirmed',
+                f'Your order {order.order_number} has been confirmed. Advance payment received.',
+                'payment'
+            )
+        
+        # Send email
+        if order.customer_email:
+            try:
+                send_order_confirmation_email(order)
+            except:
+                pass
+    
+    db.session.commit()
+    
+    # Clear session
+    session.pop('pending_part_orders', None)
+    session.pop('total_advance', None)
+    
+    flash(f'{len(orders)} order(s) confirmed successfully! Check your email for details.', 'success')
+    return redirect(url_for('my_part_orders'))
+
+@app.route('/my-orders')
+def my_part_orders():
+    """View customer's part orders"""
+    phone = request.args.get('phone', '')
+    
+    if current_user.is_authenticated and hasattr(current_user, 'patient_profile'):
+        patient = current_user.patient_profile
+        if isinstance(patient, list):
+            patient = patient[0] if patient else None
+        if patient and patient.contact:
+            phone = patient.contact
+    
+    if request.method == 'GET' and not phone:
+        return render_template('hms/my_orders_search.html')
+    
+    if phone:
+        orders = PartOrder.query.filter_by(customer_phone=phone).order_by(PartOrder.order_date.desc()).all()
+        return render_template('hms/my_orders.html', orders=orders, phone=phone)
+    
+    return render_template('hms/my_orders_search.html')
+
+@app.route('/order/<int:order_id>')
+def view_part_order(order_id):
+    """View specific order details"""
+    order = PartOrder.query.get_or_404(order_id)
+    return render_template('hms/order_detail.html', order=order)
+
+@app.route('/admin/part-orders')
+@login_required
+def admin_part_orders():
+    """Admin view of all part orders"""
+    if not is_admin():
+        flash('Admin access required', 'danger')
+        return redirect(url_for('index'))
+    
+    status_filter = request.args.get('status', 'all')
+    
+    query = PartOrder.query
+    if status_filter != 'all':
+        query = query.filter_by(order_status=status_filter)
+    
+    orders = query.order_by(PartOrder.order_date.desc()).all()
+    
+    # Statistics
+    stats = {
+        'total': PartOrder.query.count(),
+        'pending': PartOrder.query.filter_by(order_status='Pending').count(),
+        'confirmed': PartOrder.query.filter_by(order_status='Confirmed').count(),
+        'processing': PartOrder.query.filter_by(order_status='Processing').count(),
+        'shipped': PartOrder.query.filter_by(order_status='Shipped').count(),
+        'delivered': PartOrder.query.filter_by(order_status='Delivered').count(),
+        'total_revenue': db.session.query(db.func.sum(PartOrder.advance_amount)).filter(
+            PartOrder.payment_status.in_(['Advance Paid', 'Fully Paid'])
+        ).scalar() or 0
+    }
+    
+    return render_template('hms/admin_part_orders.html', orders=orders, stats=stats, status_filter=status_filter)
+
+@app.route('/admin/part-order/<int:order_id>/update', methods=['POST'])
+@login_required
+def update_part_order_status(order_id):
+    """Update order status"""
+    if not is_admin():
+        return jsonify({'error': 'Unauthorized'}), 403
+    
+    order = PartOrder.query.get_or_404(order_id)
+    new_status = request.form.get('status')
+    admin_notes = request.form.get('admin_notes')
+    
+    order.order_status = new_status
+    if admin_notes:
+        order.admin_notes = admin_notes
+    
+    if new_status == 'Delivered':
+        order.delivery_date = datetime.now()
+    
+    db.session.commit()
+    
+    flash(f'Order {order.order_number} updated to {new_status}', 'success')
+    return redirect(url_for('admin_part_orders'))
+
+@app.route('/order/<int:order_id>/cancel')
+def cancel_part_order(order_id):
+    """Cancel a part order"""
+    order = PartOrder.query.get_or_404(order_id)
+    
+    if order.order_status in ['Delivered', 'Cancelled']:
+        flash('This order cannot be cancelled', 'danger')
+        return redirect(url_for('view_part_order', order_id=order_id))
+    
+    order.order_status = 'Cancelled'
+    db.session.commit()
+    
+    flash(f'Order {order.order_number} has been cancelled', 'info')
+    return redirect(url_for('my_part_orders_search'))
+
+def send_order_confirmation_email(order):
+    """Send order confirmation email"""
+    subject = f"Order Confirmed - {order.order_number}"
+    body = f"""
+    <h2>Order Confirmation</h2>
+    <p>Dear {order.customer_name},</p>
+    <p>Your spare part order has been confirmed!</p>
+    
+    <h3>Order Details:</h3>
+    <ul>
+        <li><strong>Order Number:</strong> {order.order_number}</li>
+        <li><strong>Part:</strong> {order.part.name}</li>
+        <li><strong>Quantity:</strong> {order.quantity}</li>
+        <li><strong>Unit Price:</strong> ₹{order.unit_price}</li>
+        <li><strong>Subtotal:</strong> ₹{order.subtotal}</li>
+        <li><strong>Installation:</strong> {'Yes (₹' + str(order.installation_charges) + ')' if order.installation_required else 'No'}</li>
+        <li><strong>Total Amount:</strong> ₹{order.total_price}</li>
+        <li><strong>Advance Paid (50%):</strong> ₹{order.advance_amount}</li>
+        <li><strong>Remaining (on delivery):</strong> ₹{order.remaining_amount}</li>
+    </ul>
+    
+    <p><strong>Delivery Address:</strong><br>{order.delivery_address}</p>
+    
+    <p>We will process your order and contact you at {order.customer_phone} for delivery arrangements.</p>
+    
+    <p>Thank you for choosing GM Motors!</p>
+    <p>Best regards,<br>GM Motors Team</p>
+    """
+    send_email(order.customer_email, subject, body)
+
+# Car Accessories Routes
+@app.route('/accessories')
+def car_accessories():
+    """Browse car accessories"""
+    category_id = request.args.get('category', type=int)
+    search = request.args.get('search', '')
+    brand = request.args.get('brand', '')
+    sort_by = request.args.get('sort', 'name')
+    
+    query = CarAccessory.query
+    
+    if category_id:
+        query = query.filter_by(category_id=category_id)
+    
+    if search:
+        query = query.filter(
+            (CarAccessory.name.ilike(f'%{search}%')) |
+            (CarAccessory.description.ilike(f'%{search}%')) |
+            (CarAccessory.brand.ilike(f'%{search}%'))
+        )
+    
+    if brand:
+        query = query.filter(CarAccessory.brand.ilike(f'%{brand}%'))
+    
+    # Sorting
+    if sort_by == 'price_low':
+        query = query.order_by(CarAccessory.price.asc())
+    elif sort_by == 'price_high':
+        query = query.order_by(CarAccessory.price.desc())
+    elif sort_by == 'popular':
+        query = query.order_by(CarAccessory.is_featured.desc(), CarAccessory.rating.desc())
+    else:
+        query = query.order_by(CarAccessory.name.asc())
+    
+    accessories = query.all()
+    categories = AccessoryCategory.query.all()
+    brands = db.session.query(CarAccessory.brand).distinct().all()
+    brands = [b[0] for b in brands if b[0]]
+    
+    # Get cart count
+    cart_count = 0
+    if current_user.is_authenticated:
+        cart_count = CartItem.query.filter_by(user_id=current_user.id).count()
+    
+    return render_template('hms/accessories.html', 
+                         accessories=accessories, 
+                         categories=categories,
+                         brands=brands,
+                         selected_category=category_id,
+                         search_query=search,
+                         cart_count=cart_count)
+
+@app.route('/accessories/<int:accessory_id>')
+def accessory_detail(accessory_id):
+    """View accessory details"""
+    accessory = CarAccessory.query.get_or_404(accessory_id)
+    related = CarAccessory.query.filter_by(category_id=accessory.category_id).filter(CarAccessory.id != accessory.id).limit(4).all()
+    
+    cart_count = 0
+    if current_user.is_authenticated:
+        cart_count = CartItem.query.filter_by(user_id=current_user.id).count()
+    
+    return render_template('hms/accessory_detail.html', accessory=accessory, related=related, cart_count=cart_count)
+
+@app.route('/add-accessory-to-cart/<int:accessory_id>', methods=['POST'])
+def add_accessory_to_cart(accessory_id):
+    """Add accessory to cart"""
+    accessory = CarAccessory.query.get_or_404(accessory_id)
+    quantity = int(request.form.get('quantity', 1))
+    
+    if accessory.stock < quantity:
+        flash('Insufficient stock available', 'danger')
+        return redirect(url_for('accessory_detail', accessory_id=accessory_id))
+    
+    if current_user.is_authenticated:
+        # Check if already in cart
+        cart_item = CartItem.query.filter_by(user_id=current_user.id, accessory_id=accessory_id).first()
+        
+        if cart_item:
+            cart_item.quantity += quantity
+        else:
+            cart_item = CartItem(
+                user_id=current_user.id,
+                accessory_id=accessory_id,
+                quantity=quantity,
+                session_id=session.get('session_id', secrets.token_hex(16))
+            )
+            db.session.add(cart_item)
+        
+        db.session.commit()
+        flash(f'{accessory.name} added to cart!', 'success')
+    else:
+        flash('Please login to add items to cart', 'warning')
+        return redirect(url_for('login'))
+    
+    return redirect(url_for('car_accessories'))
 
 # Run
 if __name__ == '__main__':

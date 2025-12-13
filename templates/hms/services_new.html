@@ -1,0 +1,405 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+
+<!-- Premium Hero Section -->
+<div class="services-hero position-relative overflow-hidden mb-5">
+  <div class="hero-gradient position-absolute w-100 h-100" style="background: linear-gradient(135deg, rgba(13,110,253,0.95) 0%, rgba(11,132,217,0.95) 50%, rgba(8,70,170,0.95) 100%), url('https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=1920&q=80') center/cover; z-index: 0;"></div>
+  
+  <div class="container position-relative py-5" style="z-index: 10;">
+    <div class="row align-items-center py-5">
+      <div class="col-lg-8 text-white">
+        <div class="animate__animated animate__fadeInLeft">
+          <span class="badge bg-warning text-dark px-4 py-2 mb-3 rounded-pill">
+            <i class="fas fa-star me-2"></i>Premium Services
+          </span>
+          <h1 class="display-3 fw-bold mb-4">
+            Complete Car Care<br>
+            <span class="text-warning">Solutions</span>
+          </h1>
+          <p class="lead mb-4 opacity-90">
+            Professional automotive services with expert technicians, quality parts, and unbeatable prices
+          </p>
+          <div class="d-flex flex-wrap gap-4 mb-4">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-check-circle fa-2x text-warning me-3"></i>
+              <div>
+                <strong class="d-block">Certified Technicians</strong>
+                <small class="opacity-75">Trained & Experienced</small>
+              </div>
+            </div>
+            <div class="d-flex align-items-center">
+              <i class="fas fa-shield-alt fa-2x text-warning me-3"></i>
+              <div>
+                <strong class="d-block">6 Month Warranty</strong>
+                <small class="opacity-75">On All Services</small>
+              </div>
+            </div>
+            <div class="d-flex align-items-center">
+              <i class="fas fa-rupee-sign fa-2x text-warning me-3"></i>
+              <div>
+                <strong class="d-block">Best Prices</strong>
+                <small class="opacity-75">No Hidden Charges</small>
+              </div>
+            </div>
+          </div>
+          <a href="{{ url_for('book_car_service') }}" class="btn btn-warning btn-lg px-5 py-3 rounded-pill shadow-lg">
+            <i class="fas fa-calendar-check me-2"></i>Book Service Now
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-4 text-center d-none d-lg-block">
+        <div class="animate__animated animate__fadeInRight">
+          <div class="bg-white bg-opacity-10 backdrop-blur rounded-4 p-4">
+            <i class="fas fa-car-side fa-5x text-warning mb-3"></i>
+            <h3 class="text-white fw-bold">10,000+</h3>
+            <p class="text-white mb-0">Happy Customers</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="position-absolute bottom-0 w-100" style="height: 100px; background: linear-gradient(to top, #fff, transparent); z-index: 5;"></div>
+</div>
+
+<!-- Service Categories -->
+<div class="container my-5">
+  <div class="text-center mb-5">
+    <h2 class="display-5 fw-bold mb-3">Our Premium Services</h2>
+    <p class="lead text-muted">Choose from our comprehensive range of automotive care services</p>
+  </div>
+
+  <div class="row g-4 mb-5">
+    <!-- General Service -->
+    <div class="col-md-6 col-lg-4">
+      <div class="service-card-new card border-0 shadow-lg h-100">
+        <div class="position-relative overflow-hidden" style="height: 250px;">
+          <img src="https://images.unsplash.com/photo-1625047509248-ec889cbff17f?w=800&q=80" class="card-img-top h-100" style="object-fit: cover; transition: transform 0.5s;" alt="General Service">
+          <div class="service-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background: rgba(13,110,253,0.9); opacity: 0; transition: opacity 0.3s;">
+            <div class="text-center text-white p-4">
+              <i class="fas fa-wrench fa-3x mb-3"></i>
+              <h5>Complete Checkup</h5>
+              <p class="mb-0">Oil Change • Filters • Battery</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center mb-3">
+            <div class="service-icon-new bg-primary bg-opacity-10 rounded-circle p-3 me-3">
+              <i class="fas fa-wrench fa-2x text-primary"></i>
+            </div>
+            <div>
+              <h4 class="fw-bold mb-0">General Service</h4>
+              <small class="text-muted">Basic Maintenance</small>
+            </div>
+          </div>
+          <ul class="list-unstyled mb-4">
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Engine Oil Change</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Oil & Air Filter</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Battery Check</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Tire Inspection</li>
+          </ul>
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <small class="text-muted">Starting from</small>
+              <h4 class="text-primary fw-bold mb-0">₹2,500</h4>
+            </div>
+            <a href="{{ url_for('book_car_service') }}" class="btn btn-primary rounded-pill px-4">
+              <i class="fas fa-calendar-check me-2"></i>Book
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brake Service -->
+    <div class="col-md-6 col-lg-4">
+      <div class="service-card-new card border-0 shadow-lg h-100">
+        <div class="position-relative overflow-hidden" style="height: 250px;">
+          <img src="https://images.unsplash.com/photo-1625047509416-8b3c8c6e8e8e?w=800&q=80" class="card-img-top h-100" style="object-fit: cover; transition: transform 0.5s;" alt="Brake Service">
+          <div class="service-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background: rgba(220,53,69,0.9); opacity: 0; transition: opacity 0.3s;">
+            <div class="text-center text-white p-4">
+              <i class="fas fa-circle-stop fa-3x mb-3"></i>
+              <h5>Safety First</h5>
+              <p class="mb-0">Pads • Rotors • Fluid • Calipers</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center mb-3">
+            <div class="service-icon-new bg-danger bg-opacity-10 rounded-circle p-3 me-3">
+              <i class="fas fa-circle-stop fa-2x text-danger"></i>
+            </div>
+            <div>
+              <h4 class="fw-bold mb-0">Brake Service</h4>
+              <small class="text-muted">Complete Brake Care</small>
+            </div>
+          </div>
+          <ul class="list-unstyled mb-4">
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Brake Pad Replacement</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Brake Fluid Check</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Rotor Inspection</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Safety Test</li>
+          </ul>
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <small class="text-muted">Starting from</small>
+              <h4 class="text-danger fw-bold mb-0">₹3,500</h4>
+            </div>
+            <a href="{{ url_for('book_car_service') }}" class="btn btn-danger rounded-pill px-4">
+              <i class="fas fa-calendar-check me-2"></i>Book
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AC Service -->
+    <div class="col-md-6 col-lg-4">
+      <div class="service-card-new card border-0 shadow-lg h-100">
+        <div class="ribbon-badge">
+          <span>POPULAR</span>
+        </div>
+        <div class="position-relative overflow-hidden" style="height: 250px;">
+          <img src="https://images.unsplash.com/photo-1601362840469-51e4d8d58785?w=800&q=80" class="card-img-top h-100" style="object-fit: cover; transition: transform 0.5s;" alt="AC Service">
+          <div class="service-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background: rgba(13,202,240,0.9); opacity: 0; transition: opacity 0.3s;">
+            <div class="text-center text-white p-4">
+              <i class="fas fa-snowflake fa-3x mb-3"></i>
+              <h5>Cool Comfort</h5>
+              <p class="mb-0">Gas Refill • Cleaning • Repair</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center mb-3">
+            <div class="service-icon-new bg-info bg-opacity-10 rounded-circle p-3 me-3">
+              <i class="fas fa-snowflake fa-2x text-info"></i>
+            </div>
+            <div>
+              <h4 class="fw-bold mb-0">AC Service</h4>
+              <small class="text-muted">Cooling System</small>
+            </div>
+          </div>
+          <ul class="list-unstyled mb-4">
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>AC Gas Refill</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Filter Cleaning</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Compressor Check</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Leak Detection</li>
+          </ul>
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <small class="text-muted">Starting from</small>
+              <h4 class="text-info fw-bold mb-0">₹2,000</h4>
+            </div>
+            <a href="{{ url_for('book_car_service') }}" class="btn btn-info rounded-pill px-4">
+              <i class="fas fa-calendar-check me-2"></i>Book
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Engine Service -->
+    <div class="col-md-6 col-lg-4">
+      <div class="service-card-new card border-0 shadow-lg h-100">
+        <div class="position-relative overflow-hidden" style="height: 250px;">
+          <img src="https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=800&q=80" class="card-img-top h-100" style="object-fit: cover; transition: transform 0.5s;" alt="Engine Service">
+          <div class="service-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background: rgba(255,193,7,0.9); opacity: 0; transition: opacity 0.3s;">
+            <div class="text-center text-dark p-4">
+              <i class="fas fa-cog fa-3x mb-3"></i>
+              <h5>Power Performance</h5>
+              <p class="mb-0">Diagnostics • Repair • Tuning</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center mb-3">
+            <div class="service-icon-new bg-warning bg-opacity-10 rounded-circle p-3 me-3">
+              <i class="fas fa-cog fa-2x text-warning"></i>
+            </div>
+            <div>
+              <h4 class="fw-bold mb-0">Engine Service</h4>
+              <small class="text-muted">Performance & Power</small>
+            </div>
+          </div>
+          <ul class="list-unstyled mb-4">
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Engine Diagnostics</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Spark Plug Replace</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Timing Belt Check</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Performance Test</li>
+          </ul>
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <small class="text-muted">Starting from</small>
+              <h4 class="text-warning fw-bold mb-0">₹4,500</h4>
+            </div>
+            <a href="{{ url_for('book_car_service') }}" class="btn btn-warning rounded-pill px-4">
+              <i class="fas fa-calendar-check me-2"></i>Book
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Electrical Service -->
+    <div class="col-md-6 col-lg-4">
+      <div class="service-card-new card border-0 shadow-lg h-100">
+        <div class="position-relative overflow-hidden" style="height: 250px;">
+          <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&q=80" class="card-img-top h-100" style="object-fit: cover; transition: transform 0.5s;" alt="Electrical Service">
+          <div class="service-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background: rgba(25,135,84,0.9); opacity: 0; transition: opacity 0.3s;">
+            <div class="text-center text-white p-4">
+              <i class="fas fa-bolt fa-3x mb-3"></i>
+              <h5>Electrical Care</h5>
+              <p class="mb-0">Battery • Wiring • Lights</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center mb-3">
+            <div class="service-icon-new bg-success bg-opacity-10 rounded-circle p-3 me-3">
+              <i class="fas fa-bolt fa-2x text-success"></i>
+            </div>
+            <div>
+              <h4 class="fw-bold mb-0">Electrical Service</h4>
+              <small class="text-muted">Electrical Systems</small>
+            </div>
+          </div>
+          <ul class="list-unstyled mb-4">
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Battery Replacement</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Wiring Repair</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Light Repair</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Alternator Test</li>
+          </ul>
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <small class="text-muted">Starting from</small>
+              <h4 class="text-success fw-bold mb-0">₹1,500</h4>
+            </div>
+            <a href="{{ url_for('book_car_service') }}" class="btn btn-success rounded-pill px-4">
+              <i class="fas fa-calendar-check me-2"></i>Book
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Body Work -->
+    <div class="col-md-6 col-lg-4">
+      <div class="service-card-new card border-0 shadow-lg h-100">
+        <div class="position-relative overflow-hidden" style="height: 250px;">
+          <img src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=800&q=80" class="card-img-top h-100" style="object-fit: cover; transition: transform 0.5s;" alt="Body Work">
+          <div class="service-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background: rgba(111,66,193,0.9); opacity: 0; transition: opacity 0.3s;">
+            <div class="text-center text-white p-4">
+              <i class="fas fa-car-side fa-3x mb-3"></i>
+              <h5>Body Excellence</h5>
+              <p class="mb-0">Dent • Paint • Polish</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center mb-3">
+            <div class="service-icon-new rounded-circle p-3 me-3" style="background: rgba(111,66,193,0.1);">
+              <i class="fas fa-car-side fa-2x" style="color: #6f42c1;"></i>
+            </div>
+            <div>
+              <h4 class="fw-bold mb-0">Body Work</h4>
+              <small class="text-muted">Paint & Denting</small>
+            </div>
+          </div>
+          <ul class="list-unstyled mb-4">
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Dent Removal</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Scratch Repair</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Full Body Paint</li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Polish & Coating</li>
+          </ul>
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <small class="text-muted">Starting from</small>
+              <h4 class="fw-bold mb-0" style="color: #6f42c1;">₹5,000</h4>
+            </div>
+            <a href="{{ url_for('book_car_service') }}" class="btn rounded-pill px-4" style="background: #6f42c1; color: white;">
+              <i class="fas fa-calendar-check me-2"></i>Book
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Section -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <div class="card border-0 shadow-lg" style="background: linear-gradient(135deg, #0d6efd 0%, #0b84d9 100%);">
+        <div class="card-body p-5 text-center text-white">
+          <h2 class="fw-bold mb-3">Ready to Book Your Service?</h2>
+          <p class="lead mb-4 opacity-90">Get 50% off on your first service booking</p>
+          <a href="{{ url_for('book_car_service') }}" class="btn btn-warning btn-lg px-5 py-3 rounded-pill shadow-lg">
+            <i class="fas fa-calendar-check me-2"></i>Book Service Now
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .service-card-new {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+  
+  .service-card-new:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.2) !important;
+  }
+  
+  .service-card-new:hover img {
+    transform: scale(1.1);
+  }
+  
+  .service-card-new:hover .service-overlay {
+    opacity: 1 !important;
+  }
+  
+  .service-icon-new {
+    transition: all 0.3s ease;
+  }
+  
+  .service-card-new:hover .service-icon-new {
+    transform: scale(1.1) rotate(10deg);
+  }
+  
+  .ribbon-badge {
+    position: absolute;
+    right: -35px;
+    top: 15px;
+    z-index: 10;
+    overflow: hidden;
+    width: 150px;
+    height: 150px;
+    text-align: right;
+  }
+  
+  .ribbon-badge span {
+    font-size: 11px;
+    font-weight: bold;
+    color: #FFF;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 25px;
+    transform: rotate(45deg);
+    width: 150px;
+    display: block;
+    background: linear-gradient(#ffc107 0%, #ff9800 100%);
+    box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+    position: absolute;
+    top: 30px;
+    right: -35px;
+  }
+  
+  .backdrop-blur {
+    backdrop-filter: blur(20px);
+  }
+</style>
+
+{% endblock %}
