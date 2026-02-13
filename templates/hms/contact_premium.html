@@ -1,0 +1,442 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+
+<!-- ═══════════════════════════════════════════════════════════════════════════════
+     PREMIUM CONTACT HERO
+═══════════════════════════════════════════════════════════════════════════════ -->
+<section class="position-relative" style="min-height: 50vh; background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 50%, #1e40af 100%); overflow: hidden; margin-top: -24px;">
+  
+  <!-- Animated Background Elements -->
+  <div class="position-absolute w-100 h-100">
+    <div class="position-absolute animate-float" style="top: 15%; left: 10%; width: 80px; height: 80px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
+    <div class="position-absolute animate-float" style="top: 40%; right: 15%; width: 120px; height: 120px; background: rgba(251,191,36,0.1); border-radius: 50%; animation-delay: 1s;"></div>
+    <div class="position-absolute animate-float" style="bottom: 20%; left: 20%; width: 60px; height: 60px; background: rgba(255,255,255,0.03); border-radius: 50%; animation-delay: 2s;"></div>
+  </div>
+  
+  <!-- Wave Bottom -->
+  <div class="position-absolute w-100" style="bottom: 0; left: 0;">
+    <svg viewBox="0 0 1440 100" fill="none" style="display: block; width: 100%;">
+      <path fill="#f8f9fa" d="M0,50 Q360,100 720,50 T1440,50 L1440,100 L0,100 Z"/>
+    </svg>
+  </div>
+  
+  <div class="container position-relative" style="z-index: 10;">
+    <div class="row align-items-center justify-content-center text-center" style="min-height: 50vh; padding: 100px 0 80px;">
+      <div class="col-lg-8">
+        
+        <!-- Icon -->
+        <div class="mb-4 animate-fadeInUp">
+          <div class="d-inline-block p-4" style="background: rgba(255,255,255,0.1); border-radius: 24px; backdrop-filter: blur(10px);">
+            <i class="fas fa-headset fa-3x" style="color: #fbbf24;"></i>
+          </div>
+        </div>
+        
+        <!-- Badge -->
+        <div class="mb-3 animate-fadeInUp delay-1">
+          <span class="badge px-4 py-2 rounded-pill" style="background: rgba(251,191,36,0.9); color: #1a1a2e; font-weight: 600;">
+            <i class="fas fa-phone-alt me-2"></i>24/7 Support Available
+          </span>
+        </div>
+        
+        <!-- Heading -->
+        <h1 class="display-4 fw-bold text-white mb-4 animate-fadeInUp delay-2">
+          Get In <span style="color: #fbbf24;">Touch</span>
+        </h1>
+        
+        <!-- Subtitle -->
+        <p class="lead text-white mb-4 animate-fadeInUp delay-3" style="opacity: 0.9; max-width: 600px; margin: 0 auto;">
+          We're here to help with all your automotive needs. Reach out to us for any questions, service bookings, or quotes.
+        </p>
+        
+        <!-- Quick Contact Buttons -->
+        <div class="d-flex flex-wrap justify-content-center gap-3 animate-fadeInUp delay-4">
+          <a href="tel:+919997612579" class="btn btn-lg px-4 py-3" style="background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; border-radius: 50px; font-weight: 600;">
+            <i class="fas fa-phone me-2"></i>+91 9997612579
+          </a>
+          <a href="https://wa.me/919997612579" target="_blank" class="btn btn-lg px-4 py-3" style="background: rgba(255,255,255,0.15); color: #fff; border-radius: 50px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);">
+            <i class="fab fa-whatsapp me-2"></i>WhatsApp Us
+          </a>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════════
+     CONTACT CARDS SECTION
+═══════════════════════════════════════════════════════════════════════════════ -->
+<section class="py-5" style="background: #f8f9fa; margin-top: -60px;">
+  <div class="container">
+    <div class="row g-4">
+      
+      <!-- Phone Card -->
+      <div class="col-lg-3 col-md-6 reveal">
+        <div class="feature-card text-center p-4 h-100 bg-white" style="border-radius: 28px; box-shadow: 0 10px 40px rgba(0,0,0,0.08);">
+          <div class="mx-auto mb-3" style="width: 70px; height: 70px; background: linear-gradient(135deg, #22c55e, #16a34a); border-radius: 20px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-phone fa-xl text-white"></i>
+          </div>
+          <h5 class="fw-bold mb-2" style="color: #1e293b;">Call Us</h5>
+          <p class="text-muted small mb-2">Open 7 Days: 9AM-7PM</p>
+          <a href="tel:+919997612579" class="fw-bold text-decoration-none" style="color: #22c55e;">+91 9997612579</a>
+        </div>
+      </div>
+      
+      <!-- WhatsApp Card -->
+      <div class="col-lg-3 col-md-6 reveal">
+        <div class="feature-card text-center p-4 h-100 bg-white" style="border-radius: 28px; box-shadow: 0 10px 40px rgba(0,0,0,0.08);">
+          <div class="mx-auto mb-3" style="width: 70px; height: 70px; background: linear-gradient(135deg, #25D366, #128C7E); border-radius: 20px; display: flex; align-items: center; justify-content: center;">
+            <i class="fab fa-whatsapp fa-xl text-white"></i>
+          </div>
+          <h5 class="fw-bold mb-2" style="color: #1e293b;">WhatsApp</h5>
+          <p class="text-muted small mb-2">Quick Response</p>
+          <a href="https://wa.me/919997612579" target="_blank" class="fw-bold text-decoration-none" style="color: #25D366;">Chat Now</a>
+        </div>
+      </div>
+      
+      <!-- Email Card -->
+      <div class="col-lg-3 col-md-6 reveal">
+        <div class="feature-card text-center p-4 h-100 bg-white" style="border-radius: 28px; box-shadow: 0 10px 40px rgba(0,0,0,0.08);">
+          <div class="mx-auto mb-3" style="width: 70px; height: 70px; background: linear-gradient(135deg, #0d6efd, #0a58ca); border-radius: 20px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-envelope fa-xl text-white"></i>
+          </div>
+          <h5 class="fw-bold mb-2" style="color: #1e293b;">Email Us</h5>
+          <p class="text-muted small mb-2">24hr Response</p>
+          <a href="mailto:gauravmotors@gmail.com" class="fw-bold text-decoration-none" style="color: #0d6efd;">gauravmotors@gmail.com</a>
+        </div>
+      </div>
+      
+      <!-- Location Card -->
+      <div class="col-lg-3 col-md-6 reveal">
+        <div class="feature-card text-center p-4 h-100 bg-white" style="border-radius: 28px; box-shadow: 0 10px 40px rgba(0,0,0,0.08);">
+          <div class="mx-auto mb-3" style="width: 70px; height: 70px; background: linear-gradient(135deg, #ef4444, #dc2626); border-radius: 20px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-map-marker-alt fa-xl text-white"></i>
+          </div>
+          <h5 class="fw-bold mb-2" style="color: #1e293b;">Visit Us</h5>
+          <p class="text-muted small mb-2">Main Market Road</p>
+          <span class="fw-bold" style="color: #ef4444;">Lohaghat, Uttarakhand</span>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════════
+     CONTACT FORM + MAP SECTION
+═══════════════════════════════════════════════════════════════════════════════ -->
+<section class="py-5" style="background: #fff;">
+  <div class="container">
+    <div class="row g-5">
+      
+      <!-- Contact Form -->
+      <div class="col-lg-6 reveal">
+        <div class="p-5 bg-white h-100" style="border-radius: 32px; box-shadow: 0 15px 50px rgba(0,0,0,0.1);">
+          
+          <span class="badge px-4 py-2 mb-3" style="background: rgba(13,110,253,0.1); color: #0d6efd; font-size: 0.85rem; border-radius: 50px;">
+            <i class="fas fa-paper-plane me-2"></i>SEND MESSAGE
+          </span>
+          
+          <h2 class="display-6 fw-bold mb-4" style="color: #1e293b;">Drop Us a Line</h2>
+          
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show mb-4" style="border-radius: 16px;">
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          
+          <form method="POST" action="{{ url_for('contact') }}">
+            <div class="row g-4">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold"><i class="fas fa-user me-2 text-primary"></i>Full Name *</label>
+                <input type="text" name="name" class="form-control form-control-lg" placeholder="John Doe" style="border-radius: 16px; border: 2px solid #e2e8f0; padding: 14px 18px;" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold"><i class="fas fa-envelope me-2 text-primary"></i>Email *</label>
+                <input type="email" name="email" class="form-control form-control-lg" placeholder="john@example.com" style="border-radius: 16px; border: 2px solid #e2e8f0; padding: 14px 18px;" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold"><i class="fas fa-phone me-2 text-primary"></i>Phone</label>
+                <input type="tel" name="phone" class="form-control form-control-lg" placeholder="+91 9876543210" style="border-radius: 16px; border: 2px solid #e2e8f0; padding: 14px 18px;">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold"><i class="fas fa-tag me-2 text-primary"></i>Subject *</label>
+                <select name="subject" class="form-select form-select-lg" style="border-radius: 16px; border: 2px solid #e2e8f0; padding: 14px 18px;" required>
+                  <option value="">Select Subject</option>
+                  <option value="service">🔧 Service Booking</option>
+                  <option value="repair">🛠️ Repair Inquiry</option>
+                  <option value="quote">💰 Price Quote</option>
+                  <option value="feedback">⭐ Feedback</option>
+                  <option value="other">📝 Other</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold"><i class="fas fa-comment me-2 text-primary"></i>Message *</label>
+                <textarea name="message" class="form-control" rows="5" placeholder="Tell us about your car service needs..." style="border-radius: 16px; border: 2px solid #e2e8f0; padding: 14px 18px;" required></textarea>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-lg w-100 py-3 fw-bold" style="background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #1a1a2e; border-radius: 50px; font-size: 1.1rem;">
+                  <i class="fas fa-paper-plane me-2"></i>Send Message
+                </button>
+              </div>
+            </div>
+          </form>
+          
+          <div class="mt-4 p-4" style="background: linear-gradient(135deg, rgba(13,110,253,0.05), rgba(251,191,36,0.05)); border-radius: 16px; border-left: 4px solid #0d6efd;">
+            <div class="d-flex align-items-center gap-3">
+              <div style="width: 45px; height: 45px; background: linear-gradient(135deg, #0d6efd, #0a58ca); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-clock text-white"></i>
+              </div>
+              <div>
+                <div class="fw-bold" style="color: #1e293b;">Quick Response</div>
+                <div class="small text-muted">We typically reply within 2 hours during business hours</div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      
+      <!-- Map + Info -->
+      <div class="col-lg-6 reveal">
+        
+        <!-- Google Map -->
+        <div class="mb-4 overflow-hidden" style="border-radius: 32px; box-shadow: 0 15px 50px rgba(0,0,0,0.1);">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3475.8234!2d80.0892!3d29.4123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sGaurav%20Motors%20Lohaghat!5e0!3m2!1sen!2sin!4v1704412800000!5m2!1sen!2sin" 
+            width="100%" 
+            height="300" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+        
+        <!-- Address Card -->
+        <div class="p-4 mb-4 bg-white" style="border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.08);">
+          <div class="d-flex align-items-start gap-4">
+            <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #ef4444, #dc2626); border-radius: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <i class="fas fa-map-marker-alt fa-xl text-white"></i>
+            </div>
+            <div>
+              <h5 class="fw-bold mb-2" style="color: #1e293b;">Workshop Address</h5>
+              <p class="text-muted mb-2">Gaurav Motors, Main Market Road<br>Near Bus Stand, Lohaghat<br>Champawat District, Uttarakhand - 262524</p>
+              <a href="https://maps.google.com/?q=Gaurav+Motors+Lohaghat+Uttarakhand" target="_blank" class="btn btn-sm px-4 py-2" style="background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff; border-radius: 50px;">
+                <i class="fas fa-directions me-2"></i>Get Directions
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Working Hours -->
+        <div class="p-4 bg-white" style="border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.08);">
+          <h5 class="fw-bold mb-4" style="color: #1e293b;"><i class="fas fa-clock me-2 text-primary"></i>Working Hours</h5>
+          <div class="row g-3">
+            <div class="col-12">
+              <div class="p-3" style="background: linear-gradient(135deg, rgba(13,110,253,0.05), rgba(13,110,253,0.1)); border-radius: 16px;">
+                <div class="fw-bold" style="color: #1e293b;">Open 7 Days a Week</div>
+                <div class="text-muted">Monday - Sunday: 9:00 AM - 7:00 PM</div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="p-3" style="background: linear-gradient(135deg, rgba(34,197,94,0.1), rgba(34,197,94,0.2)); border-radius: 16px;">
+                <div class="d-flex align-items-center justify-content-between">
+                  <div>
+                    <div class="fw-bold" style="color: #1e293b;">Emergency Service</div>
+                    <div class="text-muted">Available 24/7</div>
+                  </div>
+                  <a href="tel:+919997612579" class="btn btn-sm" style="background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; border-radius: 50px;">
+                    <i class="fas fa-phone me-1"></i>Call Now
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════════
+     MEET THE OWNER SECTION
+═══════════════════════════════════════════════════════════════════════════════ -->
+<section class="py-5" style="background: #f8f9fa;">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      
+      <!-- Owner Photo -->
+      <div class="col-lg-5 reveal">
+        <div class="position-relative">
+          <div class="img-hover-zoom" style="border-radius: 32px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.15);">
+            <img src="{{ url_for('static', filename='images/owner.jpg') }}" alt="Madan Mohan Chilkoti - Owner" class="w-100" style="height: 450px; object-fit: cover;" onerror="this.src='https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&q=80'">
+          </div>
+          
+          <!-- Badge -->
+          <div class="position-absolute p-4 shadow-lg animate-float" style="bottom: -20px; right: -20px; background: linear-gradient(135deg, #fbbf24, #f59e0b); border-radius: 24px;">
+            <div class="d-flex align-items-center gap-2">
+              <i class="fas fa-user-tie fa-lg" style="color: #1a1a2e;"></i>
+              <div>
+                <div class="fw-bold" style="color: #1a1a2e;">Owner & Founder</div>
+                <div class="small" style="color: rgba(26,26,46,0.7);">Since 2010</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Owner Info -->
+      <div class="col-lg-7 reveal">
+        <span class="badge px-4 py-2 mb-3" style="background: rgba(13,110,253,0.1); color: #0d6efd; font-size: 0.85rem; border-radius: 50px;">
+          <i class="fas fa-handshake me-2"></i>MEET THE OWNER
+        </span>
+        
+        <h2 class="display-5 fw-bold mb-3" style="color: #1e293b;">Madan Mohan Chilkoti</h2>
+        
+        <p class="lead text-muted mb-4">
+          With over 15 years of experience in the automotive industry, I started Gaurav Motors with a simple vision - to provide honest, reliable, and professional car service to our community.
+        </p>
+        
+        <div class="p-4 mb-4" style="background: linear-gradient(135deg, rgba(13,110,253,0.05), rgba(251,191,36,0.05)); border-radius: 20px; border-left: 4px solid #0d6efd;">
+          <p class="mb-0 fst-italic" style="font-size: 1.1rem; color: #475569;">
+            <i class="fas fa-quote-left text-primary me-2"></i>
+            "Every customer who walks through our doors becomes part of the Gaurav Motors family. Your trust is our greatest achievement."
+            <i class="fas fa-quote-right text-primary ms-2"></i>
+          </p>
+        </div>
+        
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <div class="d-flex align-items-center gap-3 p-3 bg-white" style="border-radius: 16px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
+              <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #0d6efd, #0a58ca); border-radius: 14px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-phone text-white"></i>
+              </div>
+              <div>
+                <div class="small text-muted">Direct Line</div>
+                <a href="tel:+919997612579" class="fw-bold text-decoration-none" style="color: #1e293b;">+91 9997612579</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="d-flex align-items-center gap-3 p-3 bg-white" style="border-radius: 16px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
+              <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #25D366, #128C7E); border-radius: 14px; display: flex; align-items: center; justify-content: center;">
+                <i class="fab fa-whatsapp text-white"></i>
+              </div>
+              <div>
+                <div class="small text-muted">WhatsApp</div>
+                <a href="https://wa.me/919997612579" target="_blank" class="fw-bold text-decoration-none" style="color: #1e293b;">Chat with Owner</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Social Links -->
+        <div class="d-flex gap-3">
+          <a href="https://wa.me/919997612579" target="_blank" class="btn btn-lg px-4 py-3" style="background: linear-gradient(135deg, #25D366, #128C7E); color: #fff; border-radius: 50px;">
+            <i class="fab fa-whatsapp me-2"></i>WhatsApp
+          </a>
+          <a href="tel:+919997612579" class="btn btn-lg px-4 py-3" style="background: linear-gradient(135deg, #0d6efd, #0a58ca); color: #fff; border-radius: 50px;">
+            <i class="fas fa-phone me-2"></i>Call Owner
+          </a>
+        </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════════
+     SOCIAL MEDIA + CTA
+═══════════════════════════════════════════════════════════════════════════════ -->
+<section class="py-5 position-relative" style="background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 50%, #1e40af 100%); overflow: hidden;">
+  
+  <!-- Background Decorations -->
+  <div class="position-absolute" style="top: 10%; left: 5%; width: 150px; height: 150px; background: rgba(255,255,255,0.03); border-radius: 50%;"></div>
+  <div class="position-absolute" style="bottom: 10%; right: 5%; width: 200px; height: 200px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
+  
+  <div class="container position-relative" style="z-index: 10;">
+    <div class="row align-items-center g-5">
+      
+      <div class="col-lg-6 text-white reveal">
+        <h2 class="display-5 fw-bold mb-4">Follow Us on Social Media</h2>
+        <p class="lead mb-4" style="opacity: 0.9;">Stay updated with automotive tips, offers, and behind-the-scenes content from Gaurav Motors.</p>
+        
+        <div class="d-flex flex-wrap gap-3">
+          <a href="#" class="btn btn-lg" style="width: 60px; height: 60px; background: rgba(255,255,255,0.15); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+            <i class="fab fa-facebook-f fa-xl text-white"></i>
+          </a>
+          <a href="#" class="btn btn-lg" style="width: 60px; height: 60px; background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+            <i class="fab fa-instagram fa-xl text-white"></i>
+          </a>
+          <a href="#" class="btn btn-lg" style="width: 60px; height: 60px; background: #FF0000; border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+            <i class="fab fa-youtube fa-xl text-white"></i>
+          </a>
+          <a href="https://wa.me/919997612579" target="_blank" class="btn btn-lg" style="width: 60px; height: 60px; background: #25D366; border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+            <i class="fab fa-whatsapp fa-xl text-white"></i>
+          </a>
+        </div>
+      </div>
+      
+      <div class="col-lg-6 reveal">
+        <div class="p-5 text-center" style="background: rgba(255,255,255,0.1); border-radius: 32px; backdrop-filter: blur(10px);">
+          <div class="mb-4">
+            <i class="fas fa-calendar-check fa-3x" style="color: #fbbf24;"></i>
+          </div>
+          <h3 class="fw-bold text-white mb-3">Ready to Book a Service?</h3>
+          <p class="text-white mb-4" style="opacity: 0.9;">Schedule your car service today and experience premium automotive care.</p>
+          <a href="{{ url_for('book_car_service') }}" class="btn btn-lg px-5 py-3 fw-bold" style="background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #1a1a2e; border-radius: 50px;">
+            <i class="fas fa-calendar-check me-2"></i>Book Service Now
+          </a>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- Mobile Bottom Nav Spacer -->
+<div class="d-lg-none" style="height: 70px;"></div>
+
+<style>
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+  }
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .reveal {
+    animation: slideInLeft 0.6s ease-out forwards;
+  }
+  
+  .img-hover-zoom img {
+    transition: transform 0.4s ease;
+  }
+  
+  .img-hover-zoom:hover img {
+    transform: scale(1.05);
+  }
+</style>
+
+{% endblock %}

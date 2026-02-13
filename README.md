@@ -1,25 +1,25 @@
-# 🚗 GAURAV MOTORS - Complete Hospital Management System (HMS)
+# 🚗 GAURAV MOTORS - Complete Car Service Center Management System
 
 [![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://www.python.org/)
 [![Flask](https://img.shields.io/badge/Flask-3.0.0-green.svg)](https://flask.palletsprojects.com/)
 [![Status](https://img.shields.io/badge/Status-Production%20Ready-success.svg)]()
 [![Tests](https://img.shields.io/badge/Tests-All%20Passing-brightgreen.svg)]()
 
-A comprehensive, feature-rich Hospital Management System built with Flask. Includes patient management, doctor scheduling, appointments, medical records, **spare parts ordering with 50% advance payment**, reviews, analytics, notifications, and much more!
+A comprehensive, feature-rich Car Service Center Management System built with Flask. Includes customer management, technician scheduling, service bookings, vehicle records, **spare parts ordering with 50% advance payment**, reviews, analytics, notifications, and much more!
 
 ---
 
 ## ✨ Complete Feature List
 
-### 🏥 Core Medical Features
-- ✅ **Patient Registration & Management** - Complete patient profiles with medical history
-- ✅ **Doctor Management** - Doctor profiles, specializations, availability schedules
-- ✅ **Appointment Booking** - Real-time appointment scheduling with conflict detection
-- ✅ **Medical Records** - Digital medical record management with file uploads
-- ✅ **Medical History Tracking** - Comprehensive patient health timeline
-- ✅ **Prescription Management** - Digital prescriptions with PDF generation
+### 🔧 Core Service Features
+- ✅ **Customer Registration & Management** - Complete customer profiles with vehicle history
+- ✅ **Technician Management** - Technician profiles, specializations, availability schedules
+- ✅ **Service Booking** - Real-time service appointment scheduling with conflict detection
+- ✅ **Vehicle Records** - Digital vehicle service records with file uploads
+- ✅ **Service History Tracking** - Comprehensive vehicle maintenance timeline
+- ✅ **Service Report Management** - Digital service reports with PDF generation
 
-### 🛒 Spare Parts E-Commerce (NEW!)
+### 🛒 Spare Parts E-Commerce
 - ✅ **Spare Parts Catalog** - Browse 100+ automotive spare parts
 - ✅ **Advanced Search & Filters** - Filter by category, brand, price, availability
 - ✅ **Product Details** - Comprehensive product information with images
@@ -38,14 +38,14 @@ A comprehensive, feature-rich Hospital Management System built with Flask. Inclu
 - ✅ **Invoice Generation** - Automatic PDF invoice creation
 
 ### 📧 Communication Features
-- ✅ **Email Notifications** - Order confirmations, appointment reminders
-- ✅ **In-App Notifications** - Real-time alerts for appointments and orders
+- ✅ **Email Notifications** - Order confirmations, service reminders
+- ✅ **In-App Notifications** - Real-time alerts for bookings and orders
 - ✅ **SMS Integration** - Optional SMS notifications (Twilio/MSG91/Fast2SMS)
 - ✅ **Email Queue System** - Reliable email delivery with retry mechanism
 
 ### ⭐ Reviews & Ratings
-- ✅ **Doctor Reviews** - Patients can rate and review doctors
-- ✅ **Service Reviews** - Review hospital services
+- ✅ **Technician Reviews** - Customers can rate and review technicians
+- ✅ **Service Reviews** - Review automotive services
 - ✅ **Star Ratings** - 5-star rating system with comments
 - ✅ **Review Moderation** - Admin approval system
 
@@ -97,19 +97,30 @@ A comprehensive, feature-rich Hospital Management System built with Flask. Inclu
    RAZORPAY_KEY_SECRET=XXXXXXXXXXXXXXXX
    ```
 
-4. **Initialize the database**
+4. **Verify setup (Recommended)**
    ```bash
-   python setup_db.py
-   python setup_services.py
-   python setup_spare_parts.py
+   python setup.py
+   ```
+   This checks all dependencies, creates required directories, and validates your configuration.
+
+5. **Initialize the database**
+   ```bash
+   python init_automotive_db.py
+   ```
+   Creates the database with sample data including services, spare parts, and admin account.
+
+6. **Run the application**
+   ```bash
+   python start.py
+   ```
+   The enhanced start script will auto-check setup and start the server.
+
+   **Alternative:** Standard Flask command
+   ```bash
+   flask run
    ```
 
-5. **Run the application**
-   ```bash
-   python app.py
-   ```
-
-6. **Access the application**
+7. **Access the application**
    
    Open your browser and go to: `http://localhost:5000`
 
@@ -117,36 +128,49 @@ A comprehensive, feature-rich Hospital Management System built with Flask. Inclu
 
 ## 🧪 Testing
 
-Run the comprehensive test suite:
+### Run Setup Verification
 ```bash
-python test_features.py
+python setup.py
+```
+
+### Run Test Suite
+```bash
+pytest tests.py -v
+```
+
+### Run with Coverage
+```bash
+pytest tests.py -v --cov=app --cov-report=html
 ```
 
 This verifies:
 - ✅ All dependencies installed
-- ✅ All templates exist
-- ✅ All routes functioning
-- ✅ Database models correct
-- ✅ Configuration valid
+- ✅ Database models working
+- ✅ Authentication functional
+- ✅ API endpoints responding
+- ✅ Security features active
 
 ---
 
 ## 📋 Default Login Credentials
 
 ### Admin Account
+- **Username:** `admin`
 - **Email:** `admin@gmmotors.com`
-- **Password:** `admin123`
-- **Access:** Full system access, analytics, user management
+- **Password:** `Admin@123456`
+- **Access:**  Full system access, analytics, user management
 
-### Test Doctor Account
-- **Email:** `doctor@gmmotors.com`
-- **Password:** `doctor123`
-- **Access:** Doctor dashboard, appointments, medical records
+⚠️ **IMPORTANT: Change the admin password immediately after first login!**
 
-### Test Patient Account
-- **Email:** `patient@gmmotors.com`
-- **Password:** `patient123`
-- **Access:** Book appointments, view records, order parts
+### Test Technician Account
+- **Username:** `tech1`
+- **Password:** `Tech123456`
+- **Access:** Technician dashboard, service bookings
+
+### Test Customer Account
+- **Username:** `customer1`
+- **Password:** `Customer123`
+- **Access:** Book services, view records, order parts
 
 ---
 

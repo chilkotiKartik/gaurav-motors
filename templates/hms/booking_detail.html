@@ -1,0 +1,71 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+<div class="container my-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white py-3">
+          <h4 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Service Booking #{{ booking.id }}</h4>
+        </div>
+        <div class="card-body p-4">
+          <!-- Booking Info -->
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <p><strong><i class="fas fa-user me-1"></i> Customer:</strong> {{ booking.customer_name or 'N/A' }}</p>
+              <p><strong><i class="fas fa-calendar me-1"></i> Date:</strong> {{ booking.date }}</p>
+              <p><strong><i class="fas fa-clock me-1"></i> Time:</strong> {{ booking.time }}</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong><i class="fas fa-car me-1"></i> Vehicle:</strong> {{ booking.vehicle_info or 'N/A' }}</p>
+              <p><strong><i class="fas fa-wrench me-1"></i> Service:</strong> {{ booking.service_type or 'General Service' }}</p>
+              <p><strong><i class="fas fa-info-circle me-1"></i> Status:</strong>
+                <span class="badge {% if booking.status == 'Completed' %}bg-success{% elif booking.status == 'In-Progress' %}bg-warning{% elif booking.status == 'Cancelled' %}bg-danger{% else %}bg-primary{% endif %}">
+                  {{ booking.status }}
+                </span>
+              </p>
+            </div>
+          </div>
+
+          {% if booking.notes %}
+          <div class="alert alert-info">
+            <strong><i class="fas fa-sticky-note me-1"></i> Notes:</strong> {{ booking.notes }}
+          </div>
+          {% endif %}
+
+          <!-- Update Form (for technicians) -->
+          {% if current_user.role == 'technician' and booking.status != 'Completed' and booking.status != 'Cancelled' %}
+          <hr>
+          <h5 class="mb-3"><i class="fas fa-tools me-2"></i>Update Service</h5>
+          <form method="post">
+            <div class="mb-3">
+              <label class="form-label fw-bold">Status</label>
+              <select name="status" class="form-select">
+                <option value="Completed">Completed</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold">Assessment</label>
+              <textarea class="form-control" name="assessment" rows="2" placeholder="Vehicle condition assessment"></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold">Work Performed</label>
+              <textarea class="form-control" name="work_performed" rows="3" placeholder="Describe work done"></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold">Parts Used</label>
+              <textarea class="form-control" name="parts_used" rows="2" placeholder="List parts used"></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold">Recommendations</label>
+              <textarea class="form-control" name="recommendations" rows="2" placeholder="Future service recommendations"></textarea>
+            </div>
+            <button class="btn btn-success"><i class="fas fa-save me-1"></i> Save & Update</button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

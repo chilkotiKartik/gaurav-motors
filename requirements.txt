@@ -1,12 +1,20 @@
+# Core Framework
 Flask==3.0.0
 Flask-SQLAlchemy==3.1.1
 Flask-Login==0.6.3
 Flask-Mail==0.9.1
 Werkzeug==3.0.1
-gunicorn==21.2.0
+
+# Security
+Flask-WTF==1.2.1
 python-dotenv==1.0.0
+email-validator==2.1.0.post1
+
+# Production Server
+gunicorn==21.2.0
+
+# File Handling
 Pillow==10.1.0
-reportlab==4.0.7
-pandas==2.1.4
-openpyxl==3.1.2
+
+# Payment Gateway (optional)
 razorpay==1.4.1

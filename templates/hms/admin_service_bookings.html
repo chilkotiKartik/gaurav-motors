@@ -1,0 +1,582 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+
+<div class="container-fluid py-4">
+  <!-- Header -->
+  <div class="row mb-4">
+    <div class="col-lg-8">
+      <h1 class="display-6 fw-bold" style="color: #1a202c;">
+        <i class="fas fa-wrench me-3" style="color: #0d6efd;"></i>Service Bookings Management
+      </h1>
+      <p class="text-muted">Track and manage all service bookings and technician assignments</p>
+    </div>
+    <div class="col-lg-4 text-end">
+      <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-primary">
+        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+      </a>
+    </div>
+  </div>
+
+  <!-- Quick Stats -->
+  <div class="row mb-4 g-3">
+    <div class="col-lg-3 col-md-6">
+      <div class="card border-0 shadow-sm overflow-hidden" style="border-radius: 16px; border-left: 5px solid #0d6efd;">
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <p class="text-muted mb-1 small">Scheduled</p>
+              <h3 class="fw-bold mb-0" style="color: #0d6efd;">{{ stats.scheduled if stats else 0 }}</h3>
+            </div>
+            <div style="font-size: 2.5rem; color: #0d6efd; opacity: 0.2;">
+              <i class="fas fa-calendar-check"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+      <div class="card border-0 shadow-sm overflow-hidden" style="border-radius: 16px; border-left: 5px solid #ffc107;">
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <p class="text-muted mb-1 small">In Progress</p>
+              <h3 class="fw-bold mb-0" style="color: #ffc107;">{{ stats.in_progress if stats else 0 }}</h3>
+            </div>
+            <div style="font-size: 2.5rem; color: #ffc107; opacity: 0.2;">
+              <i class="fas fa-cog"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+      <div class="card border-0 shadow-sm overflow-hidden" style="border-radius: 16px; border-left: 5px solid #28a745;">
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <p class="text-muted mb-1 small">Completed</p>
+              <h3 class="fw-bold mb-0" style="color: #28a745;">{{ stats.completed if stats else 0 }}</h3>
+            </div>
+            <div style="font-size: 2.5rem; color: #28a745; opacity: 0.2;">
+              <i class="fas fa-check-circle"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+      <div class="card border-0 shadow-sm overflow-hidden" style="border-radius: 16px; border-left: 5px solid #dc3545;">
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <p class="text-muted mb-1 small">Cancelled</p>
+              <h3 class="fw-bold mb-0" style="color: #dc3545;">{{ stats.cancelled if stats else 0 }}</h3>
+            </div>
+            <div style="font-size: 2.5rem; color: #dc3545; opacity: 0.2;">
+              <i class="fas fa-times-circle"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters & Search -->
+  <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
+    <div class="card-body p-4">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label fw-bold"><i class="fas fa-search me-2 text-primary"></i>Search Bookings</label>
+          <input type="text" class="form-control form-control-lg" id="searchInput" 
+                 placeholder="Search by customer name, ID, or vehicle..." 
+                 style="border-radius: 12px; border: 2px solid #e0e0e0; padding: 12px 16px;">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-bold"><i class="fas fa-filter me-2 text-primary"></i>Filter by Status</label>
+          <select class="form-select form-select-lg" id="statusFilter" 
+                  style="border-radius: 12px; border: 2px solid #e0e0e0; padding: 12px 16px;">
+            <option value="">All Statuses</option>
+            <option value="Scheduled">Scheduled</option>
+            <option value="In-Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-bold"><i class="fas fa-calendar me-2 text-primary"></i>Date Range</label>
+          <input type="date" class="form-control form-control-lg" id="dateFilter" 
+                 style="border-radius: 12px; border: 2px solid #e0e0e0; padding: 12px 16px;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Table -->
+  <div class="card border-0 shadow-lg" style="border-radius: 20px;">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0" id="bookingsTable">
+          <thead class="bg-light" style="border-bottom: 3px solid #0d6efd;">
+            <tr>
+              <th class="fw-bold" style="color: #1a202c; padding: 20px;">
+                <i class="fas fa-hashtag text-primary me-2"></i>Booking ID
+              </th>
+              <th class="fw-bold" style="color: #1a202c; padding: 20px;">
+                <i class="fas fa-user text-primary me-2"></i>Customer
+              </th>
+              <th class="fw-bold" style="color: #1a202c; padding: 20px;">
+                <i class="fas fa-hard-hat text-primary me-2"></i>Technician
+              </th>
+              <th class="fw-bold" style="color: #1a202c; padding: 20px;">
+                <i class="fas fa-calendar text-primary me-2"></i>Schedule
+              </th>
+              <th class="fw-bold" style="color: #1a202c; padding: 20px;">
+                <i class="fas fa-car text-primary me-2"></i>Vehicle
+              </th>
+              <th class="fw-bold" style="color: #1a202c; padding: 20px;">
+                <i class="fas fa-tools text-primary me-2"></i>Service Type
+              </th>
+              <th class="fw-bold" style="color: #1a202c; padding: 20px;">
+                <i class="fas fa-badge text-primary me-2"></i>Status
+              </th>
+              <th class="fw-bold text-center" style="color: #1a202c; padding: 20px;">
+                <i class="fas fa-cogs text-primary me-2"></i>Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if service_bookings %}
+              {% for booking in service_bookings %}
+              <tr class="booking-row" style="border-bottom: 1px solid #e0e0e0; transition: all 0.3s;">
+                <td class="fw-bold" style="padding: 16px 20px;">
+                  <span class="badge bg-light text-dark" style="font-size: 0.95rem;">
+                    <i class="fas fa-hashtag me-1"></i>#{{ booking.id }}
+                  </span>
+                </td>
+                <td style="padding: 16px 20px;">
+                  <div class="d-flex align-items-center">
+                    <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-2">
+                      <i class="fas fa-user text-primary"></i>
+                    </div>
+                    <div>
+                      <strong style="color: #1a202c;">{{ booking.customer_name }}</strong>
+                      <br>
+                      <small class="text-muted">{{ booking.customer_phone or 'No phone' }}</small>
+                    </div>
+                  </div>
+                </td>
+                <td style="padding: 16px 20px;">
+                  <div class="d-flex align-items-center">
+                    <div class="rounded-circle bg-success bg-opacity-10 p-2 me-2">
+                      <i class="fas fa-hard-hat text-success"></i>
+                    </div>
+                    <div>
+                      <strong style="color: #1a202c;">Assigned</strong>
+                      <br>
+                      <small class="text-muted">Technician #{{ booking.technician_id or 'Unassigned' }}</small>
+                    </div>
+                  </div>
+                </td>
+                <td style="padding: 16px 20px;">
+                  <div>
+                    <div class="fw-bold" style="color: #1a202c;">
+                      <i class="fas fa-calendar-alt me-1 text-info"></i>{{ booking.booking_date }}
+                    </div>
+                    <small class="text-muted">
+                      <i class="fas fa-clock me-1"></i>{{ booking.booking_time }}
+                    </small>
+                  </div>
+                </td>
+                <td style="padding: 16px 20px;">
+                  <div>
+                    <strong style="color: #1a202c;">{{ booking.vehicle_brand }} {{ booking.vehicle_model }}</strong>
+                    <br>
+                    <small class="text-muted">
+                      <i class="fas fa-car me-1"></i>Service Vehicle
+                    </small>
+                  </div>
+                </td>
+                <td style="padding: 16px 20px;">
+                  <span class="badge bg-info bg-opacity-10 text-info px-3 py-2" style="font-size: 0.9rem;">
+                    <i class="fas fa-tools me-1"></i>Booking #{{ booking.booking_id }}
+                  </span>
+                </td>
+                <td style="padding: 16px 20px;">
+                  {% if booking.status == 'Scheduled' %}
+                    <span class="badge bg-info bg-opacity-20 text-info px-3 py-2" style="font-size: 0.9rem;">
+                      <i class="fas fa-calendar-check me-1"></i>Scheduled
+                    </span>
+                  {% elif booking.status == 'In-Progress' %}
+                    <span class="badge bg-warning bg-opacity-20 text-warning px-3 py-2" style="font-size: 0.9rem;">
+                      <i class="fas fa-cog me-1"></i>In Progress
+                    </span>
+                  {% elif booking.status == 'Completed' %}
+                    <span class="badge bg-success bg-opacity-20 text-success px-3 py-2" style="font-size: 0.9rem;">
+                      <i class="fas fa-check-circle me-1"></i>Completed
+                    </span>
+                  {% elif booking.status == 'Cancelled' %}
+                    <span class="badge bg-danger bg-opacity-20 text-danger px-3 py-2" style="font-size: 0.9rem;">
+                      <i class="fas fa-times-circle me-1"></i>Cancelled
+                    </span>
+                  {% endif %}
+                </td>
+                <td style="padding: 16px 20px; text-align: center;">
+                  <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-sm btn-outline-primary" title="View Details">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-warning" title="Edit Booking">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-danger" title="Delete">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            {% else %}
+            <tr>
+              <td colspan="8" class="text-center py-5">
+                <div class="text-muted">
+                  <i class="fas fa-calendar-times fa-5x mb-3" style="opacity: 0.3;"></i>
+                  <h5 class="fw-bold">No service bookings found</h5>
+                  <p>Service bookings will appear here once customers start booking services.</p>
+                </div>
+              </td>
+            </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Details Modal (Placeholder) -->
+  <div class="modal fade" id="bookingDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content border-0" style="border-radius: 16px;">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold">Booking Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="bookingDetailsContent">
+          <!-- Details will be populated here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+  /* ===== KEYFRAME ANIMATIONS ===== */
+  @keyframes slideInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+
+  /* ===== PAGE LOAD ANIMATIONS ===== */
+  .container-fluid {
+    animation: fadeIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .row {
+    animation: slideInUp 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* ===== CARD ANIMATIONS ===== */
+  .card {
+    animation: slideInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .col-lg-3 .card {
+    animation-delay: 0s;
+  }
+
+  .col-lg-3:nth-child(2) .card {
+    animation-delay: 0.1s;
+  }
+
+  .col-lg-3:nth-child(3) .card {
+    animation-delay: 0.2s;
+  }
+
+  .col-lg-3:nth-child(4) .card {
+    animation-delay: 0.3s;
+  }
+
+  .card:hover {
+    box-shadow: 0 20px 50px rgba(13, 110, 253, 0.15) !important;
+    transform: translateY(-8px);
+  }
+
+  .card:active {
+    transform: translateY(-2px);
+  }
+
+  /* ===== TABLE ANIMATIONS ===== */
+  .booking-row {
+    animation: slideInUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .booking-row:nth-child(1) {
+    animation-delay: 0s;
+  }
+
+  .booking-row:nth-child(2) {
+    animation-delay: 0.05s;
+  }
+
+  .booking-row:nth-child(3) {
+    animation-delay: 0.1s;
+  }
+
+  .booking-row:nth-child(n+4) {
+    animation-delay: 0.15s;
+  }
+
+  .booking-row:hover {
+    background-color: rgba(13, 110, 253, 0.08);
+    transform: scale(1.01);
+  }
+
+  .table-hover tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.1) !important;
+    transform: translateX(5px);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* ===== BADGE ANIMATIONS ===== */
+  .badge {
+    font-weight: 600;
+    padding: 8px 12px !important;
+    animation: slideInRight 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .badge:hover {
+    transform: scale(1.12);
+  }
+
+  .badge.bg-success {
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  /* ===== BUTTON ANIMATIONS ===== */
+  .btn {
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .btn:active {
+    transform: translateY(-1px);
+  }
+
+  .btn:active::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  /* ===== BUTTON GROUP ANIMATIONS ===== */
+  .btn-group .btn {
+    border-radius: 8px;
+    margin: 0 2px;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .btn-group .btn:hover {
+    transform: scale(1.1) translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .btn-group .btn:active {
+    transform: scale(1.05);
+  }
+
+  /* ===== FORM ANIMATIONS ===== */
+  .form-control,
+  .form-select {
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .form-control:focus,
+  .form-select:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(13, 110, 253, 0.2) !important;
+  }
+
+  /* ===== HEADER ANIMATIONS ===== */
+  h1, h2, h3, h4, h5, h6 {
+    animation: slideInLeft 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* ===== ICON ANIMATIONS ===== */
+  i.fas {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .btn i.fas {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .btn:hover i.fas {
+    transform: translateY(-2px);
+  }
+
+  /* ===== MODAL ANIMATIONS ===== */
+  .modal.fade .modal-dialog {
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .modal.show .modal-dialog {
+    animation: slideInUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* ===== LIST ITEM ANIMATIONS ===== */
+  li {
+    animation: slideInLeft 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  }
+
+  li:nth-child(1) {
+    animation-delay: 0s;
+  }
+
+  li:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+
+  li:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+
+  /* ===== SMOOTH GENERAL TRANSITIONS ===== */
+  * {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.3s;
+    transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+</style>
+
+<script>
+  // Search functionality
+  document.getElementById('searchInput').addEventListener('keyup', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    document.querySelectorAll('.booking-row').forEach(row => {
+      const text = row.textContent.toLowerCase();
+      row.style.display = text.includes(searchTerm) ? '' : 'none';
+    });
+  });
+
+  // Status filter
+  document.getElementById('statusFilter').addEventListener('change', function(e) {
+    const status = e.target.value;
+    document.querySelectorAll('.booking-row').forEach(row => {
+      if (status === '' || row.textContent.includes(status)) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  });
+</script>
+
+{% endblock %}

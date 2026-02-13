@@ -1,18 +1,21 @@
 {% extends 'hms/base.html' %}
 {% block content %}
 <div class="login-page" style="min-height: 80vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 60px 0; position: relative; overflow: hidden;">
-  <!-- Background Pattern -->
+  <!-- Animated Background Pattern -->
   <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1600&q=80'); background-size: cover; background-position: center; opacity: 0.1;"></div>
   
-  <div class="container position-relative">
+  <!-- Animated Particles -->
+  <div class="hero-particles position-absolute w-100 h-100" style="z-index: 1; pointer-events: none;"></div>
+  
+  <div class="container position-relative" style="z-index: 2;">
     <div class="row justify-content-center align-items-center">
-      <!-- Login Form -->
-      <div class="col-lg-5 col-md-6">
-        <div class="card shadow-lg border-0 rounded-4 overflow-hidden" style="backdrop-filter: blur(10px);">
+      <!-- Login Form with Animations -->
+      <div class="col-lg-5 col-md-6 animate__animated animate__fadeInLeft">
+        <div class="card shadow-lg border-0 rounded-4 overflow-hidden card-3d" style="backdrop-filter: blur(10px);" data-tilt>
           <div class="card-header text-white text-center py-4 position-relative" style="background: linear-gradient(135deg, rgba(13,110,253,0.95) 0%, rgba(11,132,217,0.95) 100%); border: none;">
             <div class="position-absolute" style="top: 0; left: 0; right: 0; bottom: 0; background: url('https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&q=80') center/cover; opacity: 0.1;"></div>
             <div class="position-relative">
-              <div class="logo-wrapper mx-auto mb-3" style="width: 80px; height: 80px; background: white; border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 30px rgba(0,0,0,0.2);">
+              <div class="logo-wrapper mx-auto mb-3" style="width: 80px; height: 80px; background: white; border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 30px rgba(0,0,0,0.2); animation: pulse 2s ease-in-out infinite;">
                 <img src="{{ url_for('static', filename='images/logo.png') }}" alt="GM Logo" style="width: 65px; height: 65px; object-fit: contain;">
               </div>
               <h3 class="mb-2 fw-bold">
@@ -33,7 +36,7 @@
                   id="username"
                   placeholder="Enter your username"
                   autocomplete="username"
-                  style="border: 2px solid #e3f2fd; border-radius: 12px; padding: 12px 20px;"
+                  style="border: 2px solid #e3f2fd; border-radius: 12px; padding: 12px 20px; transition: all 0.3s;"
                   required>
               </div>
               <div class="mb-4">
@@ -48,7 +51,7 @@
                     type="password" 
                     placeholder="Enter your password"
                     autocomplete="current-password"
-                    style="border: 2px solid #e3f2fd; border-radius: 12px 0 0 12px; padding: 12px 20px;"
+                    style="border: 2px solid #e3f2fd; border-radius: 12px 0 0 12px; padding: 12px 20px; transition: all 0.3s;"
                     required>
                   <button class="btn btn-outline-primary" type="button" id="togglePassword" style="border-radius: 0 12px 12px 0; border: 2px solid #e3f2fd; border-left: none;">
                     <i class="fas fa-eye" id="toggleIcon"></i>
@@ -56,8 +59,8 @@
                 </div>
               </div>
               
-              <!-- Credentials Helper -->
-              <div class="alert border-0 mb-4" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-radius: 12px;">
+              <!-- Credentials Helper with Animation -->
+              <div class="alert border-0 mb-4 animate__animated animate__fadeIn" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-radius: 12px; animation-delay: 0.5s;">
                 <p class="mb-2 fw-bold text-primary"><i class="fas fa-info-circle me-2"></i>Demo Credentials:</p>
                 <div class="small text-dark">
                   <div class="mb-1"><span class="badge bg-primary">Admin</span> admin / admin</div>
@@ -67,14 +70,14 @@
               </div>
 
               <div class="d-grid gap-2 mb-4">
-                <button class="btn btn-lg shadow-lg fw-bold" type="submit" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; color: white; border-radius: 12px; padding: 14px; transition: all 0.3s;">
+                <button class="btn btn-lg shadow-lg fw-bold" type="submit" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; color: white; border-radius: 12px; padding: 14px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);">
                   <i class="fas fa-sign-in-alt me-2"></i>Login to Dashboard
                 </button>
               </div>
               
               <div class="text-center">
                 <p class="mb-0 text-muted">New customer? 
-                  <a href="{{ url_for('register') }}" class="text-decoration-none fw-bold" style="color: #667eea;">
+                  <a href="{{ url_for('register') }}" class="text-decoration-none fw-bold" style="color: #667eea; transition: all 0.3s;">
                     <i class="fas fa-user-plus me-1"></i>Register Now
                   </a>
                 </p>
@@ -91,9 +94,9 @@
         </div>
       </div>
       
-      <!-- Info Card -->
-      <div class="col-lg-4 col-md-6 d-none d-md-block">
-        <div class="info-card text-white p-5 rounded-4" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px);">
+      <!-- Info Card with Animation -->
+      <div class="col-lg-4 col-md-6 d-none d-md-block animate__animated animate__fadeInRight" style="animation-delay: 0.3s;">
+        <div class="info-card text-white p-5 rounded-4" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);">
           <h4 class="fw-bold mb-4"><i class="fas fa-car me-2"></i>Gaurav Motors</h4>
           <p class="mb-4">Your trusted partner for complete automotive care in Lohaghat, Uttarakhand.</p>
           
@@ -109,7 +112,7 @@
           
           <div class="p-3 rounded-3" style="background: rgba(255, 255, 255, 0.1);">
             <p class="mb-2 small"><i class="fas fa-phone me-2"></i>+91 9997612579</p>
-            <p class="mb-0 small"><i class="fas fa-clock me-2"></i>Mon-Sat: 9AM-7PM</p>
+            <p class="mb-0 small"><i class="fas fa-clock me-2"></i>Open 7 Days: 9AM-7PM</p>
           </div>
         </div>
       </div>

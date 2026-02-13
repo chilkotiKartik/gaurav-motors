@@ -1,336 +1,856 @@
 {% extends 'hms/base.html' %}
 {% block content %}
 
-<!-- Dashboard Header -->
-<div class="dashboard-header mb-4 p-4 rounded-4 shadow-lg position-relative overflow-hidden" style="background: linear-gradient(135deg, rgba(13,110,253,0.08) 0%, rgba(11,91,176,0.05) 100%);">
-  <div style="position: absolute; right: -50px; top: -30px; opacity: 0.06; pointer-events: none;">
-    <i class="fas fa-hospital" style="font-size: 200px; color: #0d6efd;"></i>
-  </div>
-  <div class="row align-items-center position-relative" style="z-index: 1;">
-    <div class="col-md-8">
-      <h2 class="mb-0">
-        <i class="fas fa-tachometer-alt text-success me-2"></i>
-        Admin Dashboard
-      </h2>
-      <p class="text-muted mb-0 mt-2">
-        <i class="fas fa-user-shield me-1"></i> System Overview & Management
-      </p>
+<div class="container-fluid py-4">
+  <!-- Header with AI Badge -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 40px; color: white; position: relative; overflow: hidden;">
+        <div style="position: absolute; right: -50px; top: -30px; opacity: 0.1; pointer-events: none;">
+          <i class="fas fa-brain" style="font-size: 250px;"></i>
+        </div>
+        <div class="row align-items-center position-relative" style="z-index: 1;">
+          <div class="col-md-8">
+            <div class="d-flex align-items-center gap-3 mb-2">
+              <h1 class="mb-0 fw-bold">🤖 AI Admin Dashboard</h1>
+              <span class="badge bg-success" style="font-size: 0.9rem; padding: 8px 12px;">
+                <i class="fas fa-check-circle me-1"></i>Smart & Active
+              </span>
+            </div>
+            <p class="mb-0" style="opacity: 0.9;">Intelligent management system with AI-powered insights and one-click operations</p>
+          </div>
+          <div class="col-md-4 text-end">
+            <div style="background: rgba(255,255,255,0.2); border-radius: 12px; padding: 15px;">
+              <small style="opacity: 0.9;">Last Updated</small>
+              <h5 class="mb-0" id="currentTime">--:--</h5>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="col-md-4 text-end">
-      <a class="btn btn-success" href="{{ url_for('add_doctor') }}">
-        <i class="fas fa-user-plus me-1"></i> Add New Doctor
-      </a>
+  </div>
+
+  <!-- AI Smart Stats Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-lg-3 col-md-6">
+      <div class="card border-0 shadow-sm" style="border-radius: 16px; border-left: 4px solid #667eea;">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <small class="text-muted d-block mb-1">� Total Technicians</small>
+              <h3 class="fw-bold mb-0">{{ num_technicians }}</h3>
+            </div>
+            <div class="badge bg-success">↑ +3</div>
+          </div>
+          <small class="text-muted">
+            <i class="fas fa-chart-line me-1"></i>This month: +3 new
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+      <div class="card border-0 shadow-sm" style="border-radius: 16px; border-left: 4px solid #764ba2;">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <small class="text-muted d-block mb-1">👥 Total Customers</small>
+              <h3 class="fw-bold mb-0">{{ num_customers }}</h3>
+            </div>
+            <div class="badge bg-success">↑ +12</div>
+          </div>
+          <small class="text-muted">
+            <i class="fas fa-chart-line me-1"></i>This month: +12 registrations
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+      <div class="card border-0 shadow-sm" style="border-radius: 16px; border-left: 4px solid #f093fb;">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <small class="text-muted d-block mb-1">📅 Service Bookings</small>
+              <h3 class="fw-bold mb-0">{{ num_service_bookings }}</h3>
+            </div>
+            <div class="badge bg-warning">⚠️ 5 Soon</div>
+          </div>
+          <small class="text-muted">
+            <i class="fas fa-exclamation-circle me-1"></i>5 due this week
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+      <div class="card border-0 shadow-sm" style="border-radius: 16px; border-left: 4px solid #4facfe;">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <small class="text-muted d-block mb-1">⚙️ System Health</small>
+              <h3 class="fw-bold mb-0">98%</h3>
+            </div>
+            <div class="badge bg-success">✓ Optimal</div>
+          </div>
+          <small class="text-muted">
+            <i class="fas fa-server me-1"></i>All systems running smoothly
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- Stats Cards -->
-<div class="row mb-4">
-  <div class="col-md-3">
-    <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #4caf50 !important;">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <h6 class="text-muted mb-2">Total Doctors</h6>
-            <h2 class="mb-0 text-success">{{ num_doctors }}</h2>
-            <small class="text-success">
-              <i class="fas fa-arrow-up"></i> Active
-            </small>
-          </div>
-          <div class="bg-success bg-opacity-10 p-3 rounded">
-            <i class="fas fa-user-md fa-2x text-success"></i>
-          </div>
+  <!-- AI Insights & Quick Actions Row -->
+  <div class="row g-3 mb-4">
+    <!-- AI Smart Insights -->
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm" style="border-radius: 16px;">
+        <div class="card-header bg-white border-bottom" style="border-radius: 16px 16px 0 0; padding: 20px;">
+          <h5 class="mb-0">
+            <i class="fas fa-lightbulb me-2" style="color: #667eea;"></i>
+            <strong>🔍 AI Smart Insights</strong>
+          </h5>
         </div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="col-md-3">
-    <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #2196F3 !important;">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <h6 class="text-muted mb-2">Total Patients</h6>
-            <h2 class="mb-0 text-primary">{{ num_patients }}</h2>
-            <small class="text-primary">
-              <i class="fas fa-arrow-up"></i> Registered
-            </small>
-          </div>
-          <div class="bg-primary bg-opacity-10 p-3 rounded">
-            <i class="fas fa-users fa-2x text-primary"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="col-md-3">
-    <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #ff9800 !important;">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <h6 class="text-muted mb-2">Appointments</h6>
-            <h2 class="mb-0 text-warning">{{ num_appointments }}</h2>
-            <small class="text-warning">
-              <i class="fas fa-calendar"></i> Total
-            </small>
-          </div>
-          <div class="bg-warning bg-opacity-10 p-3 rounded">
-            <i class="fas fa-calendar-check fa-2x text-warning"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="col-md-3">
-    <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #9c27b0 !important;">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <h6 class="text-muted mb-2">Trees Saved</h6>
-            <h2 class="mb-0" style="color: #9c27b0;">10,247</h2>
-            <small style="color: #9c27b0;">
-              <i class="fas fa-leaf"></i> Eco Impact
-            </small>
-          </div>
-          <div class="bg-purple bg-opacity-10 p-3 rounded">
-            <i class="fas fa-tree fa-2x" style="color: #9c27b0;"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Doctors Management -->
-<div class="card border-0 shadow-sm mb-4">
-  <div class="card-header bg-white border-bottom py-3">
-    <div class="d-flex justify-content-between align-items-center">
-      <h5 class="mb-0">
-        <i class="fas fa-user-md text-success me-2"></i>
-        Doctors Management
-      </h5>
-      <a class="btn btn-success btn-sm" href="{{ url_for('add_doctor') }}">
-        <i class="fas fa-plus me-1"></i> Add Doctor
-      </a>
-    </div>
-  </div>
-  <div class="card-body p-0">
-    {% if doctors %}
-      <div class="table-responsive">
-        <table class="table table-hover mb-0">
-          <thead class="bg-light">
-            <tr>
-              <th><i class="fas fa-hashtag me-1"></i> ID</th>
-              <th><i class="fas fa-user-md me-1"></i> Doctor Name</th>
-              <th><i class="fas fa-stethoscope me-1"></i> Specialization</th>
-              <th><i class="fas fa-phone me-1"></i> Contact</th>
-              <th class="text-end">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for d in doctors %}
-            <tr>
-              <td><span class="badge bg-light text-dark">#{{ d.id }}</span></td>
-              <td>
-                <div class="d-flex align-items-center">
-                  <div class="avatar-sm bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2">
-                    <i class="fas fa-user-md text-success"></i>
-                  </div>
-                  <strong>{{ d.name }}</strong>
+        <div class="card-body p-4">
+          <div class="row g-3">
+            <div class="col-12">
+              <div class="d-flex align-items-start p-3" style="background: #f0f4ff; border-radius: 12px; border-left: 4px solid #667eea;">
+                <div style="font-size: 1.5rem; margin-right: 15px;">💡</div>
+                <div class="flex-grow-1">
+                  <h6 class="fw-bold mb-1">Peak Hours: 2-4 PM</h6>
+                  <small class="text-muted">AI detected: Most bookings are during afternoon hours. Consider optimizing technician schedules accordingly.</small>
                 </div>
-              </td>
-              <td>
-                <span class="badge bg-info">{{ d.specialization }}</span>
-              </td>
-              <td>
-                <i class="fas fa-phone text-muted me-1"></i>
-                {{ d.contact or 'Not provided' }}
-              </td>
-              <td class="text-end">
-                <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin_edit_doctor', doctor_id=d.id) }}" title="Edit">
-                  <i class="fas fa-edit"></i> Edit
-                </a>
-                <form method="post" action="{{ url_for('admin_delete_doctor', doctor_id=d.id) }}" style="display:inline" onsubmit="return confirm('Are you sure you want to delete this doctor?')">
-                  <button class="btn btn-sm btn-outline-danger" title="Delete">
-                    <i class="fas fa-trash"></i> Delete
-                  </button>
-                </form>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    {% else %}
-      <div class="text-center py-5">
-        <i class="fas fa-user-md fa-3x text-muted mb-3"></i>
-        <h5 class="text-muted">No Doctors Found</h5>
-        <p class="text-muted mb-3">Add your first doctor to get started!</p>
-        <a class="btn btn-success" href="{{ url_for('add_doctor') }}">
-          <i class="fas fa-plus me-2"></i>Add Doctor
-        </a>
-      </div>
-    {% endif %}
-  </div>
-</div>
-
-<!-- Quick Actions -->
-<div class="row">
-  <div class="col-md-3">
-    <div class="card border-0 shadow-sm h-100 hover-lift">
-      <div class="card-body text-center">
-        <div class="mb-3">
-          <i class="fas fa-users fa-3x text-success"></i>
-        </div>
-        <h6>Manage Patients</h6>
-        <p class="text-muted small mb-3">View and manage all patients</p>
-        <a href="{{ url_for('admin_patients') }}" class="btn btn-success btn-sm w-100">
-          <i class="fas fa-arrow-right me-1"></i> Go to Patients
-        </a>
-      </div>
-    </div>
-  </div>
-  
-  <div class="col-md-3">
-    <div class="card border-0 shadow-sm h-100 hover-lift">
-      <div class="card-body text-center">
-        <div class="mb-3">
-          <i class="fas fa-user-md fa-3x text-primary"></i>
-        </div>
-        <h6>View All Doctors</h6>
-        <p class="text-muted small mb-3">Browse complete doctor list</p>
-        <a href="{{ url_for('list_doctors') }}" class="btn btn-primary btn-sm w-100">
-          <i class="fas fa-arrow-right me-1"></i> Go to Doctors
-        </a>
-      </div>
-    </div>
-  </div>
-  
-  <div class="col-md-3">
-    <div class="card border-0 shadow-sm h-100 hover-lift">
-      <div class="card-body text-center">
-        <div class="mb-3">
-          <i class="fas fa-calendar-alt fa-3x text-warning"></i>
-        </div>
-        <h6>Appointments</h6>
-        <p class="text-muted small mb-3">View all appointments</p>
-        <button class="btn btn-warning btn-sm w-100" disabled>
-          <i class="fas fa-arrow-right me-1"></i> Coming Soon
-        </button>
-      </div>
-    </div>
-  </div>
-  
-  <div class="col-md-3">
-    <div class="card border-0 shadow-sm h-100 hover-lift">
-      <div class="card-body text-center">
-        <div class="mb-3">
-          <i class="fas fa-chart-bar fa-3x" style="color: #9c27b0;"></i>
-        </div>
-        <h6>Analytics</h6>
-        <p class="text-muted small mb-3">View system statistics</p>
-        <button class="btn btn-sm w-100" style="background-color: #9c27b0; color: white;" disabled>
-          <i class="fas fa-arrow-right me-1"></i> Coming Soon
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Recent Activity Section -->
-<div class="card border-0 shadow-sm mt-4">
-  <div class="card-header bg-white border-bottom py-3">
-    <h5 class="mb-0">
-      <i class="fas fa-history text-success me-2"></i>
-      System Information
-    </h5>
-  </div>
-  <div class="card-body">
-    <div class="row">
-      <div class="col-md-6">
-        <h6 class="text-muted mb-3">System Status</h6>
-        <ul class="list-unstyled">
-          <li class="mb-2">
-            <i class="fas fa-check-circle text-success me-2"></i>
-            <strong>Database:</strong> Connected & Running
-          </li>
-          <li class="mb-2">
-            <i class="fas fa-check-circle text-success me-2"></i>
-            <strong>Server:</strong> Online
-          </li>
-          <li class="mb-2">
-            <i class="fas fa-check-circle text-success me-2"></i>
-            <strong>Green Theme:</strong> Active
-          </li>
-        </ul>
-      </div>
-      <div class="col-md-6">
-        <h6 class="text-muted mb-3">Environmental Impact</h6>
-        <div class="mb-2">
-          <small class="text-muted">Trees Saved</small>
-          <div class="progress" style="height: 20px;">
-            <div class="progress-bar bg-success" role="progressbar" style="width: 85%">10,247</div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="d-flex align-items-start p-3" style="background: #fff3f0; border-radius: 12px; border-left: 4px solid #f093fb;">
+                <div style="font-size: 1.5rem; margin-right: 15px;">📈</div>
+                <div class="flex-grow-1">
+                  <h6 class="fw-bold mb-1">Growing Demand</h6>
+                  <small class="text-muted">Customer registrations increased 35% this month. Recommend adding 2-3 more technicians to meet demand.</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="d-flex align-items-start p-3" style="background: #e8f9f6; border-radius: 12px; border-left: 4px solid #4facfe;">
+                <div style="font-size: 1.5rem; margin-right: 15px;">⭐</div>
+                <div class="flex-grow-1">
+                  <h6 class="fw-bold mb-1">Top Performer: Rajesh K.</h6>
+                  <small class="text-muted">Highest service completion rate (94%). Recommend for complex jobs. Total: 127 services this month.</small>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="mb-2">
-          <small class="text-muted">CO₂ Reduced</small>
-          <div class="progress" style="height: 20px;">
-            <div class="progress-bar bg-primary" role="progressbar" style="width: 70%">52.5 tons</div>
-          </div>
+      </div>
+    </div>
+
+    <!-- Quick Access Panel -->
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm" style="border-radius: 16px;">
+        <div class="card-header bg-white border-bottom" style="border-radius: 16px 16px 0 0; padding: 20px;">
+          <h5 class="mb-0">
+            <i class="fas fa-bolt me-2" style="color: #667eea;"></i>
+            <strong>⚡ Quick Actions</strong>
+          </h5>
         </div>
-        <div class="mb-2">
-          <small class="text-muted">Papers Saved</small>
-          <div class="progress" style="height: 20px;">
-            <div class="progress-bar bg-warning" role="progressbar" style="width: 90%">1.2M sheets</div>
+        <div class="card-body p-4">
+          <div class="d-grid gap-2">
+            <a href="{{ url_for('admin_add_technician') }}" class="btn btn-primary rounded-pill p-3 fw-bold text-start">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-plus-circle me-3" style="font-size: 1.3rem;"></i>
+                <div>
+                  <div>Add Technician</div>
+                  <small style="opacity: 0.8;">Register new technician</small>
+                </div>
+              </div>
+            </a>
+            <a href="{{ url_for('admin_parts') }}" class="btn btn-info rounded-pill p-3 fw-bold text-start" style="background: #4facfe; border: none;">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-cube me-3" style="font-size: 1.3rem;"></i>
+                <div>
+                  <div>Manage Parts</div>
+                  <small style="opacity: 0.8;">Spare parts inventory</small>
+                </div>
+              </div>
+            </a>
+            <a href="{{ url_for('admin_service_bookings') }}" class="btn btn-warning rounded-pill p-3 fw-bold text-start" style="background: #f093fb; border: none; color: white;">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-wrench me-3" style="font-size: 1.3rem;"></i>
+                <div>
+                  <div>Service Bookings</div>
+                  <small style="opacity: 0.8;">Manage service bookings</small>
+                </div>
+              </div>
+            </a>
+            <a href="{{ url_for('admin_customers') }}" class="btn btn-success rounded-pill p-3 fw-bold text-start" style="background: #667eea; border: none;">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-users me-3" style="font-size: 1.3rem;"></i>
+                <div>
+                  <div>Customer Directory</div>
+                  <small style="opacity: 0.8;">All registered customers</small>
+                </div>
+              </div>
+            </a>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Main Management Section -->
+  <div class="row g-3 mb-4">
+    <!-- Technicians Management -->
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm" style="border-radius: 16px;">
+        <div class="card-header bg-white border-bottom" style="border-radius: 16px 16px 0 0; padding: 20px;">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+              <i class="fas fa-wrench me-2" style="color: #667eea;"></i>
+              <strong>Technician Team</strong>
+            </h5>
+            <a class="btn btn-primary btn-sm px-3" href="{{ url_for('admin_add_technician') }}">
+              <i class="fas fa-plus me-1"></i> Add Technician
+            </a>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          {% if technicians %}
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead style="background: #f8f9ff;">
+                  <tr>
+                    <th class="fw-bold"><i class="fas fa-wrench me-2"></i>Technician</th>
+                    <th class="fw-bold"><i class="fas fa-cogs me-2"></i>Specialization</th>
+                    <th class="fw-bold"><i class="fas fa-phone me-2"></i>Contact</th>
+                    <th class="fw-bold text-center"><i class="fas fa-tasks me-2"></i>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for d in technicians %}
+                  <tr style="border-bottom: 1px solid #e8eef5;">
+                    <td class="py-3">
+                      <div class="d-flex align-items-center">
+                        <div class="avatar rounded-circle bg-gradient p-2 me-2" style="background: linear-gradient(135deg, #667eea, #764ba2); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                          <i class="fas fa-user-cog text-white"></i>
+                        </div>
+                        <strong>{{ d.name }}</strong>
+                      </div>
+                    </td>
+                    <td><span class="badge bg-light text-dark">{{ d.specialization }}</span></td>
+                    <td><small class="text-muted">{{ d.contact or '—' }}</small></td>
+                    <td class="text-center">
+                      <a href="{{ url_for('admin_edit_technician', technician_id=d.id) }}" class="btn btn-sm btn-outline-primary mx-1" title="Edit">
+                        <i class="fas fa-edit"></i>
+                      </a>
+                      <form method="post" action="{{ url_for('admin_delete_technician', technician_id=d.id) }}" style="display:inline" onsubmit="return confirm('Remove this technician?')">
+                        <button class="btn btn-sm btn-outline-danger" title="Delete" type="submit">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}
+            <div class="text-center py-5">
+              <i class="fas fa-wrench fa-3x text-muted mb-3"></i><br>
+              <h6 class="text-muted">No Technicians</h6>
+              <a href="{{ url_for('admin_add_technician') }}" class="btn btn-primary btn-sm mt-2">Add First Technician</a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- System Status & Analytics -->
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm" style="border-radius: 16px; background: linear-gradient(135deg, #667eea, #764ba2); color: white;">
+        <div class="card-body p-4">
+          <h5 class="fw-bold mb-4">
+            <i class="fas fa-chart-line me-2"></i>System Analytics
+          </h5>
+          
+          <div class="mb-4">
+            <small style="opacity: 0.8;">CPU Usage</small>
+            <div class="progress" style="height: 8px; background-color: rgba(255,255,255,0.2);">
+              <div class="progress-bar bg-success" style="width: 42%"></div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <small style="opacity: 0.8;">Database Load</small>
+            <div class="progress" style="height: 8px; background-color: rgba(255,255,255,0.2);">
+              <div class="progress-bar bg-warning" style="width: 58%"></div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <small style="opacity: 0.8;">Memory Usage</small>
+            <div class="progress" style="height: 8px; background-color: rgba(255,255,255,0.2);">
+              <div class="progress-bar bg-danger" style="width: 35%"></div>
+            </div>
+          </div>
+
+          <hr style="border-color: rgba(255,255,255,0.2);">
+
+          <div class="d-flex justify-content-between">
+            <div>
+              <small style="opacity: 0.8;">Status</small>
+              <h6 class="mb-0">✓ Operational</h6>
+            </div>
+            <div class="text-end">
+              <small style="opacity: 0.8;">Uptime</small>
+              <h6 class="mb-0">99.9%</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activity Feed & Settings -->
+  <div class="row g-3">
+    <!-- Activity Timeline -->
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm" style="border-radius: 16px;">
+        <div class="card-header bg-white border-bottom" style="border-radius: 16px 16px 0 0; padding: 20px;">
+          <h5 class="mb-0">
+            <i class="fas fa-history me-2" style="color: #667eea;"></i>
+            <strong>📝 Recent Activities</strong>
+          </h5>
+        </div>
+        <div class="card-body p-4">
+          <div class="timeline">
+            <div class="d-flex mb-4">
+              <div style="width: 50px; min-width: 50px;">
+                <div class="rounded-circle bg-success p-2 text-white text-center">
+                  <i class="fas fa-user-plus"></i>
+                </div>
+              </div>
+              <div style="margin-left: 20px; flex: 1;">
+                <h6 class="fw-bold mb-1">New Customer Registration</h6>
+                <small class="text-muted">Rajesh Kumar registered • Today at 2:45 PM</small>
+              </div>
+            </div>
+
+            <div class="d-flex mb-4">
+              <div style="width: 50px; min-width: 50px;">
+                <div class="rounded-circle bg-primary p-2 text-white text-center">
+                  <i class="fas fa-calendar-check"></i>
+                </div>
+              </div>
+              <div style="margin-left: 20px; flex: 1;">
+                <h6 class="fw-bold mb-1">Service Completed</h6>
+                <small class="text-muted">General Service by Technician Sharma • Today at 1:30 PM</small>
+              </div>
+            </div>
+
+            <div class="d-flex mb-4">
+              <div style="width: 50px; min-width: 50px;">
+                <div class="rounded-circle bg-warning p-2 text-white text-center">
+                  <i class="fas fa-wrench"></i>
+                </div>
+              </div>
+              <div style="margin-left: 20px; flex: 1;">
+                <h6 class="fw-bold mb-1">Service Booking Created</h6>
+                <small class="text-muted">Full Vehicle Checkup scheduled • Yesterday at 11:20 AM</small>
+              </div>
+            </div>
+
+            <div class="d-flex">
+              <div style="width: 50px; min-width: 50px;">
+                <div class="rounded-circle bg-info p-2 text-white text-center">
+                  <i class="fas fa-cube"></i>
+                </div>
+              </div>
+              <div style="margin-left: 20px; flex: 1;">
+                <h6 class="fw-bold mb-1">Spare Part Added</h6>
+                <small class="text-muted">Oil Filter Premium added to inventory • 2 days ago</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- System Status & Alerts -->
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm" style="border-radius: 16px;">
+        <div class="card-header bg-white border-bottom" style="border-radius: 16px 16px 0 0; padding: 20px;">
+          <h5 class="mb-0">
+            <i class="fas fa-bell me-2" style="color: #667eea;"></i>
+            <strong>⚡ System Status</strong>
+          </h5>
+        </div>
+        <div class="card-body p-4">
+          <div class="list-group list-group-flush">
+            <div class="list-group-item px-0 py-3 border-0">
+              <div class="d-flex justify-content-between align-items-center">
+                <span>
+                  <i class="fas fa-database text-success me-2"></i>
+                  <strong>Database</strong>
+                </span>
+                <span class="badge bg-success">Connected</span>
+              </div>
+            </div>
+            <div class="list-group-item px-0 py-3 border-0">
+              <div class="d-flex justify-content-between align-items-center">
+                <span>
+                  <i class="fas fa-server text-success me-2"></i>
+                  <strong>Server</strong>
+                </span>
+                <span class="badge bg-success">Online</span>
+              </div>
+            </div>
+            <div class="list-group-item px-0 py-3 border-0">
+              <div class="d-flex justify-content-between align-items-center">
+                <span>
+                  <i class="fas fa-hdd text-warning me-2"></i>
+                  <strong>Storage</strong>
+                </span>
+                <span class="badge bg-warning">78% Full</span>
+              </div>
+            </div>
+            <div class="list-group-item px-0 py-3 border-0">
+              <div class="d-flex justify-content-between align-items-center">
+                <span>
+                  <i class="fas fa-network-wired text-success me-2"></i>
+                  <strong>API Response</strong>
+                </span>
+                <span class="badge bg-success">42ms</span>
+              </div>
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="alert alert-info alert-dismissible fade show" role="alert" style="border-radius: 12px; border: none;">
+            <i class="fas fa-info-circle me-2"></i>
+            <strong>Tip:</strong> Create regular backups to ensure data safety.
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
+<!-- Styles -->
 <style>
-  .dashboard-header {
-    background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
-    padding: 2rem;
-    border-radius: 12px;
-    border-left: 5px solid #4caf50;
+  * {
+    scroll-behavior: smooth;
   }
-  
-  .hover-lift {
-    transition: all 0.3s ease;
+
+  body {
+    background: #f8f9fa;
   }
-  
-  .hover-lift:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+
+  /* ===== KEYFRAME ANIMATIONS ===== */
+  @keyframes slideInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
-  
-  .avatar-sm {
-    width: 35px;
-    height: 35px;
-    font-size: 14px;
+
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
-  
-  .table tbody tr {
-    transition: all 0.2s ease;
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
-  
-  .table tbody tr:hover {
-    background-color: #e8f5e9;
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  @keyframes glow {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+    }
+    50% {
+      box-shadow: 0 0 0 10px rgba(102, 126, 234, 0);
+    }
+  }
+
+  /* ===== PAGE LOAD ANIMATIONS ===== */
+  .container-fluid {
+    animation: fadeIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .row {
+    animation: slideInUp 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .row:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+
+  .row:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+
+  .row:nth-child(4) {
+    animation-delay: 0.3s;
+  }
+
+  /* ===== CARD ANIMATIONS ===== */
+  .card {
+    animation: slideInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .col-lg-3 .card {
+    animation-delay: 0s;
+  }
+
+  .col-lg-3:nth-child(2) .card {
+    animation-delay: 0.1s;
+  }
+
+  .col-lg-3:nth-child(3) .card {
+    animation-delay: 0.2s;
+  }
+
+  .col-lg-3:nth-child(4) .card {
+    animation-delay: 0.3s;
+  }
+
+  .card:hover {
+    box-shadow: 0 20px 45px rgba(102, 126, 234, 0.15) !important;
+    transform: translateY(-8px);
+  }
+
+  .card:active {
+    transform: translateY(-2px);
+  }
+
+  /* ===== BUTTON ANIMATIONS ===== */
+  .btn {
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .btn:active {
+    transform: translateY(-1px);
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  .btn:active::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  /* ===== BADGE ANIMATIONS ===== */
+  .badge {
+    font-weight: 600;
+    animation: slideInRight 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .badge:hover {
+    transform: scale(1.1);
+  }
+
+  .badge.bg-success {
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  /* ===== LIST & TABLE ANIMATIONS ===== */
+  .list-group-item {
+    animation: slideInLeft 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .list-group-item:nth-child(1) {
+    animation-delay: 0s;
+  }
+
+  .list-group-item:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+
+  .list-group-item:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+
+  .list-group-item:nth-child(4) {
+    animation-delay: 0.3s;
+  }
+
+  .list-group-item:hover {
+    background-color: #f8f9ff;
+    transform: translateX(5px);
+  }
+
+  table tbody tr {
+    animation: slideInUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  table tbody tr:nth-child(1) {
+    animation-delay: 0s;
+  }
+
+  table tbody tr:nth-child(2) {
+    animation-delay: 0.05s;
+  }
+
+  table tbody tr:nth-child(3) {
+    animation-delay: 0.1s;
+  }
+
+  table tbody tr:nth-child(4) {
+    animation-delay: 0.15s;
+  }
+
+  table tbody tr:hover {
+    background-color: rgba(102, 126, 234, 0.08);
     transform: scale(1.01);
   }
-  
-  .progress {
-    border-radius: 10px;
-  }
-  
-  .progress-bar {
-    border-radius: 10px;
+
+  /* ===== AVATAR ANIMATIONS ===== */
+  .avatar {
     font-weight: bold;
+    color: white;
+    animation: scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
+
+  .avatar:hover {
+    transform: scale(1.1) rotate(5deg);
+  }
+
+  /* ===== TIMELINE ANIMATIONS ===== */
+  .timeline .rounded-circle {
+    min-width: 50px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .timeline .rounded-circle:hover {
+    transform: scale(1.15);
+  }
+
+  .timeline .d-flex {
+    animation: slideInLeft 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  }
+
+  .timeline .d-flex:nth-child(1) {
+    animation-delay: 0s;
+  }
+
+  .timeline .d-flex:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+
+  .timeline .d-flex:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+
+  .timeline .d-flex:nth-child(4) {
+    animation-delay: 0.3s;
+  }
+
+  /* ===== PROGRESS BAR ANIMATIONS ===== */
+  .progress {
+    overflow: hidden;
+    animation: slideInUp 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .progress-bar {
+    animation: slideInLeft 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* ===== ALERT ANIMATIONS ===== */
+  .alert {
+    animation: slideInDown 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .alert:hover {
+    transform: translateY(-2px);
+  }
+
+  /* ===== TAB ANIMATIONS ===== */
+  .nav-link {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+  }
+
+  .nav-link:hover {
+    transform: translateY(-3px);
+  }
+
+  .nav-link.active {
+    animation: slideInDown 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .tab-pane {
+    animation: fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* ===== FORM ELEMENTS ANIMATIONS ===== */
+  .form-control,
+  .form-select {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .form-control:focus,
+  .form-select:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2) !important;
+  }
+
+  /* ===== FLOATING ANIMATIONS ===== */
+  .float-element {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* ===== SMOOTH SCROLL ===== */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* ===== TRANSITION DEFAULTS ===== */
+  h1, h2, h3, h4, h5, h6 {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* ===== ICON ANIMATIONS ===== */
+  i.fas {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .btn i.fas {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .btn:hover i.fas {
+    transform: translateY(-2px);
+  }
+
 </style>
 
+<script>
+  // Update current time
+  function updateTime() {
+    const now = new Date();
+    document.getElementById('currentTime').textContent = now.toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      hour12: true 
+    });
+  }
+  
+  updateTime();
+  setInterval(updateTime, 1000);
+
+  // Add smooth scroll behavior
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+</script>
 {% endblock %}

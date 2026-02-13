@@ -1,0 +1,86 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+
+<div class="container my-5">
+  <div class="row">
+    <!-- Technician Info Card -->
+    <div class="col-lg-4 mb-4">
+      <div class="card shadow-lg border-0 sticky-top" style="top: 20px;">
+        <div class="card-body text-center p-4">
+          <div class="mb-3">
+            <div class="rounded-circle bg-success d-inline-flex align-items-center justify-content-center" 
+                 style="width: 120px; height: 120px;">
+              <i class="fas fa-user-cog fa-3x text-white"></i>
+            </div>
+          </div>
+          <h4 class="fw-bold mb-1">{{ technician.name }}</h4>
+          <p class="text-muted mb-3">{{ technician.specialization }}</p>
+          
+          <!-- Rating Display -->
+          <div class="mb-3">
+            <div class="d-flex justify-content-center align-items-center mb-2">
+              <h2 class="mb-0 me-2">{{ '%.1f'|format(avg_rating) }}</h2>
+              <div>
+                {% for i in range(5) %}
+                  {% if i < avg_rating %}
+                    <i class="fas fa-star text-warning"></i>
+                  {% else %}
+                    <i class="far fa-star text-warning"></i>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+            <p class="text-muted mb-0">Based on {{ reviews|length }} reviews</p>
+          </div>
+          
+          <a href="{{ url_for('book_car_service') }}" class="btn btn-success w-100">
+            <i class="fas fa-calendar-check"></i> Book Service
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reviews List -->
+    <div class="col-lg-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-white border-bottom py-3">
+          <h4 class="mb-0"><i class="fas fa-comments"></i> Customer Reviews</h4>
+        </div>
+        <div class="card-body">
+          {% if reviews %}
+            {% for review in reviews %}
+            <div class="review-item border-bottom pb-4 mb-4">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <div>
+                  <h6 class="fw-bold mb-1">{{ review.customer.name if review.customer else 'Customer' }}</h6>
+                  <div class="mb-2">
+                    {% for i in range(5) %}
+                      {% if i < review.rating %}
+                        <i class="fas fa-star text-warning"></i>
+                      {% else %}
+                        <i class="far fa-star text-warning"></i>
+                      {% endif %}
+                    {% endfor %}
+                    <span class="badge bg-success ms-2">Verified Customer</span>
+                  </div>
+                </div>
+                <small class="text-muted">{{ review.created_at.strftime('%b %d, %Y') }}</small>
+              </div>
+              {% if review.comment %}
+              <p class="mb-0 text-muted">{{ review.comment }}</p>
+              {% endif %}
+            </div>
+            {% endfor %}
+          {% else %}
+          <div class="text-center py-5 text-muted">
+            <i class="fas fa-comment-slash fa-3x mb-3"></i>
+            <p>No reviews yet. Be the first to review this technician!</p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

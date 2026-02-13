@@ -1,40 +1,44 @@
 {% extends 'hms/base.html' %}
 {% block content %}
 
-<!-- Dashboard Header -->
-<div class="dashboard-header mb-4 p-4 rounded-4 shadow-lg" style="background: linear-gradient(135deg, #0d6efd 0%, #0b84d9 100%);">
-  <div class="row align-items-center">
+<!-- Dashboard Header with Animations -->
+<div class="dashboard-header mb-4 p-4 rounded-4 shadow-lg position-relative overflow-hidden reveal-on-scroll" style="background: linear-gradient(135deg, #0d6efd 0%, #0b84d9 100%);">
+  <!-- Floating Background Elements -->
+  <div class="position-absolute" style="top: 10%; right: 5%; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: float 8s ease-in-out infinite;"></div>
+  <div class="position-absolute" style="bottom: 10%; left: 10%; width: 60px; height: 60px; background: rgba(251,191,36,0.2); border-radius: 30%; animation: float 6s ease-in-out infinite reverse;"></div>
+  
+  <div class="row align-items-center position-relative" style="z-index: 2;">
     <div class="col-md-8">
-      <h2 class="mb-0 text-white">
-        <i class="fas fa-heartbeat me-2"></i>
-        Patient Dashboard
+      <h2 class="mb-0 text-white animate__animated animate__fadeInLeft text-gradient-animate">
+        <i class="fas fa-car me-2"></i>
+        Customer Dashboard
       </h2>
-      <p class="text-white mb-0 mt-2 opacity-75">
+      <p class="text-white mb-0 mt-2 opacity-75 animate__animated animate__fadeIn" style="animation-delay: 0.2s;">
         <i class="fas fa-user-circle me-1"></i> Welcome back, <strong>{{ patient.name }}</strong>
       </p>
     </div>
-    <div class="col-md-4 text-end">
-      <a class="btn btn-light me-2" href="{{ url_for('patient_edit') }}">
+    <div class="col-md-4 text-end animate__animated animate__fadeInRight">
+      <a class="btn btn-light me-2 magnetic-btn" href="{{ url_for('patient_edit') }}" style="border-radius: 25px; transition: all 0.3s;">
         <i class="fas fa-user-edit me-1"></i> Edit Profile
       </a>
-      <a class="btn btn-light" href="{{ url_for('list_doctors') }}">
-        <i class="fas fa-calendar-plus me-1"></i> Book Appointment
+      <a class="btn magnetic-btn" href="{{ url_for('spare_parts_browse') }}" style="background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #000; border: none; border-radius: 25px; transition: all 0.3s;">
+        <i class="fas fa-calendar-plus me-1"></i> Book Service
       </a>
     </div>
   </div>
 </div>
 
-<!-- Stats Cards -->
-<div class="row mb-4 g-4">
-  <div class="col-md-3">
-    <div class="card border-0 shadow-lg h-100 stat-card" style="border-left: 4px solid #0d6efd !important;">
+<!-- Stats Cards with Animations -->
+<div class="row mb-4 g-4 stagger-reveal">
+  <div class="col-md-3 stagger-item">
+    <div class="card border-0 shadow-lg h-100 stat-card-modern card-3d" style="border-left: 4px solid #0d6efd !important; border-radius: 20px; transition: all 0.4s;" data-tilt>
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-center">
           <div>
-            <h6 class="text-muted mb-2">Upcoming Appointments</h6>
-            <h3 class="mb-0 text-primary fw-bold">{{ upcoming|length }}</h3>
+            <h6 class="text-muted mb-2">Upcoming Services</h6>
+            <h3 class="mb-0 text-primary fw-bold counter" data-target="{{ upcoming|length }}">0</h3>
           </div>
-          <div class="bg-primary bg-opacity-10 p-3 rounded-circle">
+          <div class="bg-primary bg-opacity-10 p-3 rounded-circle" style="animation: pulse 2s ease-in-out infinite;">
             <i class="fas fa-calendar-check fa-2x text-primary"></i>
           </div>
         </div>
@@ -42,8 +46,8 @@
     </div>
   </div>
   
-  <div class="col-md-3">
-    <div class="card border-0 shadow-lg h-100 stat-card" style="border-left: 4px solid #0b84d9 !important;">
+  <div class="col-md-3 stagger-item">
+    <div class="card border-0 shadow-lg h-100 stat-card-modern card-3d" style="border-left: 4px solid #0b84d9 !important; border-radius: 20px; transition: all 0.4s;" data-tilt>
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-center">
           <div>
@@ -51,31 +55,31 @@
             <h6 class="mb-0 text-primary">{{ patient.contact or 'Not Set' }}</h6>
           </div>
           <div class="bg-info bg-opacity-10 p-3 rounded-circle">
-            <i class="fas fa-phone fa-2x text-info"></i>
+            <i class="fas fa-phone fa-2x text-info fa-shake"></i>
           </div>
         </div>
       </div>
     </div>
   </div>
   
-  <div class="col-md-3">
-    <div class="card border-0 shadow-lg h-100 stat-card" style="border-left: 4px solid #198754 !important;">
+  <div class="col-md-3 stagger-item">
+    <div class="card border-0 shadow-lg h-100 stat-card-modern card-3d" style="border-left: 4px solid #198754 !important; border-radius: 20px; transition: all 0.4s;" data-tilt>
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-center">
           <div>
-            <h6 class="text-muted mb-2">Total Visits</h6>
-            <h3 class="mb-0 text-success fw-bold">{{ past|length }}</h3>
+            <h6 class="text-muted mb-2">Total Services</h6>
+            <h3 class="mb-0 text-success fw-bold counter" data-target="{{ past|length }}">0</h3>
           </div>
           <div class="bg-success bg-opacity-10 p-3 rounded-circle">
-            <i class="fas fa-user-check fa-2x text-success"></i>
+            <i class="fas fa-check-circle fa-2x text-success"></i>
           </div>
         </div>
       </div>
     </div>
   </div>
   
-  <div class="col-md-3">
-    <div class="card border-0 shadow-lg h-100 stat-card" style="border-left: 4px solid #6610f2 !important;">
+  <div class="col-md-3 stagger-item">
+    <div class="card border-0 shadow-lg h-100 stat-card-modern card-3d" style="border-left: 4px solid #6610f2 !important; border-radius: 20px; transition: all 0.4s;" data-tilt>
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-center">
           <div>
@@ -161,7 +165,7 @@
         <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
         <h5 class="text-muted">No Upcoming Appointments</h5>
         <p class="text-muted mb-3">Book your first appointment to start your eco-friendly healthcare journey!</p>
-        <a class="btn btn-success" href="{{ url_for('list_doctors') }}">
+        <a class="btn btn-success" href="{{ url_for('spare_parts_browse') }}">
           <i class="fas fa-search me-2"></i>Browse Doctors
         </a>
       </div>
@@ -179,7 +183,7 @@
         </div>
         <h5>Browse Doctors</h5>
         <p class="text-muted small">Find and book appointments with our expert doctors</p>
-        <a href="{{ url_for('list_doctors') }}" class="btn btn-success w-100">
+        <a href="{{ url_for('spare_parts_browse') }}" class="btn btn-success w-100">
           <i class="fas fa-search me-2"></i>View Doctors
         </a>
       </div>

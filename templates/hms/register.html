@@ -1,103 +1,123 @@
 {% extends 'hms/base.html' %}
 {% block content %}
-<div class="row justify-content-center mt-4">
-  <div class="col-md-7">
-    <div class="card shadow-lg border-0 rounded-4" style="border-top: 5px solid #0d6efd !important;">
-      <div class="card-header text-white text-center py-4" style="background: linear-gradient(135deg, #0d6efd 0%, #0b84d9 100%);">
-        <h3 class="mb-0">
-          <i class="fas fa-user-plus me-2"></i>Join Gaurav Motors
-        </h3>
-        <p class="mb-0 mt-2 small opacity-75"><i class="fas fa-car me-2"></i>Register for Quality Automotive Service</p>
-      </div>
-      <div class="card-body p-5">
-        <!-- Welcome Message -->
-        <div class="alert alert-primary border-0 shadow-sm mb-4" style="background: linear-gradient(135deg, #eef6ff 0%, #f5f9ff 100%);">
-          <div class="row align-items-center">
-            <div class="col-md-2 text-center">
-              <i class="fas fa-car fa-3x text-primary"></i>
-            </div>
-            <div class="col-md-10">
-              <h6 class="text-primary mb-2"><strong>Start Your Automotive Journey!</strong></h6>
-              <p class="mb-0 small text-primary">
-                Register today to access our comprehensive car services, book appointments 
-                with expert mechanics, and manage your vehicle service records securely.
-              </p>
+<div class="register-page py-5" style="min-height: 80vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); position: relative; overflow: hidden;">
+  <!-- Animated Particles -->
+  <div class="hero-particles position-absolute w-100 h-100" style="z-index: 1; pointer-events: none;"></div>
+  
+  <!-- Animated Background Shapes -->
+  <div class="position-absolute" style="top: 10%; left: 5%; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: float 6s ease-in-out infinite;"></div>
+  <div class="position-absolute" style="top: 60%; right: 10%; width: 150px; height: 150px; background: rgba(255,255,255,0.08); border-radius: 50%; animation: float 8s ease-in-out infinite reverse;"></div>
+  <div class="position-absolute" style="bottom: 20%; left: 15%; width: 80px; height: 80px; background: rgba(255,255,255,0.12); border-radius: 30%; animation: float 7s ease-in-out infinite;"></div>
+  
+  <div class="container position-relative" style="z-index: 2;">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-7 animate__animated animate__fadeInUp">
+        <div class="card shadow-lg border-0 rounded-4 overflow-hidden card-3d" style="border-top: 5px solid #0d6efd !important; backdrop-filter: blur(10px);" data-tilt>
+          <div class="card-header text-white text-center py-4 position-relative overflow-hidden" style="background: linear-gradient(135deg, #0d6efd 0%, #0b84d9 100%);">
+            <div class="position-absolute" style="top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%); animation: rotate 20s linear infinite;"></div>
+            <div class="position-relative">
+              <div class="mx-auto mb-3 animate__animated animate__bounceIn" style="width: 70px; height: 70px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-user-plus fa-2x"></i>
+              </div>
+              <h3 class="mb-0 text-gradient-animate">
+                Join Gaurav Motors
+              </h3>
+              <p class="mb-0 mt-2 small opacity-75"><i class="fas fa-car me-2"></i>Register for Quality Automotive Service</p>
             </div>
           </div>
-        </div>
+          <div class="card-body p-5">
+            <!-- Welcome Message with Animation -->
+            <div class="alert alert-primary border-0 shadow-sm mb-4 animate__animated animate__fadeIn" style="background: linear-gradient(135deg, #eef6ff 0%, #f5f9ff 100%); border-radius: 15px; animation-delay: 0.2s;">
+              <div class="row align-items-center">
+                <div class="col-md-2 text-center">
+                  <i class="fas fa-car fa-3x text-primary"></i>
+                </div>
+                <div class="col-md-10">
+                  <h6 class="text-primary mb-2"><strong>🚗 Start Your Automotive Journey!</strong></h6>
+                  <p class="mb-0 small text-primary">
+                    Register today to access our comprehensive car services, book services 
+                    with expert mechanics, and manage your vehicle service records securely.
+                  </p>
+                </div>
+              </div>
+            </div>
 
-        <form method="post" id="registerForm">
-          <div class="row">
-            <div class="col-md-6 mb-4">
-              <label class="form-label fw-bold text-primary">
-                <i class="fas fa-user me-2"></i>Username *
-              </label>
-              <input 
-                class="form-control form-control-lg border-primary shadow-sm" 
-                name="username" 
-                id="username"
-                placeholder="Choose a username"
-                autocomplete="username"
-                pattern="[a-zA-Z0-9_]{3,20}"
-                title="3-20 characters, letters, numbers, and underscore only"
-                required>
-              <div class="form-text">
-                <small class="text-primary"><i class="fas fa-check me-1"></i>Unique identifier</small>
+            <form method="post" id="registerForm" class="stagger-reveal">
+              <div class="row">
+                <div class="col-md-6 mb-4 stagger-item">
+                  <label class="form-label fw-bold text-primary">
+                    <i class="fas fa-user me-2"></i>Username *
+                  </label>
+                  <input 
+                    class="form-control form-control-lg border-primary shadow-sm" 
+                    name="username" 
+                    id="username"
+                    placeholder="Choose a username"
+                    autocomplete="username"
+                    pattern="[a-zA-Z0-9_]{3,20}"
+                    title="3-20 characters, letters, numbers, and underscore only"
+                    style="border-radius: 12px; transition: all 0.3s;"
+                    required>
+                  <div class="form-text">
+                    <small class="text-primary"><i class="fas fa-check me-1"></i>Unique identifier</small>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-4 stagger-item">
+                  <label class="form-label fw-bold text-primary">
+                    <i class="fas fa-envelope me-2"></i>Email *
+                  </label>
+                  <input 
+                    class="form-control form-control-lg border-primary shadow-sm" 
+                    name="email" 
+                    type="email"
+                    placeholder="your@email.com"
+                    autocomplete="email"
+                    style="border-radius: 12px; transition: all 0.3s;"
+                    required>
+                  <div class="form-text">
+                    <small class="text-primary"><i class="fas fa-envelope me-1"></i>For service booking notifications</small>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="col-md-6 mb-4">
-              <label class="form-label fw-bold text-primary">
-                <i class="fas fa-envelope me-2"></i>Email *
-              </label>
-              <input 
-                class="form-control form-control-lg border-primary shadow-sm" 
-                name="email" 
-                type="email"
-                placeholder="your@email.com"
-                autocomplete="email"
-                required>
-              <div class="form-text">
-                <small class="text-primary"><i class="fas fa-envelope me-1"></i>For service appointment notifications</small>
-              </div>
-            </div>
-          </div>
 
-          <div class="row">
-            <div class="col-md-6 mb-4">
-              <label class="form-label fw-bold text-primary">
-                <i class="fas fa-lock me-2"></i>Password *
-              </label>
-              <div class="input-group input-group-lg">
-                <input 
-                  class="form-control border-primary shadow-sm" 
-                  name="password" 
-                  id="password"
-                  type="password" 
-                  placeholder="Strong & secure"
-                  autocomplete="new-password"
-                  minlength="6"
-                  required>
-                <button class="btn btn-outline-primary" type="button" id="togglePassword">
-                  <i class="fas fa-eye" id="toggleIcon"></i>
-                </button>
-              </div>
-              <div class="form-text">
-                <small class="text-success"><i class="fas fa-shield-alt me-1"></i>Min 6 characters</small>
-              </div>
-            </div>
-            <div class="col-md-6 mb-4">
-              <label class="form-label fw-bold text-success">
-                <i class="fas fa-lock me-2"></i>Confirm Password *
-              </label>
-              <input 
-                class="form-control form-control-lg border-success" 
-                name="confirm_password" 
-                id="confirm_password"
-                type="password" 
-                placeholder="Re-enter password"
-                autocomplete="new-password"
-                required>
-              <div id="passwordMatch" class="form-text"></div>
+              <div class="row">
+                <div class="col-md-6 mb-4 stagger-item">
+                  <label class="form-label fw-bold text-primary">
+                    <i class="fas fa-lock me-2"></i>Password *
+                  </label>
+                  <div class="input-group input-group-lg">
+                    <input 
+                      class="form-control border-primary shadow-sm" 
+                      name="password" 
+                      id="password"
+                      type="password" 
+                      placeholder="Strong & secure"
+                      autocomplete="new-password"
+                      minlength="6"
+                      style="border-radius: 12px 0 0 12px; transition: all 0.3s;"
+                      required>
+                    <button class="btn btn-outline-primary" type="button" id="togglePassword" style="border-radius: 0 12px 12px 0;">
+                      <i class="fas fa-eye" id="toggleIcon"></i>
+                    </button>
+                  </div>
+                  <div class="form-text">
+                    <small class="text-success"><i class="fas fa-shield-alt me-1"></i>Min 6 characters</small>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-4 stagger-item">
+                  <label class="form-label fw-bold text-success">
+                    <i class="fas fa-lock me-2"></i>Confirm Password *
+                  </label>
+                  <input 
+                    class="form-control form-control-lg border-success" 
+                    name="confirm_password" 
+                    id="confirm_password"
+                    type="password" 
+                    placeholder="Re-enter password"
+                    autocomplete="new-password"
+                    style="border-radius: 12px; transition: all 0.3s;"
+                    required>
+                  <div id="passwordMatch" class="form-text"></div>
             </div>
           </div>
 

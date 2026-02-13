@@ -1,52 +1,66 @@
 {% extends 'hms/base.html' %}
 {% block content %}
-<!-- FAQ Hero -->
+<!-- FAQ Hero with Particles -->
 <div class="hero-section position-relative overflow-hidden mb-5">
-  <div class="jumbotron text-center py-5 text-white rounded-4 shadow-lg" style="background: linear-gradient(180deg, rgba(11,91,176,0.9) 0%, rgba(13,110,253,0.85) 60%), url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1600&q=80') center/cover no-repeat;">
-    <div class="container">
-      <h1 class="display-3 fw-bold mb-3">
-        <i class="fas fa-question-circle me-3"></i>Frequently Asked Questions
-      </h1>
-      <p class="lead fs-4">We're here to help you</p>
-      <p class="mt-3 opacity-75">Find answers to common questions about our healthcare services</p>
+  <!-- Animated Particles -->
+  <div class="hero-particles position-absolute w-100 h-100" style="z-index: 2; pointer-events: none;"></div>
+  
+  <div class="jumbotron text-center py-5 text-white rounded-4 shadow-lg position-relative" style="background: linear-gradient(180deg, rgba(11,91,176,0.9) 0%, rgba(13,110,253,0.85) 60%), url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1600&q=80') center/cover no-repeat;">
+    <div class="container position-relative" style="z-index: 3;">
+      <div class="animate__animated animate__bounceIn" style="animation-delay: 0.1s;">
+        <h1 class="display-3 fw-bold mb-3 text-gradient-animate">
+          <i class="fas fa-question-circle me-3"></i>Frequently Asked Questions
+        </h1>
+      </div>
+      <p class="lead fs-4 animate__animated animate__fadeInUp" style="animation-delay: 0.3s;">We're here to help you</p>
+      <p class="mt-3 opacity-75 animate__animated animate__fadeIn" style="animation-delay: 0.5s;">Find answers to common questions about our automotive services</p>
     </div>
+  </div>
+  
+  <!-- Animated Wave -->
+  <div class="position-absolute w-100" style="bottom: -1px; left: 0; z-index: 3;">
+    <svg viewBox="0 0 1440 120" preserveAspectRatio="none" style="width: 100%; height: 60px; display: block;">
+      <path fill="#f8f9fa" d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,64C960,75,1056,85,1152,80C1248,75,1344,53,1392,42.7L1440,32L1440,120L0,120Z">
+        <animate attributeName="d" dur="10s" repeatCount="indefinite" values="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,64C960,75,1056,85,1152,80C1248,75,1344,53,1392,42.7L1440,32L1440,120L0,120Z;M0,32L48,42.7C96,53,192,75,288,80C384,85,480,75,576,64C672,53,768,43,864,48C960,53,1056,75,1152,80C1248,85,1344,75,1392,69.3L1440,64L1440,120L0,120Z;M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,64C960,75,1056,85,1152,80C1248,75,1344,53,1392,42.7L1440,32L1440,120L0,120Z"/>
+      </path>
+    </svg>
   </div>
 </div>
 
 <div class="container my-5">
   <!-- Search Box -->
-  <div class="card border-0 shadow-lg mb-5">
+  <div class="card border-0 shadow-lg mb-5 reveal-on-scroll card-3d" data-tilt style="border-radius: 20px; overflow: hidden;">
     <div class="card-body p-4">
       <div class="input-group input-group-lg">
-        <span class="input-group-text bg-primary text-white border-0">
+        <span class="input-group-text bg-primary text-white border-0" style="border-radius: 12px 0 0 12px;">
           <i class="fas fa-search"></i>
         </span>
-        <input type="text" id="faqSearch" class="form-control border-0 shadow-sm" placeholder="Search for answers..." style="font-size: 1.1rem;">
+        <input type="text" id="faqSearch" class="form-control border-0 shadow-sm" placeholder="Search for answers..." style="font-size: 1.1rem; border-radius: 0 12px 12px 0; transition: all 0.3s;">
       </div>
-      <small class="text-muted mt-2 d-block"><i class="fas fa-info-circle me-1"></i> Type keywords like 'appointment', 'billing', or 'services'</small>
+      <small class="text-muted mt-2 d-block animate__animated animate__fadeIn" style="animation-delay: 0.3s;"><i class="fas fa-info-circle me-1 fa-spin"></i> Type keywords like 'service', 'parts', or 'repair'</small>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-3 reveal-on-scroll">
       <!-- Categories -->
-      <div class="card border-0 shadow-lg mb-4 sticky-top" style="top: 20px;">
+      <div class="card border-0 shadow-lg mb-4 sticky-top glass-card" style="top: 20px; border-radius: 20px; backdrop-filter: blur(10px);">
         <div class="card-body p-4">
-          <h5 class="fw-bold text-primary mb-4"><i class="fas fa-list me-2"></i>Categories</h5>
-          <div class="list-group list-group-flush">
-            <a href="#general" class="list-group-item list-group-item-action border-0 rounded-3 mb-2 category-link">
+          <h5 class="fw-bold text-primary mb-4 animate__animated animate__fadeInLeft"><i class="fas fa-list me-2"></i>Categories</h5>
+          <div class="list-group list-group-flush stagger-reveal">
+            <a href="#general" class="list-group-item list-group-item-action border-0 rounded-3 mb-2 category-link stagger-item magnetic-btn" style="transition: all 0.3s;">
               <i class="fas fa-info-circle me-2 text-primary"></i>General
             </a>
-            <a href="#appointments" class="list-group-item list-group-item-action border-0 rounded-3 mb-2 category-link">
-              <i class="fas fa-calendar me-2 text-primary"></i>Appointments
+            <a href="#bookings" class="list-group-item list-group-item-action border-0 rounded-3 mb-2 category-link stagger-item magnetic-btn" style="transition: all 0.3s;">
+              <i class="fas fa-calendar me-2 text-primary"></i>Service Bookings
             </a>
-            <a href="#services" class="list-group-item list-group-item-action border-0 rounded-3 mb-2 category-link">
-              <i class="fas fa-hospital me-2 text-primary"></i>Services
+            <a href="#services" class="list-group-item list-group-item-action border-0 rounded-3 mb-2 category-link stagger-item magnetic-btn" style="transition: all 0.3s;">
+              <i class="fas fa-car me-2 text-primary"></i>Services
             </a>
-            <a href="#billing" class="list-group-item list-group-item-action border-0 rounded-3 mb-2 category-link">
+            <a href="#billing" class="list-group-item list-group-item-action border-0 rounded-3 mb-2 category-link stagger-item magnetic-btn" style="transition: all 0.3s;">
               <i class="fas fa-rupee-sign me-2 text-primary"></i>Billing
             </a>
-            <a href="#technical" class="list-group-item list-group-item-action border-0 rounded-3 category-link">
+            <a href="#technical" class="list-group-item list-group-item-action border-0 rounded-3 category-link stagger-item magnetic-btn" style="transition: all 0.3s;">
               <i class="fas fa-laptop me-2 text-primary"></i>Technical
             </a>
           </div>
@@ -56,51 +70,51 @@
 
     <div class="col-md-9">
       <!-- General Questions -->
-      <div id="general" class="mb-5">
-        <h3 class="fw-bold text-primary mb-4">
+      <div id="general" class="mb-5 reveal-on-scroll">
+        <h3 class="fw-bold text-primary mb-4 animate__animated animate__fadeInRight">
           <i class="fas fa-info-circle me-2"></i>General Questions
         </h3>
         <div class="accordion accordion-flush" id="accordionGeneral">
-          <div class="accordion-item border-0 shadow-sm rounded-3 mb-3">
+          <div class="accordion-item border-0 shadow-sm rounded-3 mb-3 stagger-item" style="overflow: hidden; transition: all 0.3s;">
             <h2 class="accordion-header">
               <button class="accordion-button fw-bold bg-primary bg-opacity-10 rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#g1">
-                What is Woodland Medical Centre?
+                <i class="fas fa-car me-2 text-primary"></i>What is Gaurav Motors?
               </button>
             </h2>
             <div id="g1" class="accordion-collapse collapse show" data-bs-parent="#accordionGeneral">
-              <div class="accordion-body">
-                Woodland Medical Centre is a leading healthcare facility dedicated to providing exceptional 
-                medical services with state-of-the-art technology and expert specialists. We offer comprehensive 
-                care across multiple specialties with a patient-first approach.
+              <div class="accordion-body animate__animated animate__fadeIn">
+                Gaurav Motors is Lohaghat's trusted automotive service center offering comprehensive 
+                car services including engine repair, body work, electrical systems, and genuine spare parts. 
+                We provide expert care for all vehicle makes and models.
               </div>
             </div>
           </div>
 
-          <div class="accordion-item border-0 shadow-sm rounded-3 mb-3">
+          <div class="accordion-item border-0 shadow-sm rounded-3 mb-3 stagger-item" style="overflow: hidden; transition: all 0.3s;">
             <h2 class="accordion-header">
               <button class="accordion-button collapsed fw-bold rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#g2">
-                How do I register on the platform?
+                <i class="fas fa-user-plus me-2 text-success"></i>How do I register on the platform?
               </button>
             </h2>
             <div id="g2" class="accordion-collapse collapse" data-bs-parent="#accordionGeneral">
               <div class="accordion-body">
                 Click on the "Register" button in the navigation menu, fill in your details (name, email, password), 
-                and submit the form. You'll receive instant access to book appointments, view doctors, and manage 
-                your health records digitally. Best part? Each registration saves 10 sheets of paper!
+                and submit the form. You'll receive instant access to book services, view services, and manage 
+                your service history digitally. Track your car's maintenance easily!
               </div>
             </div>
           </div>
 
-          <div class="accordion-item border-0 shadow-sm rounded-3 mb-3">
+          <div class="accordion-item border-0 shadow-sm rounded-3 mb-3 stagger-item" style="overflow: hidden; transition: all 0.3s;">
             <h2 class="accordion-header">
               <button class="accordion-button collapsed fw-bold rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#g3">
-                Is my medical data secure?
+                <i class="fas fa-shield-alt me-2 text-info"></i>Is my data secure?
               </button>
             </h2>
             <div id="g3" class="accordion-collapse collapse" data-bs-parent="#accordionGeneral">
               <div class="accordion-body">
-                Absolutely! We use industry-standard encryption (SSL/TLS) to protect all your medical data. 
-                Your records are stored securely and only authorized healthcare professionals can access 
+                Absolutely! We use industry-standard encryption (SSL/TLS) to protect all your vehicle data. 
+                Your records are stored securely and only authorized technicians can access 
                 your information with your consent.
               </div>
             </div>
@@ -108,22 +122,22 @@
         </div>
       </div>
 
-      <!-- Appointments -->
-      <div id="appointments" class="mb-5">
+      <!-- Service Bookings -->
+      <div id="bookings" class="mb-5">
         <h3 class="fw-bold text-primary mb-4">
-          <i class="fas fa-calendar me-2"></i>Appointments
+          <i class="fas fa-calendar me-2"></i>Service Bookings
         </h3>
-        <div class="accordion" id="accordionAppointments">
+        <div class="accordion" id="accordionBookings">
           <div class="accordion-item border-0 shadow-sm rounded-3 mb-3">
             <h2 class="accordion-header">
               <button class="accordion-button collapsed fw-bold rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#a1">
-                How do I book an appointment?
+                How do I book a service?
               </button>
             </h2>
-            <div id="a1" class="accordion-collapse collapse" data-bs-parent="#accordionAppointments">
+            <div id="a1" class="accordion-collapse collapse" data-bs-parent="#accordionBookings">
               <div class="accordion-body">
-                After logging in, click "Find Doctors" to browse available doctors. Select a doctor, 
-                choose an available time slot, add your symptoms, and confirm. You'll receive instant 
+                After logging in, go to "Book Service" to browse available services. Select a service type, 
+                choose an available time slot, add your vehicle details, and confirm. You'll receive instant 
                 confirmation via email.
               </div>
             </div>
@@ -132,12 +146,12 @@
           <div class="accordion-item border-0 shadow-sm rounded-3 mb-3">
             <h2 class="accordion-header">
               <button class="accordion-button collapsed fw-bold rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#a2">
-                Can I reschedule or cancel my appointment?
+                Can I reschedule or cancel my booking?
               </button>
             </h2>
-            <div id="a2" class="accordion-collapse collapse" data-bs-parent="#accordionAppointments">
+            <div id="a2" class="accordion-collapse collapse" data-bs-parent="#accordionBookings">
               <div class="accordion-body">
-                Yes! Go to your Patient Dashboard, find your appointment, and click "Reschedule" or "Cancel". 
+                Yes! Go to your Customer Dashboard, find your booking, and click "Reschedule" or "Cancel". 
                 For rescheduling, select a new available slot. Please note: cancellations should be done at 
                 least 24 hours in advance when possible.
               </div>
@@ -147,13 +161,13 @@
           <div class="accordion-item border-0 shadow-sm rounded-3 mb-3">
             <h2 class="accordion-header">
               <button class="accordion-button collapsed fw-bold rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#a3">
-                Do you offer telemedicine appointments?
+                Do you offer pickup and drop service?
               </button>
             </h2>
-            <div id="a3" class="accordion-collapse collapse" data-bs-parent="#accordionAppointments">
+            <div id="a3" class="accordion-collapse collapse" data-bs-parent="#accordionBookings">
               <div class="accordion-body">
-                Yes! We offer virtual consultation options. Select "Virtual Consultation" when booking your appointment 
-                for a convenient online visit with our healthcare professionals.
+                Yes! We offer vehicle pickup and drop options for your convenience. Select "Pickup & Drop" when booking your service 
+                and our team will coordinate the vehicle collection from your location.
               </div>
             </div>
           </div>
@@ -163,20 +177,20 @@
       <!-- Services -->
       <div id="services" class="mb-5">
         <h3 class="fw-bold text-primary mb-4">
-          <i class="fas fa-hospital me-2"></i>Services
+          <i class="fas fa-car me-2"></i>Services
         </h3>
         <div class="accordion" id="accordionServices">
           <div class="accordion-item border-0 shadow-sm rounded-3 mb-3">
             <h2 class="accordion-header">
               <button class="accordion-button collapsed fw-bold rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#s1">
-                What medical services do you offer?
+                What automotive services do you offer?
               </button>
             </h2>
             <div id="s1" class="accordion-collapse collapse" data-bs-parent="#accordionServices">
               <div class="accordion-body">
-                We offer comprehensive healthcare services including Cardiology, Orthopedics, Pediatrics, 
-                Dermatology, Neurology, and General Medicine. Visit our Services page for detailed information 
-                about each department and available treatments.
+                We offer comprehensive automotive services including Engine Repair, Brake Service, 
+                AC Repair, Electrical & Diagnostics, Body Work & Painting, and General Maintenance. Visit our Services page for detailed information 
+                about each service and available packages.
               </div>
             </div>
           </div>
@@ -189,9 +203,9 @@
             </h2>
             <div id="s2" class="accordion-collapse collapse" data-bs-parent="#accordionServices">
               <div class="accordion-body">
-                Yes! Our 24/7 emergency services are always available. Call our emergency helpline at 
-                <strong>+91-9876-543-210</strong> for immediate assistance. For life-threatening emergencies, 
-                please call local emergency services (112) first.
+                Yes! Our 24/7 emergency roadside assistance is always available. Call our emergency helpline at 
+                <strong>+91 9997612579</strong> for immediate assistance including towing, 
+                breakdown support, and emergency repairs.
               </div>
             </div>
           </div>
@@ -207,14 +221,14 @@
           <div class="accordion-item border-0 shadow-sm rounded-3 mb-3">
             <h2 class="accordion-header">
               <button class="accordion-button collapsed fw-bold rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#b1">
-                What are the consultation fees?
+                What are the service charges?
               </button>
             </h2>
             <div id="b1" class="accordion-collapse collapse" data-bs-parent="#accordionBilling">
               <div class="accordion-body">
-                Consultation fees vary by doctor specialty and experience. General consultations start from 
-                ₹500, while specialist consultations range from ₹800-₹2000. All fees are displayed clearly 
-                when booking your appointment.
+                Service charges vary by service type and vehicle model. General service starts from 
+                ₹2,999, while specialized repairs range from ₹1,000-₹10,000+. All charges are displayed clearly 
+                when booking your service.
               </div>
             </div>
           </div>
@@ -264,7 +278,7 @@
             </h2>
             <div id="t2" class="accordion-collapse collapse" data-bs-parent="#accordionTechnical">
               <div class="accordion-body">
-                Woodland Medical Centre HMS works on all modern browsers: Chrome, Firefox, Safari, Edge, and Opera. 
+                Gaurav Motors portal works on all modern browsers: Chrome, Firefox, Safari, Edge, and Opera. 
                 We recommend using the latest version for the best experience. Our platform is also 
                 mobile-responsive, so you can access it from any device.
               </div>

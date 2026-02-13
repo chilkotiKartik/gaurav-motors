@@ -12,8 +12,14 @@ from io import BytesIO
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'hmsdevsecret-change-in-production')
-DB_PATH = os.path.join(os.path.dirname(__file__), 'hms.db')
-DB_URI = f"sqlite:///{DB_PATH.replace('\\', '/')}"
+
+# Database - use /tmp on Vercel (read-only filesystem), local path otherwise
+IS_VERCEL = os.environ.get('VERCEL', False)
+if IS_VERCEL:
+    DB_PATH = '/tmp/hms.db'
+else:
+    DB_PATH = os.path.join(os.path.dirname(__file__), 'hms.db')
+DB_URI = f"sqlite:///{DB_PATH.replace(chr(92), '/')}"
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -26,10 +32,18 @@ app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_DEFAULT_SENDER', 'noreply@gmmotors.com')
 
 # File Upload Configuration
-UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'uploads')
+if IS_VERCEL:
+    UPLOAD_FOLDER = '/tmp/uploads'
+else:
+    UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'uploads')
 ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
+
+# Session security (disable HTTPS requirement for development)
+app.config['SESSION_COOKIE_SECURE'] = False
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
 # Create upload folder if it doesn't exist
 if not os.path.exists(UPLOAD_FOLDER):
@@ -46,7 +60,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(200), nullable=False)
-    role = db.Column(db.String(20), nullable=False)  # 'admin', 'doctor', 'patient'
+    role = db.Column(db.String(20), nullable=False)  # 'admin', 'technician', 'customer'
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -54,56 +68,51 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-class Department(db.Model):
+class ServiceDepartment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=True, nullable=False)
     description = db.Column(db.String(300))
-    doctors = db.relationship('DoctorProfile', backref='department', lazy=True)
+    technicians = db.relationship('TechnicianProfile', backref='service_department', lazy=True)
 
-class DoctorProfile(db.Model):
+class TechnicianProfile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     name = db.Column(db.String(120), nullable=False)
-    specialization = db.Column(db.String(120), nullable=False)
-    department_id = db.Column(db.Integer, db.ForeignKey('department.id'), nullable=True)
+    specialization = db.Column(db.String(120), nullable=False)  # Engine, Transmission, Electrical etc.
+    department_id = db.Column(db.Integer, db.ForeignKey('service_department.id'), nullable=True)
     availability = db.Column(db.String(300))  # simple text or JSON string of available days/times
-    user = db.relationship('User', backref='doctor_profile', uselist=False)
-    appointments = db.relationship('Appointment', backref='doctor', lazy=True)
-    avail_slots = db.relationship('Availability', backref='doctor', lazy=True, cascade='all, delete-orphan')
+    user = db.relationship('User', backref='technician_profile', uselist=False)
+    service_bookings = db.relationship('ServiceBooking', backref='technician', lazy=True)
+    avail_slots = db.relationship('Availability', backref='technician', lazy=True, cascade='all, delete-orphan')
 
-class PatientProfile(db.Model):
+class CustomerProfile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     name = db.Column(db.String(120), nullable=False)
     contact = db.Column(db.String(40))
-    user = db.relationship('User', backref='patient_profile', uselist=False)
-    appointments = db.relationship('Appointment', backref='patient', lazy=True)
+    user = db.relationship('User', backref='customer_profile', uselist=False)
 
-class Appointment(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    patient_id = db.Column(db.Integer, db.ForeignKey('patient_profile.id'), nullable=False)
-    doctor_id = db.Column(db.Integer, db.ForeignKey('doctor_profile.id'), nullable=False)
-    date = db.Column(db.Date, nullable=False)
-    time = db.Column(db.Time, nullable=False)
-    status = db.Column(db.String(20), default='Booked')  # Booked/Completed/Cancelled
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    treatment = db.relationship('Treatment', backref='appointment', uselist=False)
-
+# Note: ServiceBooking model defined later in the file with enhanced fields
 
 class Availability(db.Model):
     __tablename__ = 'availability'
     id = db.Column(db.Integer, primary_key=True)
-    doctor_id = db.Column(db.Integer, db.ForeignKey('doctor_profile.id'), nullable=False)
+    technician_id = db.Column(db.Integer, db.ForeignKey('technician_profile.id'), nullable=False)
     date = db.Column(db.Date, nullable=False)
     time = db.Column(db.Time, nullable=False)
     is_available = db.Column(db.Boolean, default=True, nullable=False)
 
 
-class Treatment(db.Model):
+class ServiceWork(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    appointment_id = db.Column(db.Integer, db.ForeignKey('appointment.id'), nullable=False)
-    diagnosis = db.Column(db.String(500))
-    prescription = db.Column(db.String(500))
+    service_booking_id = db.Column(db.Integer, db.ForeignKey('service_booking.id'), nullable=False)
+    assessment = db.Column(db.String(500))  # Issues found during inspection
+    work_performed = db.Column(db.String(500))  # Services/repairs performed
+    parts_used = db.Column(db.String(500))  # Parts replaced/installed
+    recommendations = db.Column(db.String(500))  # Future maintenance recommendations
+    labor_cost = db.Column(db.Float, default=0.0)
+    parts_cost = db.Column(db.Float, default=0.0)
+    total_cost = db.Column(db.Float, default=0.0)
     notes = db.Column(db.String(1000))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -245,6 +254,7 @@ class ServiceBooking(db.Model):
     vehicle_year = db.Column(db.Integer)
     vehicle_registration = db.Column(db.String(50))
     service_id = db.Column(db.Integer, db.ForeignKey('car_service.id'), nullable=False)
+    technician_id = db.Column(db.Integer, db.ForeignKey('technician_profile.id'), nullable=True)
     booking_date = db.Column(db.Date, nullable=False)
     booking_time = db.Column(db.Time, nullable=False)
     status = db.Column(db.String(20), default='Pending')  # Pending/Confirmed/In Progress/Completed/Cancelled
@@ -263,49 +273,54 @@ class TimeSlot(db.Model):
     max_bookings = db.Column(db.Integer, default=3)  # Multiple bookings per slot
     current_bookings = db.Column(db.Integer, default=0)
 
-# Medical Records System
-class MedicalRecord(db.Model):
-    __tablename__ = 'medical_record'
+# Vehicle Records System
+class VehicleRecord(db.Model):
+    __tablename__ = 'vehicle_record'
     id = db.Column(db.Integer, primary_key=True)
-    patient_id = db.Column(db.Integer, db.ForeignKey('patient_profile.id'), nullable=False)
-    record_type = db.Column(db.String(50), nullable=False)  # Lab Report, X-Ray, Prescription, etc.
+    customer_id = db.Column(db.Integer, db.ForeignKey('customer_profile.id'), nullable=False)
+    record_type = db.Column(db.String(50), nullable=False)  # Service Report, Inspection, Part Replacement, etc.
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text)
     file_path = db.Column(db.String(500))  # Path to uploaded file
     uploaded_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     upload_date = db.Column(db.DateTime, default=datetime.utcnow)
-    patient = db.relationship('PatientProfile', backref='medical_records')
+    customer = db.relationship('CustomerProfile', backref='vehicle_records')
 
-# Patient Medical History
-class MedicalHistory(db.Model):
-    __tablename__ = 'medical_history'
+# Vehicle History
+class VehicleHistory(db.Model):
+    __tablename__ = 'vehicle_history'
     id = db.Column(db.Integer, primary_key=True)
-    patient_id = db.Column(db.Integer, db.ForeignKey('patient_profile.id'), nullable=False)
-    allergies = db.Column(db.Text)  # Known allergies
-    chronic_conditions = db.Column(db.Text)  # Diabetes, Hypertension, etc.
-    current_medications = db.Column(db.Text)  # Current medications
-    past_surgeries = db.Column(db.Text)  # Previous surgeries
-    blood_type = db.Column(db.String(10))  # A+, B-, O+, etc.
-    emergency_contact = db.Column(db.String(100))
-    emergency_phone = db.Column(db.String(20))
-    insurance_provider = db.Column(db.String(200))
-    insurance_number = db.Column(db.String(100))
+    customer_id = db.Column(db.Integer, db.ForeignKey('customer_profile.id'), nullable=False)
+    make = db.Column(db.String(50))  # Toyota, Honda, etc.
+    model = db.Column(db.String(100))  # Camry, Civic, etc.
+    year = db.Column(db.Integer)
+    vin = db.Column(db.String(17))  # Vehicle Identification Number
+    license_plate = db.Column(db.String(20))
+    mileage = db.Column(db.Integer)
+    fuel_type = db.Column(db.String(20))  # Gasoline, Diesel, Electric, etc.
+    transmission = db.Column(db.String(20))  # Manual, Automatic, CVT
+    engine_size = db.Column(db.String(20))  # 2.0L, 3.5L V6, etc.
+    color = db.Column(db.String(30))
+    last_service_date = db.Column(db.Date)
+    next_service_due = db.Column(db.Date)
+    insurance_company = db.Column(db.String(200))
+    insurance_policy = db.Column(db.String(100))
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    patient = db.relationship('PatientProfile', backref='medical_history', uselist=False)
+    customer = db.relationship('CustomerProfile', backref='vehicle_history', uselist=False)
 
-# Doctor Reviews and Ratings
-class DoctorReview(db.Model):
-    __tablename__ = 'doctor_review'
+# Technician Reviews and Ratings
+class TechnicianReview(db.Model):
+    __tablename__ = 'technician_review'
     id = db.Column(db.Integer, primary_key=True)
-    doctor_id = db.Column(db.Integer, db.ForeignKey('doctor_profile.id'), nullable=False)
-    patient_id = db.Column(db.Integer, db.ForeignKey('patient_profile.id'), nullable=False)
-    appointment_id = db.Column(db.Integer, db.ForeignKey('appointment.id'))
+    technician_id = db.Column(db.Integer, db.ForeignKey('technician_profile.id'), nullable=False)
+    customer_id = db.Column(db.Integer, db.ForeignKey('customer_profile.id'), nullable=False)
+    service_booking_id = db.Column(db.Integer, db.ForeignKey('service_booking.id'))
     rating = db.Column(db.Integer, nullable=False)  # 1-5 stars
     comment = db.Column(db.Text)
-    is_verified = db.Column(db.Boolean, default=True)  # Verified patient
+    is_verified = db.Column(db.Boolean, default=True)  # Verified customer
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    doctor_profile = db.relationship('DoctorProfile', backref='reviews')
-    patient = db.relationship('PatientProfile', backref='reviews')
+    technician_profile = db.relationship('TechnicianProfile', backref='reviews')
+    customer = db.relationship('CustomerProfile', backref='reviews')
 
 # Service Reviews
 class ServiceReview(db.Model):
@@ -323,7 +338,6 @@ class Payment(db.Model):
     __tablename__ = 'payment'
     id = db.Column(db.Integer, primary_key=True)
     payment_id = db.Column(db.String(100), unique=True, nullable=False)  # Razorpay/Stripe ID
-    appointment_id = db.Column(db.Integer, db.ForeignKey('appointment.id'))
     service_booking_id = db.Column(db.Integer, db.ForeignKey('service_booking.id'))
     part_order_id = db.Column(db.Integer, db.ForeignKey('part_order.id'))
     amount = db.Column(db.Float, nullable=False)
@@ -340,7 +354,7 @@ class Notification(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     title = db.Column(db.String(200), nullable=False)
     message = db.Column(db.Text, nullable=False)
-    notification_type = db.Column(db.String(50))  # appointment, payment, reminder, system
+    notification_type = db.Column(db.String(50))  # booking, payment, reminder, system
     is_read = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     user = db.relationship('User', backref='notifications')
@@ -361,15 +375,84 @@ class EmailQueue(db.Model):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+# Auto-initialize database on Vercel (ephemeral /tmp filesystem)
+def init_vercel_db():
+    """Create tables and seed data for Vercel deployment"""
+    if not os.path.exists(DB_PATH):
+        db.create_all()
+        # Create default admin user
+        admin = User(
+            username='admin',
+            email='admin@gauravmotors.com',
+            password_hash=generate_password_hash('Admin@123456'),
+            role='admin'
+        )
+        db.session.add(admin)
+        
+        # Create sample technician
+        tech_user = User(
+            username='drjohn',
+            email='technician@gauravmotors.com',
+            password_hash=generate_password_hash('doctor'),
+            role='technician'
+        )
+        db.session.add(tech_user)
+        db.session.flush()
+        
+        tech_profile = TechnicianProfile(
+            user_id=tech_user.id,
+            name='Rajesh Kumar',
+            specialization='Engine Specialist',
+            experience=10,
+            phone='9876543210',
+            fee=500.0
+        )
+        db.session.add(tech_profile)
+        
+        # Create sample customer
+        cust_user = User(
+            username='kar',
+            email='customer@gauravmotors.com',
+            password_hash=generate_password_hash('kar123'),
+            role='customer'
+        )
+        db.session.add(cust_user)
+        db.session.flush()
+        
+        cust_profile = CustomerProfile(
+            user_id=cust_user.id,
+            name='Karan Singh',
+            contact='9998887770',
+            address='Lohaghat, Uttarakhand'
+        )
+        db.session.add(cust_profile)
+        
+        # Add sample services
+        services = [
+            CarService(name='General Service', description='Complete car checkup and maintenance', price=2999.0, duration=120, category='maintenance'),
+            CarService(name='Brake Service', description='Brake pad replacement and inspection', price=3500.0, duration=90, category='repair'),
+            CarService(name='AC Service', description='AC gas refill and cleaning', price=2000.0, duration=60, category='maintenance'),
+            CarService(name='Engine Repair', description='Engine diagnostics and repair', price=5000.0, duration=180, category='repair'),
+            CarService(name='Oil Change', description='Engine oil and filter replacement', price=1500.0, duration=45, category='maintenance'),
+        ]
+        db.session.add_all(services)
+        
+        db.session.commit()
+        print("Vercel DB initialized with sample data")
+
+if IS_VERCEL:
+    with app.app_context():
+        init_vercel_db()
+
 # Helpers
 def is_admin():
     return current_user.is_authenticated and current_user.role == 'admin'
 
-def is_doctor():
-    return current_user.is_authenticated and current_user.role == 'doctor'
+def is_technician():
+    return current_user.is_authenticated and current_user.role == 'technician'
 
-def is_patient():
-    return current_user.is_authenticated and current_user.role == 'patient'
+def is_customer():
+    return current_user.is_authenticated and current_user.role == 'customer'
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -392,24 +475,25 @@ def send_email(recipient, subject, body, html=True):
         db.session.commit()
         return False
 
-def send_appointment_confirmation(appointment):
-    """Send appointment confirmation email"""
-    patient_email = appointment.patient.user.email
-    subject = f"Appointment Confirmed - {appointment.date}"
+def send_service_confirmation(booking):
+    """Send service booking confirmation email"""
+    customer_email = booking.customer_email
+    subject = f"Service Booking Confirmed - {booking.booking_date}"
     body = f"""
-    <h2>Appointment Confirmation</h2>
-    <p>Dear {appointment.patient.name},</p>
-    <p>Your appointment has been confirmed with the following details:</p>
+    <h2>Service Booking Confirmation</h2>
+    <p>Dear {booking.customer_name},</p>
+    <p>Your service booking has been confirmed with the following details:</p>
     <ul>
-        <li><strong>Doctor:</strong> {appointment.doctor.name}</li>
-        <li><strong>Specialization:</strong> {appointment.doctor.specialization}</li>
-        <li><strong>Date:</strong> {appointment.date.strftime('%B %d, %Y')}</li>
-        <li><strong>Time:</strong> {appointment.time.strftime('%I:%M %p')}</li>
+        <li><strong>Vehicle:</strong> {booking.vehicle_brand} {booking.vehicle_model} ({booking.vehicle_year})</li>
+        <li><strong>Service:</strong> {booking.service.name if hasattr(booking, 'service') else 'Service Booking'}</li>
+        <li><strong>Date:</strong> {booking.booking_date.strftime('%B %d, %Y')}</li>
+        <li><strong>Time:</strong> {booking.booking_time.strftime('%I:%M %p')}</li>
+        <li><strong>Total Amount:</strong> ₹{booking.total_amount}</li>
     </ul>
     <p>Please arrive 10 minutes before your scheduled time.</p>
-    <p>Best regards,<br>GM Motors Healthcare Team</p>
+    <p>Best regards,<br>Gaurav Motors Team</p>
     """
-    send_email(patient_email, subject, body)
+    send_email(customer_email, subject, body)
 
 def create_notification(user_id, title, message, notification_type='system'):
     """Create in-app notification"""
@@ -422,9 +506,9 @@ def create_notification(user_id, title, message, notification_type='system'):
     db.session.add(notification)
     db.session.commit()
 
-def calculate_doctor_rating(doctor_id):
-    """Calculate average rating for a doctor"""
-    reviews = DoctorReview.query.filter_by(doctor_id=doctor_id).all()
+def calculate_technician_rating(technician_id):
+    """Calculate average rating for a technician"""
+    reviews = TechnicianReview.query.filter_by(technician_id=technician_id).all()
     if not reviews:
         return 0
     total = sum(review.rating for review in reviews)
@@ -436,13 +520,13 @@ def get_dashboard_stats():
     this_month = datetime.now().replace(day=1).date()
     
     stats = {
-        'total_patients': PatientProfile.query.count(),
-        'total_doctors': DoctorProfile.query.count(),
-        'total_appointments': Appointment.query.count(),
-        'todays_appointments': Appointment.query.filter_by(date=today).count(),
-        'pending_appointments': Appointment.query.filter_by(status='Booked').count(),
-        'completed_appointments': Appointment.query.filter_by(status='Completed').count(),
-        'monthly_appointments': Appointment.query.filter(Appointment.date >= this_month).count(),
+        'total_customers': CustomerProfile.query.count(),
+        'total_technicians': TechnicianProfile.query.count(),
+        'total_bookings': ServiceBooking.query.count(),
+        'todays_bookings': ServiceBooking.query.filter_by(booking_date=today).count(),
+        'pending_bookings': ServiceBooking.query.filter_by(status='Pending').count(),
+        'completed_bookings': ServiceBooking.query.filter_by(status='Completed').count(),
+        'monthly_bookings': ServiceBooking.query.filter(ServiceBooking.booking_date >= this_month).count(),
         'total_revenue': db.session.query(db.func.sum(Payment.amount)).filter_by(status='Success').scalar() or 0,
         'monthly_revenue': db.session.query(db.func.sum(Payment.amount)).filter(
             Payment.status == 'Success',
@@ -451,18 +535,18 @@ def get_dashboard_stats():
         'service_bookings': ServiceBooking.query.count(),
         'pending_service_bookings': ServiceBooking.query.filter_by(status='Pending').count(),
         'spare_parts_orders': PartOrder.query.count(),
-        'average_rating': db.session.query(db.func.avg(DoctorReview.rating)).scalar() or 0
+        'average_rating': db.session.query(db.func.avg(TechnicianReview.rating)).scalar() or 0
     }
     return stats
 
 # Routes
 @app.route('/')
 def index():
-    return render_template('hms/index.html')
+    return render_template('hms/index_premium.html')
 
 @app.route('/about')
 def about():
-    return render_template('hms/about.html')
+    return render_template('hms/about_premium.html')
 
 @app.route('/services')
 def services():
@@ -558,7 +642,7 @@ def confirm_car_service():
                 {f'<li>Complimentary Car Wash</li>' if wash_service else ''}
                 {'</ul>' if pickup_service or wash_service else ''}
                 
-                <p>We will contact you at {customer_phone} to confirm the appointment.</p>
+                <p>We will contact you at {customer_phone} to confirm the booking.</p>
                 
                 <p>Thank you for choosing GM Motors!</p>
                 <p>Best regards,<br>GM Motors Team</p>
@@ -584,7 +668,7 @@ def contact():
         # In a real app, you would save this to database or send email
         flash('Thank you for contacting us! We will get back to you soon. 🌿', 'success')
         return redirect(url_for('contact'))
-    return render_template('hms/contact.html')
+    return render_template('hms/contact_premium.html')
 
 @app.route('/faq')
 def faq():
@@ -602,12 +686,12 @@ def register():
         if User.query.filter((User.username==username)|(User.email==email)).first():
             flash('Username or email already exists', 'danger')
             return redirect(url_for('register'))
-        user = User(username=username, email=email, role='patient')
+        user = User(username=username, email=email, role='customer')
         user.set_password(password)
         db.session.add(user)
         db.session.commit()
-        patient = PatientProfile(user_id=user.id, name=name or username, contact=contact)
-        db.session.add(patient)
+        customer = CustomerProfile(user_id=user.id, name=name or username, contact=contact)
+        db.session.add(customer)
         db.session.commit()
         flash('Registration successful. Please login.', 'success')
         return redirect(url_for('login'))
@@ -624,10 +708,10 @@ def login():
             flash('Logged in successfully', 'success')
             if user.role == 'admin':
                 return redirect(url_for('admin_dashboard'))
-            elif user.role == 'doctor':
-                return redirect(url_for('doctor_dashboard'))
+            elif user.role == 'technician':
+                return redirect(url_for('technician_dashboard'))
             else:
-                return redirect(url_for('patient_dashboard'))
+                return redirect(url_for('customer_dashboard'))
         flash('Invalid credentials', 'danger')
     return render_template('hms/login.html')
 
@@ -645,35 +729,44 @@ def admin_dashboard():
     if not is_admin():
         flash('Admin access required', 'danger')
         return redirect(url_for('index'))
-    num_doctors = DoctorProfile.query.count()
-    num_patients = PatientProfile.query.count()
-    num_appointments = Appointment.query.count()
-    doctors = DoctorProfile.query.all()
-    return render_template('hms/admin_dashboard.html', doctors=doctors, num_doctors=num_doctors, num_patients=num_patients, num_appointments=num_appointments)
+    num_technicians = TechnicianProfile.query.count()
+    num_customers = CustomerProfile.query.count()
+    num_service_bookings = ServiceBooking.query.count()
+    technicians = TechnicianProfile.query.all()
+    return render_template('hms/admin_dashboard.html', technicians=technicians, num_technicians=num_technicians, num_customers=num_customers, num_service_bookings=num_service_bookings)
 
 
-@app.route('/admin/patients')
+@app.route('/admin/customers')
 @login_required
-def admin_patients():
+def admin_customers():
     if not is_admin():
         flash('Admin access required', 'danger')
         return redirect(url_for('index'))
     q = request.args.get('q')
     if q:
-        patients = PatientProfile.query.filter(PatientProfile.name.contains(q)).all()
+        customers = CustomerProfile.query.filter(CustomerProfile.name.contains(q)).all()
     else:
-        patients = PatientProfile.query.all()
-    return render_template('hms/admin_patients.html', patients=patients)
+        customers = CustomerProfile.query.all()
+    return render_template('hms/admin_customers.html', customers=customers)
 
 
-@app.route('/admin/appointments')
+@app.route('/admin/service-bookings')
 @login_required
-def admin_appointments():
+def admin_service_bookings():
     if not is_admin():
         flash('Admin access required', 'danger')
         return redirect(url_for('index'))
-    appointments = Appointment.query.order_by(Appointment.date.desc(), Appointment.time.desc()).all()
-    return render_template('hms/admin_appointments.html', appointments=appointments)
+    service_bookings = ServiceBooking.query.order_by(ServiceBooking.booking_date.desc(), ServiceBooking.booking_time.desc()).all()
+    
+    # Get booking statistics
+    stats = {
+        'scheduled': ServiceBooking.query.filter_by(status='Scheduled').count(),
+        'in_progress': ServiceBooking.query.filter_by(status='In-Progress').count(),
+        'completed': ServiceBooking.query.filter_by(status='Completed').count(),
+        'cancelled': ServiceBooking.query.filter_by(status='Cancelled').count()
+    }
+    
+    return render_template('hms/admin_service_bookings.html', service_bookings=service_bookings, stats=stats)
 
 
 @app.route('/admin/analytics')
@@ -686,9 +779,9 @@ def admin_analytics():
     return render_template('hms/admin_analytics_enhanced.html')
 
 
-@app.route('/admin/add_patient', methods=['GET','POST'])
+@app.route('/admin/add_customer', methods=['GET','POST'])
 @login_required
-def admin_add_patient():
+def admin_add_customer():
     if not is_admin():
         flash('Admin access required', 'danger')
         return redirect(url_for('index'))
@@ -700,55 +793,55 @@ def admin_add_patient():
         contact = request.form.get('contact')
         if User.query.filter((User.username==username)|(User.email==email)).first():
             flash('User exists', 'danger')
-            return redirect(url_for('admin_add_patient'))
-        user = User(username=username, email=email, role='patient')
+            return redirect(url_for('admin_add_customer'))
+        user = User(username=username, email=email, role='customer')
         user.set_password(password)
         db.session.add(user)
         db.session.commit()
-        p = PatientProfile(user_id=user.id, name=name, contact=contact)
-        db.session.add(p)
+        c = CustomerProfile(user_id=user.id, name=name, contact=contact)
+        db.session.add(c)
         db.session.commit()
-        flash('Patient added', 'success')
-        return redirect(url_for('admin_patients'))
-    return render_template('hms/admin_add_patient.html')
+        flash('Customer added', 'success')
+        return redirect(url_for('admin_customers'))
+    return render_template('hms/admin_add_customer.html')
 
 
-@app.route('/admin/edit_patient/<int:patient_id>', methods=['GET','POST'])
+@app.route('/admin/edit_customer/<int:customer_id>', methods=['GET','POST'])
 @login_required
-def admin_edit_patient(patient_id):
+def admin_edit_customer(customer_id):
     if not is_admin():
         flash('Admin access required', 'danger')
         return redirect(url_for('index'))
-    patient = PatientProfile.query.get_or_404(patient_id)
+    customer = CustomerProfile.query.get_or_404(customer_id)
     if request.method == 'POST':
-        patient.name = request.form['name']
-        patient.contact = request.form.get('contact')
+        customer.name = request.form['name']
+        customer.contact = request.form.get('contact')
         db.session.commit()
-        flash('Patient updated', 'success')
-        return redirect(url_for('admin_patients'))
-    return render_template('hms/admin_edit_patient.html', patient=patient)
+        flash('Customer updated', 'success')
+        return redirect(url_for('admin_customers'))
+    return render_template('hms/admin_edit_customer.html', customer=customer)
 
 
-@app.route('/admin/delete_patient/<int:patient_id>', methods=['POST'])
+@app.route('/admin/delete_customer/<int:customer_id>', methods=['POST'])
 @login_required
-def admin_delete_patient(patient_id):
+def admin_delete_customer(customer_id):
     if not is_admin():
         flash('Admin access required', 'danger')
         return redirect(url_for('index'))
-    patient = PatientProfile.query.get_or_404(patient_id)
-    # check if patient has appointments
-    if Appointment.query.filter_by(patient_id=patient.id).first():
-        flash('Cannot delete patient with existing appointments', 'danger')
-        return redirect(url_for('admin_patients'))
-    db.session.delete(patient.user)
-    db.session.delete(patient)
+    customer = CustomerProfile.query.get_or_404(customer_id)
+    # check if customer has service bookings
+    if ServiceBooking.query.filter_by(customer_id=customer.user_id).first():
+        flash('Cannot delete customer with existing service bookings', 'danger')
+        return redirect(url_for('admin_customers'))
+    db.session.delete(customer.user)
+    db.session.delete(customer)
     db.session.commit()
-    flash('Patient deleted', 'success')
-    return redirect(url_for('admin_patients'))
+    flash('Customer deleted', 'success')
+    return redirect(url_for('admin_customers'))
 
-@app.route('/admin/add_doctor', methods=['GET','POST'])
+@app.route('/admin/add_technician', methods=['GET','POST'])
 @login_required
-def add_doctor():
+def admin_add_technician():
     if not is_admin():
         flash('Admin access required', 'danger')
         return redirect(url_for('index'))
@@ -760,260 +853,234 @@ def add_doctor():
         specialization = request.form['specialization']
         if User.query.filter((User.username==username)|(User.email==email)).first():
             flash('User exists', 'danger')
-            return redirect(url_for('add_doctor'))
-        user = User(username=username, email=email, role='doctor')
+            return redirect(url_for('admin_add_technician'))
+        user = User(username=username, email=email, role='technician')
         user.set_password(password)
         db.session.add(user)
         db.session.commit()
-        doc = DoctorProfile(user_id=user.id, name=name, specialization=specialization)
-        db.session.add(doc)
+        tech = TechnicianProfile(user_id=user.id, name=name, specialization=specialization)
+        db.session.add(tech)
         db.session.commit()
-        flash('Doctor added', 'success')
+        flash('Technician added', 'success')
         return redirect(url_for('admin_dashboard'))
-    return render_template('hms/add_doctor.html')
+    return render_template('hms/admin_add_technician.html')
 
 
-@app.route('/admin/edit_doctor/<int:doctor_id>', methods=['GET','POST'])
+@app.route('/admin/edit_technician/<int:technician_id>', methods=['GET','POST'])
 @login_required
-def admin_edit_doctor(doctor_id):
+def admin_edit_technician(technician_id):
     if not is_admin():
         flash('Admin access required', 'danger')
         return redirect(url_for('index'))
-    doc = DoctorProfile.query.get_or_404(doctor_id)
+    technician = TechnicianProfile.query.get_or_404(technician_id)
     if request.method == 'POST':
-        doc.name = request.form['name']
-        doc.specialization = request.form['specialization']
+        technician.name = request.form['name']
+        technician.specialization = request.form['specialization']
         db.session.commit()
-        flash('Doctor updated', 'success')
+        flash('Technician updated', 'success')
         return redirect(url_for('admin_dashboard'))
-    return render_template('hms/admin_edit_doctor.html', doc=doc)
+    return render_template('hms/admin_edit_technician.html', technician=technician)
 
 
-@app.route('/admin/delete_doctor/<int:doctor_id>', methods=['POST'])
+@app.route('/admin/delete_technician/<int:technician_id>', methods=['POST'])
 @login_required
-def admin_delete_doctor(doctor_id):
+def admin_delete_technician(technician_id):
     if not is_admin():
         flash('Admin access required', 'danger')
         return redirect(url_for('index'))
-    doc = DoctorProfile.query.get_or_404(doctor_id)
-    # check if doctor has appointments
-    if Appointment.query.filter_by(doctor_id=doc.id).first():
-        flash('Cannot delete doctor with existing appointments', 'danger')
+    technician = TechnicianProfile.query.get_or_404(technician_id)
+    # check if technician has service bookings
+    if ServiceBooking.query.filter_by(technician_id=technician.id).first():
+        flash('Cannot delete technician with existing service bookings', 'danger')
         return redirect(url_for('admin_dashboard'))
-    db.session.delete(doc.user)
-    db.session.delete(doc)
+    db.session.delete(technician.user)
+    db.session.delete(technician)
     db.session.commit()
-    flash('Doctor deleted', 'success')
+    flash('Technician deleted', 'success')
     return redirect(url_for('admin_dashboard'))
 
-# Patient
-@app.route('/patient')
+# Customer Dashboard
+@app.route('/customer')
 @login_required
-def patient_dashboard():
-    if not is_patient():
-        flash('Patient access required', 'danger')
+def customer_dashboard():
+    if not is_customer():
+        flash('Customer access required', 'danger')
         return redirect(url_for('index'))
     
-    # Get patient profile - handle both single object and list
-    patient = current_user.patient_profile
-    if isinstance(patient, list):
-        patient = patient[0] if patient else None
+    # Get customer profile - handle both single object and list
+    customer = current_user.customer_profile
+    if isinstance(customer, list):
+        customer = customer[0] if customer else None
     
-    if not patient:
-        flash('Patient profile not found', 'danger')
+    if not customer:
+        flash('Customer profile not found', 'danger')
         return redirect(url_for('index'))
     
-    upcoming = Appointment.query.filter_by(patient_id=patient.id).filter(Appointment.status=='Booked').order_by(Appointment.date.asc(), Appointment.time.asc()).all()
-    return render_template('hms/patient_dashboard.html', patient=patient, upcoming=upcoming)
+    upcoming = ServiceBooking.query.filter_by(customer_email=current_user.email).filter(ServiceBooking.status.in_(['Pending', 'Confirmed', 'In Progress'])).order_by(ServiceBooking.booking_date.desc()).all()
+    return render_template('hms/customer_dashboard.html', customer=customer, upcoming=upcoming)
 
 
-@app.route('/patient/edit', methods=['GET','POST'])
+@app.route('/customer/edit', methods=['GET','POST'])
 @login_required
-def patient_edit():
-    if not is_patient():
-        flash('Patient access required', 'danger')
+def customer_edit():
+    if not is_customer():
+        flash('Customer access required', 'danger')
         return redirect(url_for('index'))
     
-    # Get patient profile - handle both single object and list
-    patient = current_user.patient_profile
-    if isinstance(patient, list):
-        patient = patient[0] if patient else None
+    # Get customer profile - handle both single object and list
+    customer = current_user.customer_profile
+    if isinstance(customer, list):
+        customer = customer[0] if customer else None
     
-    if not patient:
-        flash('Patient profile not found', 'danger')
+    if not customer:
+        flash('Customer profile not found', 'danger')
         return redirect(url_for('index'))
     
     if request.method == 'POST':
-        patient.name = request.form.get('name')
-        patient.contact = request.form.get('contact')
+        customer.name = request.form.get('name')
+        customer.contact = request.form.get('contact')
         db.session.commit()
         flash('Profile updated', 'success')
-        return redirect(url_for('patient_dashboard'))
-    return render_template('hms/patient_edit.html', patient=patient)
+        return redirect(url_for('customer_dashboard'))
+    return render_template('hms/customer_edit.html', customer=customer)
 
-@app.route('/spare-parts')
-def list_doctors():
-    q = request.args.get('q')
-    category_filter = request.args.get('category')
-    
-    # Get all categories with part counts
-    categories = SparePartCategory.query.all()
-    
-    # Get parts based on filters
-    parts_query = SparePart.query
-    
-    if category_filter and category_filter != 'all':
-        parts_query = parts_query.filter_by(category_id=int(category_filter))
-    
-    if q:
-        parts_query = parts_query.filter(
-            (SparePart.name.contains(q)) | 
-            (SparePart.brand.contains(q)) | 
-            (SparePart.compatible_brands.contains(q)) |
-            (SparePart.description.contains(q))
-        )
-    
-    parts = parts_query.all()
-    
-    # Legacy support - keep doctor data for backwards compatibility
-    doctors = DoctorProfile.query.all()
-    today = datetime.now().date()
-    days = [today + timedelta(days=i) for i in range(7)]
-    doc_avail = {}
-    for d in doctors:
-        slots = Availability.query.filter_by(doctor_id=d.id, is_available=True).filter(Availability.date >= today).all()
-        doc_avail[d.id] = slots
-    
-    return render_template('hms/list_doctors.html', 
-                         categories=categories, 
-                         parts=parts,
-                         doctors=doctors, 
-                         days=days, 
-                         doc_avail=doc_avail,
-                         selected_category=category_filter)
+# Old spare-parts route removed - using Coming Soon page instead
 
-@app.route('/book/<int:doctor_id>', methods=['GET','POST'])
+@app.route('/book/<int:technician_id>', methods=['GET','POST'])
 @login_required
-def book(doctor_id):
-    if not is_patient():
-        flash('Only patients can book', 'danger')
+def book(technician_id):
+    if not is_customer():
+        flash('Only customers can book services', 'danger')
         return redirect(url_for('index'))
-    doctor = DoctorProfile.query.get_or_404(doctor_id)
-    # Show available slots for selected doctor
+    technician = TechnicianProfile.query.get_or_404(technician_id)
+    # Show available slots for selected technician
     today = datetime.now().date()
     if request.method == 'POST':
         slot_id = int(request.form.get('slot_id'))
         slot = Availability.query.get_or_404(slot_id)
         if not slot.is_available:
             flash('Slot no longer available', 'danger')
-            return redirect(url_for('book', doctor_id=doctor_id))
-        # double-check no appointment exists
-        existing = Appointment.query.filter_by(doctor_id=doctor.id, date=slot.date, time=slot.time, status='Booked').first()
+            return redirect(url_for('book', technician_id=technician_id))
+        # double-check no booking exists
+        existing = ServiceBooking.query.filter_by(technician_id=technician.id, date=slot.date, time=slot.time, status='Scheduled').first()
         if existing:
-            slot.is_available = True
+            slot.is_available = False
             db.session.commit()
             flash('Selected slot not available', 'danger')
-            return redirect(url_for('book', doctor_id=doctor_id))
+            return redirect(url_for('book', technician_id=technician_id))
         
-        # Get patient profile - handle both single object and list
-        patient_profile = current_user.patient_profile
-        if isinstance(patient_profile, list):
-            patient_profile = patient_profile[0] if patient_profile else None
+        # Get customer profile - handle both single object and list
+        customer_profile = current_user.customer_profile
+        if isinstance(customer_profile, list):
+            customer_profile = customer_profile[0] if customer_profile else None
         
-        if not patient_profile:
-            flash('Patient profile not found', 'danger')
+        if not customer_profile:
+            flash('Customer profile not found', 'danger')
             return redirect(url_for('index'))
         
-        appointment = Appointment(patient_id=patient_profile.id, doctor_id=doctor.id, date=slot.date, time=slot.time)
+        # Create service booking
+        booking = ServiceBooking(
+            customer_id=current_user.id,
+            customer_name=customer_profile.name,
+            customer_email=current_user.email,
+            customer_phone=customer_profile.contact or '',
+            vehicle_make='', vehicle_model='', vehicle_year=None, vehicle_registration='',
+            service_id=0,  # Default service
+            booking_date=slot.date,
+            booking_time=slot.time,
+            status='Scheduled',
+            total_amount=0.0,
+            notes=f'Booked with technician: {technician.name}'
+        )
         slot.is_available = False
-        db.session.add(appointment)
+        db.session.add(booking)
         db.session.commit()
-        flash('Appointment booked', 'success')
-        return redirect(url_for('patient_dashboard'))
+        flash('Service booked successfully!', 'success')
+        return redirect(url_for('customer_dashboard'))
 
     days = [today + timedelta(days=i) for i in range(7)]
     # pull availability slots for next 7 days
-    slots = Availability.query.filter_by(doctor_id=doctor.id, is_available=True).filter(Availability.date >= today).order_by(Availability.date, Availability.time).all()
-    return render_template('hms/book.html', doctor=doctor, days=days, slots=slots)
+    slots = Availability.query.filter_by(technician_id=technician.id, is_available=True).filter(Availability.date >= today).order_by(Availability.date, Availability.time).all()
+    return render_template('hms/book.html', technician=technician, days=days, slots=slots)
 
-@app.route('/cancel/<int:appointment_id>', methods=['POST'])
+@app.route('/cancel/<int:booking_id>', methods=['POST'])
 @login_required
-def cancel(appointment_id):
-    appt = Appointment.query.get_or_404(appointment_id)
-    if current_user.role == 'patient' and appt.patient.user_id != current_user.id:
+def cancel(booking_id):
+    booking = ServiceBooking.query.get_or_404(booking_id)
+    if current_user.role == 'customer' and booking.customer_id != current_user.id:
         flash('Not authorized', 'danger')
         return redirect(url_for('index'))
-    appt.status = 'Cancelled'
+    booking.status = 'Cancelled'
     # free the availability slot if it exists
-    slot = Availability.query.filter_by(doctor_id=appt.doctor_id, date=appt.date, time=appt.time).first()
+    slot = Availability.query.filter_by(technician_id=booking.technician_id, date=booking.date, time=booking.time).first()
     if slot:
         slot.is_available = True
     db.session.commit()
-    flash('Appointment cancelled', 'info')
+    flash('Service booking cancelled', 'info')
     return redirect(request.referrer or url_for('index'))
 
 
-@app.route('/reschedule/<int:appointment_id>', methods=['GET','POST'])
+@app.route('/reschedule/<int:booking_id>', methods=['GET','POST'])
 @login_required
-def reschedule(appointment_id):
-    appt = Appointment.query.get_or_404(appointment_id)
-    if current_user.role == 'patient' and appt.patient.user_id != current_user.id:
+def reschedule(booking_id):
+    booking = ServiceBooking.query.get_or_404(booking_id)
+    if current_user.role == 'customer' and booking.customer_id != current_user.id:
         flash('Not authorized', 'danger')
         return redirect(url_for('index'))
-    if appt.status != 'Booked':
-        flash('Can only reschedule booked appointments', 'danger')
-        return redirect(url_for('patient_dashboard'))
+    if booking.status not in ['Scheduled', 'Confirmed']:
+        flash('Can only reschedule scheduled bookings', 'danger')
+        return redirect(url_for('customer_dashboard'))
     
     if request.method == 'POST':
         slot_id = request.form.get('slot_id')
         if not slot_id:
             flash('Please select a time slot', 'danger')
-            return redirect(url_for('reschedule', appointment_id=appointment_id))
+            return redirect(url_for('reschedule', booking_id=booking_id))
         
         slot_id = int(slot_id)
         new_slot = Availability.query.get_or_404(slot_id)
-        if not new_slot.is_available or new_slot.doctor_id != appt.doctor_id:
+        if not new_slot.is_available or new_slot.technician_id != booking.technician_id:
             flash('Slot not available', 'danger')
-            return redirect(url_for('reschedule', appointment_id=appointment_id))
+            return redirect(url_for('reschedule', booking_id=booking_id))
         
         # free old slot
-        old_slot = Availability.query.filter_by(doctor_id=appt.doctor_id, date=appt.date, time=appt.time).first()
+        old_slot = Availability.query.filter_by(technician_id=booking.technician_id, date=booking.date, time=booking.time).first()
         if old_slot:
             old_slot.is_available = True
         
         # take new slot
-        appt.date = new_slot.date
-        appt.time = new_slot.time
+        booking.booking_date = new_slot.date
+        booking.booking_time = new_slot.time
         new_slot.is_available = False
         db.session.commit()
-        flash('Appointment rescheduled', 'success')
-        return redirect(url_for('patient_dashboard'))
+        flash('Service booking rescheduled', 'success')
+        return redirect(url_for('customer_dashboard'))
     
-    # show available slots for same doctor
+    # show available slots for same technician
     today = datetime.now().date()
-    slots = Availability.query.filter_by(doctor_id=appt.doctor_id, is_available=True).filter(Availability.date >= today).order_by(Availability.date, Availability.time).all()
-    return render_template('hms/reschedule.html', appt=appt, slots=slots)
+    slots = Availability.query.filter_by(technician_id=booking.technician_id, is_available=True).filter(Availability.date >= today).order_by(Availability.date, Availability.time).all()
+    return render_template('hms/reschedule.html', booking=booking, slots=slots)
 
-# Doctor
-@app.route('/doctor')
+# Technician Dashboard
+@app.route('/technician')
 @login_required
-def doctor_dashboard():
-    if not is_doctor():
-        flash('Doctor access required', 'danger')
+def technician_dashboard():
+    if not is_technician():
+        flash('Technician access required', 'danger')
         return redirect(url_for('index'))
     
-    # Get doctor profile - handle both single object and list
-    doc = current_user.doctor_profile
-    if isinstance(doc, list):
-        doc = doc[0] if doc else None
+    # Get technician profile - handle both single object and list
+    technician = current_user.technician_profile
+    if isinstance(technician, list):
+        technician = technician[0] if technician else None
     
-    if not doc:
-        flash('Doctor profile not found', 'danger')
+    if not technician:
+        flash('Technician profile not found', 'danger')
         return redirect(url_for('index'))
     
     today = datetime.now().date()
-    upcoming = Appointment.query.filter_by(doctor_id=doc.id).filter(Appointment.status=='Booked').order_by(Appointment.date.asc(), Appointment.time.asc()).all()
-    return render_template('hms/doctor_dashboard.html', doc=doc, upcoming=upcoming)
+    upcoming = ServiceBooking.query.filter_by(technician_id=technician.id).filter(ServiceBooking.status.in_(['Pending', 'Confirmed', 'In Progress'])).order_by(ServiceBooking.booking_date.desc()).all()
+    return render_template('hms/technician_dashboard.html', technician=technician, upcoming=upcoming)
 
 # Spare Parts Routes
 @app.route('/part/<int:part_id>')
@@ -1067,7 +1134,7 @@ def order_part(part_id):
         db.session.commit()
         
         flash(f'Order placed successfully! Order ID: #{order.id}. We will contact you at {customer_phone}', 'success')
-        return redirect(url_for('list_doctors'))
+        return redirect(url_for('spare_parts_browse'))
     
     return render_template('hms/order_part.html', part=part)
 
@@ -1106,20 +1173,20 @@ def admin_parts():
     return render_template('hms/admin_parts.html', categories=categories, parts=parts, orders=orders)
 
 
-@app.route('/doctor/availability', methods=['GET','POST'])
+@app.route('/technician/availability', methods=['GET','POST'])
 @login_required
-def doctor_availability():
-    if not is_doctor():
-        flash('Doctor access required', 'danger')
+def technician_availability():
+    if not is_technician():
+        flash('Technician access required', 'danger')
         return redirect(url_for('index'))
     
-    # Get doctor profile - handle both single object and list
-    doc = current_user.doctor_profile
-    if isinstance(doc, list):
-        doc = doc[0] if doc else None
+    # Get technician profile - handle both single object and list
+    technician = current_user.technician_profile
+    if isinstance(technician, list):
+        technician = technician[0] if technician else None
     
-    if not doc:
-        flash('Doctor profile not found', 'danger')
+    if not technician:
+        flash('Technician profile not found', 'danger')
         return redirect(url_for('index'))
     
     today = datetime.now().date()
@@ -1127,7 +1194,7 @@ def doctor_availability():
     if request.method == 'POST':
         pass  # TODO: Handle POST request
     
-    return render_template('hms/doctor_availability.html', doctor=doc, days=days)
+    return render_template('hms/technician_availability.html', technician=technician, days=days)
 
 
 # ============================================
@@ -1387,14 +1454,14 @@ def get_chatbot_response(message):
 
     # Contact/About queries
     elif any(word in message for word in ['contact', 'phone', 'address', 'location']):
-        response = "You can reach us at:\n📞 Phone: +91 9997612579\n📱 WhatsApp: +91 9997612579\n📍 Location: Lohaghat, Champawat, Uttarakhand\n⏰ Hours: Mon-Sat, 9 AM - 7 PM\n\nVisit our contact page for more details and map!"
+        response = "You can reach us at:\n📞 Phone: +91 9997612579\n📱 WhatsApp: +91 9997612579\n📍 Location: Lohaghat, Champawat, Uttarakhand\n⏰ Hours: Open 7 Days, 9 AM - 7 PM\n\nVisit our contact page for more details and map!"
 
     elif any(word in message for word in ['about', 'company', 'who', 'gaurav']):
         response = "🏆 Gaurav Motors - Uttarakhand's #1 Auto Workshop!\n\n✓ Established 2010\n✓ ISO Certified\n✓ 5000+ Happy Customers\n✓ Expert Technicians\n✓ Genuine Parts\n✓ Lifetime Warranty\n\nWe provide complete automotive solutions - from services to spare parts to accessories!"
 
-    # Appointment queries
+    # Booking queries
     elif any(word in message for word in ['appointment', 'schedule', 'time', 'slot', 'booking', 'reserve']):
-        response = "📅 Book Your Appointment:\n\n1. Click 'Book Service Now' button\n2. Choose your service\n3. Fill in your vehicle details\n4. Select preferred date/time\n5. Pay 50% advance\n\n✅ Quick & Easy!\n📞 Or call: +91 9997612579"
+        response = "📅 Book Your Service:\n\n1. Click 'Book Service Now' button\n2. Choose your service\n3. Fill in your vehicle details\n4. Select preferred date/time\n5. Pay 50% advance\n\n✅ Quick & Easy!\n📞 Or call: +91 9997612579"
 
     # Price/Cost queries
     elif any(word in message for word in ['price', 'cost', 'fee', 'charge', 'rate']):
@@ -1414,94 +1481,129 @@ def get_chatbot_response(message):
 
     return response
 
-@app.route('/appointment/<int:appointment_id>', methods=['GET','POST'])
+@app.route('/booking/<int:booking_id>', methods=['GET','POST'])
 @login_required
-def appointment_detail(appointment_id):
-    appt = Appointment.query.get_or_404(appointment_id)
-    if current_user.role == 'doctor' and appt.doctor.user_id != current_user.id:
-        flash('Not authorized', 'danger')
-        return redirect(url_for('index'))
+def booking_detail(booking_id):
+    booking = ServiceBooking.query.get_or_404(booking_id)
+    if current_user.role == 'technician' and hasattr(booking, 'technician_id') and booking.technician_id:
+        tech_profile = current_user.technician_profile
+        if isinstance(tech_profile, list):
+            tech_profile = tech_profile[0] if tech_profile else None
+        if tech_profile and booking.technician_id != tech_profile.id:
+            flash('Not authorized', 'danger')
+            return redirect(url_for('index'))
+    
     if request.method == 'POST':
-        # doctor marks completed and records treatment
+        # technician marks completed and records work
         status = request.form.get('status')
-        diagnosis = request.form.get('diagnosis')
-        prescription = request.form.get('prescription')
-        notes = request.form.get('notes')
+        assessment = request.form.get('assessment')
+        work_performed = request.form.get('work_performed')
+        parts_used = request.form.get('parts_used')
+        recommendations = request.form.get('recommendations')
+        
         if status == 'Completed':
-            appt.status = 'Completed'
-            tr = Treatment(appointment_id=appt.id, diagnosis=diagnosis, prescription=prescription, notes=notes)
-            db.session.add(tr)
+            booking.status = 'Completed'
+            work = ServiceWork(
+                service_booking_id=booking.id,
+                assessment=assessment,
+                work_performed=work_performed,
+                parts_used=parts_used,
+                recommendations=recommendations
+            )
+            db.session.add(work)
             db.session.commit()
-            flash('Appointment completed and treatment saved', 'success')
-            return redirect(url_for('doctor_dashboard'))
+            flash('Service booking completed and work saved', 'success')
+            return redirect(url_for('technician_dashboard'))
         elif status == 'Cancelled':
-            appt.status = 'Cancelled'
+            booking.status = 'Cancelled'
             db.session.commit()
-            flash('Appointment cancelled', 'info')
-            return redirect(url_for('doctor_dashboard'))
-    return render_template('hms/appointment_detail.html', appt=appt)
+            flash('Service booking cancelled', 'info')
+            return redirect(url_for('technician_dashboard'))
+    
+    return render_template('hms/booking_detail.html', booking=booking)
 
 # ===== NEW ADVANCED FEATURES =====
 
-# Medical Records Routes
-@app.route('/patient/medical-records')
+# Vehicle Records Routes
+@app.route('/customer/vehicle-records')
 @login_required
-def patient_medical_records():
-    """View patient's medical records"""
-    if not is_patient():
+def customer_vehicle_records():
+    """View customer's vehicle records"""
+    if not is_customer():
         flash('Access denied', 'danger')
         return redirect(url_for('index'))
     
-    patient = current_user.patient_profile[0]
-    records = MedicalRecord.query.filter_by(patient_id=patient.id).order_by(MedicalRecord.upload_date.desc()).all()
-    history = MedicalHistory.query.filter_by(patient_id=patient.id).first()
+    customer = current_user.customer_profile
+    if isinstance(customer, list):
+        customer = customer[0] if customer else None
     
-    return render_template('hms/medical_records.html', records=records, history=history)
+    if not customer:
+        flash('Customer profile not found', 'danger')
+        return redirect(url_for('index'))
+    
+    records = VehicleRecord.query.filter_by(customer_id=customer.id).order_by(VehicleRecord.upload_date.desc()).all()
+    history = VehicleHistory.query.filter_by(customer_id=customer.id).first()
+    
+    return render_template('hms/vehicle_records.html', records=records, history=history)
 
-@app.route('/patient/medical-history', methods=['GET', 'POST'])
+@app.route('/customer/vehicle-history', methods=['GET', 'POST'])
 @login_required
-def update_medical_history():
-    """Update patient medical history"""
-    if not is_patient():
+def update_vehicle_history():
+    """Update customer vehicle history"""
+    if not is_customer():
         flash('Access denied', 'danger')
         return redirect(url_for('index'))
     
-    patient = current_user.patient_profile[0]
-    history = MedicalHistory.query.filter_by(patient_id=patient.id).first()
+    customer = current_user.customer_profile
+    if isinstance(customer, list):
+        customer = customer[0] if customer else None
+    
+    if not customer:
+        flash('Customer profile not found', 'danger')
+        return redirect(url_for('index'))
+    
+    history = VehicleHistory.query.filter_by(customer_id=customer.id).first()
     
     if request.method == 'POST':
         if not history:
-            history = MedicalHistory(patient_id=patient.id)
+            history = VehicleHistory(customer_id=customer.id)
         
-        history.blood_type = request.form.get('blood_type')
-        history.allergies = request.form.get('allergies')
-        history.chronic_conditions = request.form.get('chronic_conditions')
-        history.current_medications = request.form.get('current_medications')
-        history.past_surgeries = request.form.get('past_surgeries')
-        history.emergency_contact = request.form.get('emergency_contact')
-        history.emergency_phone = request.form.get('emergency_phone')
-        history.insurance_provider = request.form.get('insurance_provider')
-        history.insurance_number = request.form.get('insurance_number')
+        history.make = request.form.get('make')
+        history.model = request.form.get('model')
+        history.year = int(request.form.get('year')) if request.form.get('year') else None
+        history.vin = request.form.get('vin')
+        history.license_plate = request.form.get('license_plate')
+        history.mileage = int(request.form.get('mileage')) if request.form.get('mileage') else None
+        history.fuel_type = request.form.get('fuel_type')
+        history.transmission = request.form.get('transmission')
+        history.engine_size = request.form.get('engine_size')
+        history.color = request.form.get('color')
+        history.insurance_company = request.form.get('insurance_company')
+        history.insurance_policy = request.form.get('insurance_policy')
         
         db.session.add(history)
         db.session.commit()
-        flash('Medical history updated successfully', 'success')
-        return redirect(url_for('patient_medical_records'))
+        flash('Vehicle history updated successfully', 'success')
+        return redirect(url_for('customer_vehicle_records'))
     
-    return render_template('hms/medical_history_form.html', history=history)
+    return render_template('hms/vehicle_history_form.html', history=history)
 
-@app.route('/upload-medical-record', methods=['POST'])
+@app.route('/upload-vehicle-record', methods=['POST'])
 @login_required
-def upload_medical_record():
-    """Upload medical record file"""
+def upload_vehicle_record():
+    """Upload vehicle record file"""
+    if not is_customer():
+        flash('Access denied', 'danger')
+        return redirect(url_for('index'))
+    
     if 'file' not in request.files:
         flash('No file provided', 'danger')
-        return redirect(request.referrer or url_for('patient_medical_records'))
+        return redirect(request.referrer or url_for('customer_vehicle_records'))
     
     file = request.files['file']
     if file.filename == '':
         flash('No file selected', 'danger')
-        return redirect(request.referrer or url_for('patient_medical_records'))
+        return redirect(request.referrer or url_for('customer_vehicle_records'))
     
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
@@ -1510,10 +1612,17 @@ def upload_medical_record():
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(filepath)
         
-        patient = current_user.patient_profile[0]
-        record = MedicalRecord(
-            patient_id=patient.id,
-            record_type=request.form.get('record_type', 'Other'),
+        customer = current_user.customer_profile
+        if isinstance(customer, list):
+            customer = customer[0] if customer else None
+        
+        if not customer:
+            flash('Customer profile not found', 'danger')
+            return redirect(url_for('index'))
+        
+        record = VehicleRecord(
+            customer_id=customer.id,
+            record_type=request.form.get('record_type', 'Service Report'),
             title=request.form.get('title', filename),
             description=request.form.get('description'),
             file_path=filename,
@@ -1522,41 +1631,41 @@ def upload_medical_record():
         db.session.add(record)
         db.session.commit()
         
-        flash('Medical record uploaded successfully', 'success')
+        flash('Vehicle record uploaded successfully', 'success')
     else:
         flash('Invalid file type', 'danger')
     
-    return redirect(url_for('patient_medical_records'))
+    return redirect(url_for('customer_vehicle_records'))
 
-# Doctor Reviews Routes
-@app.route('/doctor/<int:doctor_id>/reviews')
-def doctor_reviews(doctor_id):
-    """View doctor reviews"""
-    doctor = DoctorProfile.query.get_or_404(doctor_id)
-    reviews = DoctorReview.query.filter_by(doctor_id=doctor_id).order_by(DoctorReview.created_at.desc()).all()
-    avg_rating = calculate_doctor_rating(doctor_id)
+# Technician Reviews Routes
+@app.route('/technician/<int:technician_id>/reviews')
+def technician_reviews(technician_id):
+    """View technician reviews"""
+    technician = TechnicianProfile.query.get_or_404(technician_id)
+    reviews = TechnicianReview.query.filter_by(technician_id=technician_id).order_by(TechnicianReview.created_at.desc()).all()
+    avg_rating = calculate_technician_rating(technician_id)
     
-    return render_template('hms/doctor_reviews.html', doctor=doctor, reviews=reviews, avg_rating=avg_rating)
+    return render_template('hms/technician_reviews.html', technician=technician, reviews=reviews, avg_rating=avg_rating)
 
-@app.route('/appointment/<int:appointment_id>/review', methods=['GET', 'POST'])
+@app.route('/booking/<int:booking_id>/review', methods=['GET', 'POST'])
 @login_required
-def submit_review(appointment_id):
-    """Submit review for completed appointment"""
-    if not is_patient():
-        flash('Only patients can submit reviews', 'danger')
+def submit_review(booking_id):
+    """Submit review for completed service booking"""
+    if not is_customer():
+        flash('Only customers can submit reviews', 'danger')
         return redirect(url_for('index'))
     
-    appointment = Appointment.query.get_or_404(appointment_id)
+    booking = ServiceBooking.query.get_or_404(booking_id)
     
-    if appointment.status != 'Completed':
-        flash('Can only review completed appointments', 'warning')
-        return redirect(url_for('patient_dashboard'))
+    if booking.status != 'Completed':
+        flash('Can only review completed service bookings', 'warning')
+        return redirect(url_for('customer_dashboard'))
     
     # Check if already reviewed
-    existing_review = DoctorReview.query.filter_by(appointment_id=appointment_id).first()
+    existing_review = TechnicianReview.query.filter_by(service_booking_id=booking_id).first()
     if existing_review:
-        flash('You have already reviewed this appointment', 'info')
-        return redirect(url_for('patient_dashboard'))
+        flash('You have already reviewed this service', 'info')
+        return redirect(url_for('customer_dashboard'))
     
     if request.method == 'POST':
         rating = int(request.form.get('rating', 0))
@@ -1566,11 +1675,23 @@ def submit_review(appointment_id):
             flash('Rating must be between 1 and 5', 'danger')
             return redirect(request.referrer)
         
-        patient = current_user.patient_profile[0]
-        review = DoctorReview(
-            doctor_id=appointment.doctor_id,
-            patient_id=patient.id,
-            appointment_id=appointment_id,
+        customer = current_user.customer_profile
+        if isinstance(customer, list):
+            customer = customer[0] if customer else None
+        
+        if not customer:
+            flash('Customer profile not found', 'danger')
+            return redirect(url_for('index'))
+        
+        # Get technician_id from booking if it exists
+        technician_id = None
+        if hasattr(booking, 'technician_id'):
+            technician_id = booking.technician_id
+        
+        review = TechnicianReview(
+            technician_id=technician_id or 0,
+            customer_id=customer.id,
+            service_booking_id=booking_id,
             rating=rating,
             comment=comment
         )
@@ -1578,9 +1699,9 @@ def submit_review(appointment_id):
         db.session.commit()
         
         flash('Thank you for your review!', 'success')
-        return redirect(url_for('patient_dashboard'))
+        return redirect(url_for('customer_dashboard'))
     
-    return render_template('hms/submit_review.html', appointment=appointment)
+    return render_template('hms/submit_review.html', booking=booking)
 
 # Notifications Routes
 @app.route('/api/notifications')
@@ -1625,23 +1746,23 @@ def mark_all_notifications_read():
 # Advanced Search Routes
 @app.route('/search')
 def search():
-    """Universal search across doctors, services, and parts"""
+    """Universal search across technicians, services, and parts"""
     query = request.args.get('q', '').strip()
     category = request.args.get('category', 'all')
     
     results = {
-        'doctors': [],
+        'technicians': [],
         'services': [],
         'parts': []
     }
     
     if query:
-        if category in ['all', 'doctors']:
-            doctors = DoctorProfile.query.filter(
-                (DoctorProfile.name.ilike(f'%{query}%')) |
-                (DoctorProfile.specialization.ilike(f'%{query}%'))
+        if category in ['all', 'technicians']:
+            technicians = TechnicianProfile.query.filter(
+                (TechnicianProfile.name.ilike(f'%{query}%')) |
+                (TechnicianProfile.specialization.ilike(f'%{query}%'))
             ).all()
-            results['doctors'] = doctors
+            results['technicians'] = technicians
         
         if category in ['all', 'services']:
             services = CarService.query.filter(
@@ -1662,22 +1783,22 @@ def search():
     return render_template('hms/search_results.html', query=query, results=results, category=category)
 
 # Export Routes
-@app.route('/admin/export/appointments')
+@app.route('/admin/export/service-bookings')
 @login_required
-def export_appointments():
-    """Export appointments to CSV"""
+def export_service_bookings():
+    """Export service bookings to CSV"""
     if not is_admin():
         flash('Access denied', 'danger')
         return redirect(url_for('index'))
     
-    appointments = Appointment.query.order_by(Appointment.date.desc()).all()
+    bookings = ServiceBooking.query.order_by(ServiceBooking.booking_date.desc()).all()
     
     # Create CSV in memory
     output = BytesIO()
-    output.write(b'ID,Patient,Doctor,Date,Time,Status,Created At\n')
+    output.write(b'ID,Customer Name,Email,Phone,Service ID,Date,Time,Status,Amount,Created At\n')
     
-    for appt in appointments:
-        line = f'{appt.id},{appt.patient.name},{appt.doctor.name},{appt.date},{appt.time},{appt.status},{appt.created_at}\n'
+    for booking in bookings:
+        line = f'{booking.id},{booking.customer_name},{booking.customer_email},{booking.customer_phone},{booking.service_id},{booking.booking_date},{booking.booking_time},{booking.status},{booking.total_amount},{booking.created_at}\n'
         output.write(line.encode('utf-8'))
     
     output.seek(0)
@@ -1685,7 +1806,7 @@ def export_appointments():
         output,
         mimetype='text/csv',
         as_attachment=True,
-        download_name=f'appointments_{datetime.now().strftime("%Y%m%d")}.csv'
+        download_name=f'bookings_{datetime.now().strftime("%Y%m%d")}.csv'
     )
 
 @app.route('/admin/export/revenue')
@@ -1702,7 +1823,7 @@ def export_revenue():
     output.write(b'ID,Payment ID,Amount,Currency,Method,Date,Type\n')
     
     for payment in payments:
-        payment_type = 'Appointment' if payment.appointment_id else 'Service' if payment.service_booking_id else 'Part Order'
+        payment_type = 'Booking' if payment.appointment_id else 'Service' if payment.service_booking_id else 'Part Order'
         line = f'{payment.id},{payment.payment_id},{payment.amount},{payment.currency},{payment.payment_method},{payment.transaction_date},{payment_type}\n'
         output.write(line.encode('utf-8'))
     
@@ -1725,17 +1846,17 @@ def analytics_dashboard():
     stats = get_dashboard_stats()
     return jsonify(stats)
 
-@app.route('/api/analytics/appointments-by-month')
+@app.route('/api/analytics/bookings-by-month')
 @login_required
-def appointments_by_month():
-    """Get appointments grouped by month for charts"""
+def bookings_by_month():
+    """Get service bookings grouped by month for charts"""
     if not is_admin():
         return jsonify({'error': 'Unauthorized'}), 403
     
     # Get last 12 months data
     monthly_data = db.session.query(
-        db.func.strftime('%Y-%m', Appointment.date).label('month'),
-        db.func.count(Appointment.id).label('count')
+        db.func.strftime('%Y-%m', ServiceBooking.booking_date).label('month'),
+        db.func.count(ServiceBooking.id).label('count')
     ).group_by('month').order_by('month').limit(12).all()
     
     return jsonify({
@@ -1760,111 +1881,47 @@ def revenue_by_month():
         'data': [float(item.total) for item in monthly_revenue]
     })
 
-@app.route('/api/analytics/top-doctors')
+@app.route('/api/analytics/top-technicians')
 @login_required
-def top_doctors():
-    """Get top-rated doctors"""
+def top_technicians():
+    """Get top-rated technicians"""
     if not is_admin():
         return jsonify({'error': 'Unauthorized'}), 403
     
-    doctors = DoctorProfile.query.all()
-    doctor_ratings = []
+    technicians = TechnicianProfile.query.all()
+    technician_ratings = []
     
-    for doctor in doctors:
-        avg_rating = calculate_doctor_rating(doctor.id)
-        review_count = DoctorReview.query.filter_by(doctor_id=doctor.id).count()
-        doctor_ratings.append({
-            'name': doctor.name,
-            'specialization': doctor.specialization,
+    for technician in technicians:
+        avg_rating = calculate_technician_rating(technician.id)
+        review_count = TechnicianReview.query.filter_by(technician_id=technician.id).count()
+        technician_ratings.append({
+            'name': technician.name,
+            'specialization': technician.specialization,
             'rating': avg_rating,
             'reviews': review_count
         })
     
     # Sort by rating
-    doctor_ratings.sort(key=lambda x: x['rating'], reverse=True)
+    technician_ratings.sort(key=lambda x: x['rating'], reverse=True)
     
-    return jsonify(doctor_ratings[:10])
+    return jsonify(technician_ratings[:10])
 
 # ===== SPARE PARTS ORDERING SYSTEM (Complete with Advance Payment) =====
 
 @app.route('/spare-parts')
 def spare_parts_browse():
-    """Browse all spare parts with categories"""
-    category_id = request.args.get('category', type=int)
-    search = request.args.get('search', '')
-    brand = request.args.get('brand', '')
-    sort_by = request.args.get('sort', 'name')
-    
-    query = SparePart.query
-    
-    if category_id:
-        query = query.filter_by(category_id=category_id)
-    
-    if search:
-        query = query.filter(
-            (SparePart.name.ilike(f'%{search}%')) |
-            (SparePart.description.ilike(f'%{search}%')) |
-            (SparePart.brand.ilike(f'%{search}%'))
-        )
-    
-    if brand:
-        query = query.filter(SparePart.brand.ilike(f'%{brand}%'))
-    
-    # Sorting
-    if sort_by == 'price_low':
-        query = query.order_by(SparePart.price.asc())
-    elif sort_by == 'price_high':
-        query = query.order_by(SparePart.price.desc())
-    elif sort_by == 'popular':
-        query = query.order_by(SparePart.is_featured.desc())
-    else:
-        query = query.order_by(SparePart.name.asc())
-    
-    parts = query.all()
-    categories = SparePartCategory.query.all()
-    brands = db.session.query(SparePart.brand).distinct().all()
-    brands = [b[0] for b in brands if b[0]]
-    
-    # Get cart count
-    cart_count = 0
-    if current_user.is_authenticated:
-        cart_count = CartItem.query.filter_by(user_id=current_user.id).count()
-    
-    return render_template('hms/spare_parts_new.html', 
-                         parts=parts, 
-                         categories=categories,
-                         brands=brands,
-                         selected_category=category_id,
-                         search_query=search,
-                         cart_count=cart_count)
+    """Spare Parts Catalog"""
+    return render_template('hms/spare_parts_new.html')
 
 @app.route('/spare-parts/<int:part_id>')
 def spare_part_detail(part_id):
-    """Detailed view of a spare part"""
-    part = SparePart.query.get_or_404(part_id)
-    related_parts = SparePart.query.filter(
-        SparePart.category_id == part.category_id,
-        SparePart.id != part_id
-    ).limit(4).all()
-    
-    return render_template('hms/spare_part_detail.html', part=part, related_parts=related_parts)
+    """Spare Part Detail - Coming Soon"""
+    return render_template('hms/spare_part_detail.html')
 
 @app.route('/cart')
 def view_cart():
-    """View shopping cart"""
-    session_id = session.get('cart_session_id')
-    if not session_id:
-        session_id = secrets.token_urlsafe(16)
-        session['cart_session_id'] = session_id
-    
-    if current_user.is_authenticated:
-        cart_items = CartItem.query.filter_by(user_id=current_user.id).all()
-    else:
-        cart_items = CartItem.query.filter_by(session_id=session_id).all()
-    
-    total = sum(item.part.price * item.quantity for item in cart_items)
-    
-    return render_template('hms/cart.html', cart_items=cart_items, total=total)
+    """Cart - Coming Soon"""
+    return render_template('hms/cart.html')
 
 @app.route('/cart/add/<int:part_id>', methods=['POST'])
 def add_to_cart(part_id):
@@ -2083,12 +2140,12 @@ def my_part_orders():
     """View customer's part orders"""
     phone = request.args.get('phone', '')
     
-    if current_user.is_authenticated and hasattr(current_user, 'patient_profile'):
-        patient = current_user.patient_profile
-        if isinstance(patient, list):
-            patient = patient[0] if patient else None
-        if patient and patient.contact:
-            phone = patient.contact
+    if current_user.is_authenticated and hasattr(current_user, 'customer_profile'):
+        customer = current_user.customer_profile
+        if isinstance(customer, list):
+            customer = customer[0] if customer else None
+        if customer and customer.contact:
+            phone = customer.contact
     
     if request.method == 'GET' and not phone:
         return render_template('hms/my_orders_search.html')
@@ -2207,66 +2264,13 @@ def send_order_confirmation_email(order):
 # Car Accessories Routes
 @app.route('/accessories')
 def car_accessories():
-    """Browse car accessories"""
-    category_id = request.args.get('category', type=int)
-    search = request.args.get('search', '')
-    brand = request.args.get('brand', '')
-    sort_by = request.args.get('sort', 'name')
-    
-    query = CarAccessory.query
-    
-    if category_id:
-        query = query.filter_by(category_id=category_id)
-    
-    if search:
-        query = query.filter(
-            (CarAccessory.name.ilike(f'%{search}%')) |
-            (CarAccessory.description.ilike(f'%{search}%')) |
-            (CarAccessory.brand.ilike(f'%{search}%'))
-        )
-    
-    if brand:
-        query = query.filter(CarAccessory.brand.ilike(f'%{brand}%'))
-    
-    # Sorting
-    if sort_by == 'price_low':
-        query = query.order_by(CarAccessory.price.asc())
-    elif sort_by == 'price_high':
-        query = query.order_by(CarAccessory.price.desc())
-    elif sort_by == 'popular':
-        query = query.order_by(CarAccessory.is_featured.desc(), CarAccessory.rating.desc())
-    else:
-        query = query.order_by(CarAccessory.name.asc())
-    
-    accessories = query.all()
-    categories = AccessoryCategory.query.all()
-    brands = db.session.query(CarAccessory.brand).distinct().all()
-    brands = [b[0] for b in brands if b[0]]
-    
-    # Get cart count
-    cart_count = 0
-    if current_user.is_authenticated:
-        cart_count = CartItem.query.filter_by(user_id=current_user.id).count()
-    
-    return render_template('hms/accessories.html', 
-                         accessories=accessories, 
-                         categories=categories,
-                         brands=brands,
-                         selected_category=category_id,
-                         search_query=search,
-                         cart_count=cart_count)
+    """Car Accessories - Coming Soon"""
+    return render_template('hms/accessories.html')
 
 @app.route('/accessories/<int:accessory_id>')
 def accessory_detail(accessory_id):
-    """View accessory details"""
-    accessory = CarAccessory.query.get_or_404(accessory_id)
-    related = CarAccessory.query.filter_by(category_id=accessory.category_id).filter(CarAccessory.id != accessory.id).limit(4).all()
-    
-    cart_count = 0
-    if current_user.is_authenticated:
-        cart_count = CartItem.query.filter_by(user_id=current_user.id).count()
-    
-    return render_template('hms/accessory_detail.html', accessory=accessory, related=related, cart_count=cart_count)
+    """Accessory Detail - Coming Soon"""
+    return render_template('hms/accessories.html')
 
 @app.route('/add-accessory-to-cart/<int:accessory_id>', methods=['POST'])
 def add_accessory_to_cart(accessory_id):

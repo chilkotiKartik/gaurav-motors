@@ -1,0 +1,24 @@
+# Vercel Ignore File
+__pycache__/
+*.pyc
+*.pyo
+*.db
+*.sqlite3
+instance/
+backups/
+uploads/
+logs/
+.env
+.env.local
+venv/
+env/
+.git/
+*.egg-info/
+dist/
+build/
+tests.py
+test_*.py
+debug_*.py
+*.md
+setup.py
+.gitignore

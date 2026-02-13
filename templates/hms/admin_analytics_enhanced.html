@@ -9,8 +9,8 @@
                     <i class="fas fa-chart-line text-primary"></i> Advanced Analytics Dashboard
                 </h2>
                 <div class="btn-group">
-                    <a href="{{ url_for('export_appointments') }}" class="btn btn-outline-primary">
-                        <i class="fas fa-download"></i> Export Appointments
+                    <a href="{{ url_for('export_service_bookings') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-download"></i> Export Bookings
                     </a>
                     <a href="{{ url_for('export_revenue') }}" class="btn btn-outline-success">
                         <i class="fas fa-download"></i> Export Revenue
@@ -44,9 +44,9 @@
                 <div class="card-body text-white">
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <p class="mb-1 opacity-75">Total Appointments</p>
-                            <h2 class="fw-bold mb-0"><span id="totalAppointments">0</span></h2>
-                            <small class="opacity-75">This Month: <span id="monthlyAppointments">0</span></small>
+                            <p class="mb-1 opacity-75">Total Bookings</p>
+                            <h2 class="fw-bold mb-0"><span id="totalBookings">0</span></h2>
+                            <small class="opacity-75">This Month: <span id="monthlyBookings">0</span></small>
                         </div>
                         <div class="bg-white bg-opacity-25 p-3 rounded-3">
                             <i class="fas fa-calendar-check fa-2x"></i>
@@ -61,9 +61,9 @@
                 <div class="card-body text-white">
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <p class="mb-1 opacity-75">Total Patients</p>
-                            <h2 class="fw-bold mb-0"><span id="totalPatients">0</span></h2>
-                            <small class="opacity-75">Total Doctors: <span id="totalDoctors">0</span></small>
+                            <p class="mb-1 opacity-75">Total Customers</p>
+                            <h2 class="fw-bold mb-0"><span id="totalCustomers">0</span></h2>
+                            <small class="opacity-75">Total Technicians: <span id="totalTechnicians">0</span></small>
                         </div>
                         <div class="bg-white bg-opacity-25 p-3 rounded-3">
                             <i class="fas fa-users fa-2x"></i>
@@ -80,7 +80,7 @@
                         <div>
                             <p class="mb-1 opacity-75">Average Rating</p>
                             <h2 class="fw-bold mb-0"><span id="averageRating">0.0</span> ⭐</h2>
-                            <small class="opacity-75">Pending: <span id="pendingAppointments">0</span></small>
+                            <small class="opacity-75">Pending: <span id="pendingBookings">0</span></small>
                         </div>
                         <div class="bg-white bg-opacity-25 p-3 rounded-3">
                             <i class="fas fa-star fa-2x"></i>
@@ -96,10 +96,10 @@
         <div class="col-lg-8">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white border-bottom py-3">
-                    <h5 class="mb-0 fw-bold"><i class="fas fa-chart-bar text-primary"></i> Monthly Appointments Trend</h5>
+                    <h5 class="mb-0 fw-bold"><i class="fas fa-chart-bar text-primary"></i> Monthly Bookings Trend</h5>
                 </div>
                 <div class="card-body">
-                    <canvas id="appointmentsChart" style="max-height: 350px;"></canvas>
+                    <canvas id="bookingsChart" style="max-height: 350px;"></canvas>
                 </div>
             </div>
         </div>
@@ -107,7 +107,7 @@
         <div class="col-lg-4">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white border-bottom py-3">
-                    <h5 class="mb-0 fw-bold"><i class="fas fa-chart-pie text-success"></i> Appointment Status</h5>
+                    <h5 class="mb-0 fw-bold"><i class="fas fa-chart-pie text-success"></i> Booking Status</h5>
                 </div>
                 <div class="card-body">
                     <canvas id="statusChart" style="max-height: 350px;"></canvas>
@@ -131,10 +131,10 @@
         <div class="col-lg-5">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white border-bottom py-3">
-                    <h5 class="mb-0 fw-bold"><i class="fas fa-trophy text-warning"></i> Top Rated Doctors</h5>
+                    <h5 class="mb-0 fw-bold"><i class="fas fa-trophy text-warning"></i> Top Rated Technicians</h5>
                 </div>
                 <div class="card-body" style="max-height: 400px; overflow-y: auto;">
-                    <div id="topDoctorsList">
+                    <div id="topTechniciansList">
                         <div class="text-center py-4 text-muted">
                             <div class="spinner-border" role="status">
                                 <span class="visually-hidden">Loading...</span>
@@ -169,9 +169,9 @@
         <div class="col-lg-4">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body">
-                    <h6 class="fw-bold text-muted mb-3">Today's Appointments</h6>
-                    <h3 class="fw-bold text-success mb-0"><span id="todaysAppointments">0</span></h3>
-                    <small class="text-muted">Completed: <span id="completedAppointments">0</span></small>
+                    <h6 class="fw-bold text-muted mb-3">Today's Bookings</h6>
+                    <h3 class="fw-bold text-success mb-0"><span id="todaysBookings">0</span></h3>
+                    <small class="text-muted">Completed: <span id="completedBookings">0</span></small>
                 </div>
             </div>
         </div>
@@ -190,21 +190,21 @@ async function loadAnalytics() {
         // Update stat cards
         document.getElementById('totalRevenue').textContent = stats.total_revenue.toLocaleString();
         document.getElementById('monthlyRevenue').textContent = stats.monthly_revenue.toLocaleString();
-        document.getElementById('totalAppointments').textContent = stats.total_appointments.toLocaleString();
-        document.getElementById('monthlyAppointments').textContent = stats.monthly_appointments.toLocaleString();
-        document.getElementById('totalPatients').textContent = stats.total_patients.toLocaleString();
-        document.getElementById('totalDoctors').textContent = stats.total_doctors.toLocaleString();
+        document.getElementById('totalBookings').textContent = stats.total_appointments.toLocaleString();
+        document.getElementById('monthlyBookings').textContent = stats.monthly_appointments.toLocaleString();
+        document.getElementById('totalCustomers').textContent = stats.total_patients.toLocaleString();
+        document.getElementById('totalTechnicians').textContent = stats.total_doctors.toLocaleString();
         document.getElementById('averageRating').textContent = stats.average_rating.toFixed(1);
-        document.getElementById('pendingAppointments').textContent = stats.pending_appointments.toLocaleString();
+        document.getElementById('pendingBookings').textContent = stats.pending_appointments.toLocaleString();
         document.getElementById('serviceBookings').textContent = stats.service_bookings.toLocaleString();
         document.getElementById('pendingServiceBookings').textContent = stats.pending_service_bookings.toLocaleString();
         document.getElementById('sparePartsOrders').textContent = stats.spare_parts_orders.toLocaleString();
-        document.getElementById('todaysAppointments').textContent = stats.todays_appointments.toLocaleString();
-        document.getElementById('completedAppointments').textContent = stats.completed_appointments.toLocaleString();
+        document.getElementById('todaysBookings').textContent = stats.todays_appointments.toLocaleString();
+        document.getElementById('completedBookings').textContent = stats.completed_appointments.toLocaleString();
         
-        // Load appointments chart
-        const appointmentsData = await fetch('/api/analytics/appointments-by-month').then(r => r.json());
-        createLineChart('appointmentsChart', appointmentsData, 'Appointments', 'rgb(13, 110, 253)');
+        // Load bookings chart
+        const bookingsData = await fetch('/api/analytics/appointments-by-month').then(r => r.json());
+        createLineChart('bookingsChart', bookingsData, 'Bookings', 'rgb(13, 110, 253)');
         
         // Load revenue chart
         const revenueData = await fetch('/api/analytics/revenue-by-month').then(r => r.json());
@@ -216,9 +216,9 @@ async function loadAnalytics() {
             data: [stats.pending_appointments, stats.completed_appointments, stats.total_appointments - stats.pending_appointments - stats.completed_appointments]
         });
         
-        // Load top doctors
-        const topDoctors = await fetch('/api/analytics/top-doctors').then(r => r.json());
-        displayTopDoctors(topDoctors);
+        // Load top technicians
+        const topTechnicians = await fetch('/api/analytics/top-doctors').then(r => r.json());
+        displayTopTechnicians(topTechnicians);
         
     } catch (error) {
         console.error('Error loading analytics:', error);
@@ -278,14 +278,14 @@ function createPieChart(canvasId, data) {
     });
 }
 
-function displayTopDoctors(doctors) {
-    const container = document.getElementById('topDoctorsList');
-    if (doctors.length === 0) {
+function displayTopTechnicians(technicians) {
+    const container = document.getElementById('topTechniciansList');
+    if (technicians.length === 0) {
         container.innerHTML = '<p class="text-muted text-center">No ratings yet</p>';
         return;
     }
     
-    container.innerHTML = doctors.map((doctor, index) => `
+    container.innerHTML = technicians.map((tech, index) => `
         <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
             <div class="me-3">
                 <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" 
@@ -294,12 +294,12 @@ function displayTopDoctors(doctors) {
                 </div>
             </div>
             <div class="flex-grow-1">
-                <h6 class="mb-1 fw-bold">${doctor.name}</h6>
-                <small class="text-muted">${doctor.specialization}</small>
+                <h6 class="mb-1 fw-bold">${tech.name}</h6>
+                <small class="text-muted">${tech.specialization}</small>
             </div>
             <div class="text-end">
-                <div class="fw-bold text-warning">${doctor.rating.toFixed(1)} ⭐</div>
-                <small class="text-muted">${doctor.reviews} reviews</small>
+                <div class="fw-bold text-warning">${tech.rating.toFixed(1)} ⭐</div>
+                <small class="text-muted">${tech.reviews} reviews</small>
             </div>
         </div>
     `).join('');

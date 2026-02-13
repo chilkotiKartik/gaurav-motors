@@ -1,0 +1,101 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+
+<!-- Page Header -->
+<div class="availability-header mb-4 p-4 rounded" style="background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%); border-left: 5px solid #4caf50;">
+  <div class="row align-items-center">
+    <div class="col-md-8">
+      <h2 class="mb-0">
+        <i class="fas fa-calendar-alt text-success me-2"></i>
+        Manage Your Availability
+      </h2>
+      <p class="text-muted mb-0 mt-2">
+        <i class="fas fa-user-cog me-1"></i> <strong>{{ technician.name }}</strong> | {{ technician.specialization }}
+      </p>
+    </div>
+    <div class="col-md-4 text-end">
+      <a href="{{ url_for('technician_dashboard') }}" class="btn btn-outline-success">
+        <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Add New Slot Card -->
+<div class="card border-0 shadow-sm mb-4">
+  <div class="card-header text-white py-3" style="background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);">
+    <h5 class="mb-0">
+      <i class="fas fa-plus-circle me-2"></i>
+      Add New Time Slot
+    </h5>
+  </div>
+  <div class="card-body p-4">
+    <form method="post" class="row g-3">
+      <div class="col-md-5">
+        <label class="form-label fw-bold">
+          <i class="fas fa-calendar me-1"></i> Select Date
+        </label>
+        <input type="date" name="date" class="form-control form-control-lg" required style="border-left: 4px solid #4caf50;">
+        <small class="text-muted">Choose a date for availability</small>
+      </div>
+      
+      <div class="col-md-5">
+        <label class="form-label fw-bold">
+          <i class="fas fa-clock me-1"></i> Select Time
+        </label>
+        <input type="time" name="time" class="form-control form-control-lg" required style="border-left: 4px solid #4caf50;">
+        <small class="text-muted">Choose a time slot</small>
+      </div>
+      
+      <div class="col-md-2 d-flex align-items-end">
+        <button type="submit" class="btn btn-success btn-lg w-100">
+          <i class="fas fa-check me-2"></i>Add
+        </button>
+      </div>
+    </form>
+    
+    <div class="alert alert-info mt-3 mb-0">
+      <i class="fas fa-info-circle me-2"></i>
+      <strong>Tip:</strong> Add multiple slots to give customers more booking options. Each slot is for one service booking.
+    </div>
+  </div>
+</div>
+
+<!-- Week View -->
+<div class="card border-0 shadow-sm">
+  <div class="card-header bg-white border-bottom py-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">
+        <i class="fas fa-calendar-week text-success me-2"></i>
+        Next 7 Days
+      </h5>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row g-3">
+      {% for day in days %}
+      <div class="col-md">
+        <div class="card h-100 border text-center">
+          <div class="card-header bg-light py-2">
+            <strong>{{ day.strftime('%a') }}</strong><br>
+            <small>{{ day.strftime('%b %d') }}</small>
+          </div>
+          <div class="card-body p-2">
+            <small class="text-muted">No slots set</small>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date().toISOString().split('T')[0];
+    const dateInput = document.querySelector('input[type="date"]');
+    if (dateInput) dateInput.setAttribute('min', today);
+  });
+</script>
+
+{% endblock %}

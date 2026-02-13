@@ -1,0 +1,584 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+
+<div class="container-fluid py-4">
+  <!-- Header -->
+  <div class="row mb-4">
+    <div class="col-lg-8">
+      <h1 class="display-6 fw-bold" style="color: #1a202c;">
+        <i class="fas fa-cube me-3" style="color: #0d6efd;"></i>Spare Parts Management
+      </h1>
+      <p class="text-muted">Manage your inventory, add new parts, and track orders</p>
+    </div>
+    <div class="col-lg-4 text-end">
+      <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-primary">
+        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+      </a>
+    </div>
+  </div>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show" role="alert" style="border-radius: 12px;">
+          <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-circle' }} me-2"></i>{{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <!-- Tabs Navigation -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <ul class="nav nav-tabs" id="partsTab" role="tablist" style="border-bottom: 2px solid #e0e0e0;">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active fw-bold" id="add-tab" data-bs-toggle="tab" data-bs-target="#add-part" type="button" role="tab">
+            <i class="fas fa-plus-circle me-2"></i>Add New Part
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link fw-bold" id="inventory-tab" data-bs-toggle="tab" data-bs-target="#inventory" type="button" role="tab">
+            <i class="fas fa-boxes me-2"></i>Inventory ({{ parts|length }})
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link fw-bold" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button" role="tab">
+            <i class="fas fa-shopping-cart me-2"></i>Recent Orders ({{ orders|length }})
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Tab Content -->
+  <div class="tab-content" id="partsTabContent">
+    
+    <!-- Add Part Form -->
+    <div class="tab-pane fade show active" id="add-part" role="tabpanel">
+      <div class="row">
+        <div class="col-lg-10 mx-auto">
+          <div class="card border-0 shadow-lg" style="border-radius: 20px;">
+            <div class="card-body p-5">
+              <h4 class="fw-bold mb-4" style="color: #1a202c;">
+                <i class="fas fa-package me-2" style="color: #0d6efd;"></i>Add New Spare Part
+              </h4>
+
+              <form method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="action" value="add_part">
+                
+                <div class="row g-4">
+                  <!-- Part Name -->
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold"><i class="fas fa-tag me-2 text-primary"></i>Part Name *</label>
+                    <input type="text" name="name" class="form-control form-control-lg" placeholder="e.g., Oil Filter" style="border-radius: 12px; border: 2px solid #e0e0e0; padding: 12px 16px;" required>
+                  </div>
+
+                  <!-- Category -->
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold"><i class="fas fa-list me-2 text-primary"></i>Category *</label>
+                    <select name="category_id" class="form-select form-select-lg" style="border-radius: 12px; border: 2px solid #e0e0e0; padding: 12px 16px;" required>
+                      <option value="">-- Select Category --</option>
+                      {% for cat in categories %}
+                        <option value="{{ cat.id }}">
+                          {% if cat.name == 'Engine Parts' %}🔧
+                          {% elif cat.name == 'Brake System' %}🛑
+                          {% elif cat.name == 'Electrical' %}⚡
+                          {% endif %} {{ cat.name }}
+                        </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <!-- Part Number -->
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold"><i class="fas fa-barcode me-2 text-primary"></i>Part Number</label>
+                    <input type="text" name="part_number" class="form-control form-control-lg" placeholder="e.g., PN-12345" style="border-radius: 12px; border: 2px solid #e0e0e0; padding: 12px 16px;">
+                  </div>
+
+                  <!-- Brand -->
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold"><i class="fas fa-industry me-2 text-primary"></i>Brand</label>
+                    <input type="text" name="brand" class="form-control form-control-lg" placeholder="e.g., Bosch, Mann-Filter" style="border-radius: 12px; border: 2px solid #e0e0e0; padding: 12px 16px;">
+                  </div>
+
+                  <!-- Price -->
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold"><i class="fas fa-rupee-sign me-2 text-primary"></i>Price (₹) *</label>
+                    <input type="number" name="price" step="0.01" class="form-control form-control-lg" placeholder="e.g., 500" style="border-radius: 12px; border: 2px solid #e0e0e0; padding: 12px 16px;" required>
+                  </div>
+
+                  <!-- Stock Quantity -->
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold"><i class="fas fa-box me-2 text-primary"></i>Stock Quantity</label>
+                    <input type="number" name="stock_quantity" class="form-control form-control-lg" placeholder="e.g., 50" style="border-radius: 12px; border: 2px solid #e0e0e0; padding: 12px 16px;">
+                  </div>
+
+                  <!-- Image URL -->
+                  <div class="col-12">
+                    <label class="form-label fw-bold"><i class="fas fa-image me-2 text-primary"></i>Product Image URL</label>
+                    <input type="url" name="image_url" class="form-control form-control-lg" placeholder="https://example.com/image.jpg" style="border-radius: 12px; border: 2px solid #e0e0e0; padding: 12px 16px;">
+                    <small class="text-muted">Paste image URL from Unsplash or other image sources</small>
+                  </div>
+
+                  <!-- Description -->
+                  <div class="col-12">
+                    <label class="form-label fw-bold"><i class="fas fa-file-alt me-2 text-primary"></i>Description</label>
+                    <textarea name="description" class="form-control form-control-lg" rows="3" placeholder="Detailed product description..." style="border-radius: 12px; border: 2px solid #e0e0e0; padding: 12px 16px;"></textarea>
+                  </div>
+
+                  <!-- Compatible Brands -->
+                  <div class="col-12">
+                    <label class="form-label fw-bold"><i class="fas fa-car me-2 text-primary"></i>Compatible Car Brands</label>
+                    <input type="text" name="compatible_brands" class="form-control form-control-lg" placeholder="e.g., Maruti, Hyundai, Tata, Honda" style="border-radius: 12px; border: 2px solid #e0e0e0; padding: 12px 16px;">
+                  </div>
+
+                  <!-- Warranty -->
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold"><i class="fas fa-shield me-2 text-primary"></i>Warranty (Months)</label>
+                    <input type="number" name="warranty_months" class="form-control form-control-lg" value="6" style="border-radius: 12px; border: 2px solid #e0e0e0; padding: 12px 16px;">
+                  </div>
+
+                  <!-- OEM -->
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold"><i class="fas fa-certificate me-2 text-primary"></i>Product Type</label>
+                    <div class="form-check mt-2">
+                      <input type="checkbox" name="is_oem" class="form-check-input" id="oem_check" style="width: 20px; height: 20px;">
+                      <label class="form-check-label" for="oem_check">
+                        <strong>OEM (Original Equipment Manufacturer)</strong>
+                        <small class="d-block text-muted">Check if this is an original manufacturer part</small>
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Submit -->
+                  <div class="col-12">
+                    <button type="submit" class="btn btn-lg btn-primary rounded-pill px-5 py-3" style="width: 100%; font-weight: bold; font-size: 1.1rem;">
+                      <i class="fas fa-check-circle me-2"></i>Add Part to Inventory
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inventory Tab -->
+    <div class="tab-pane fade" id="inventory" role="tabpanel">
+      <div class="row g-4">
+        {% if parts %}
+          {% for part in parts %}
+          <div class="col-lg-4 col-md-6">
+            <div class="card border-0 shadow-sm h-100 overflow-hidden" style="border-radius: 16px; transition: all 0.3s;">
+              <!-- Image -->
+              <div style="height: 200px; background: linear-gradient(135deg, #f5f7fa, #c3cfe2); position: relative; overflow: hidden;">
+                <img src="{{ part.image_url or 'https://images.unsplash.com/photo-1486262715933-d5c0675ebc61?w=400&q=80' }}" 
+                     alt="{{ part.name }}" 
+                     style="width: 100%; height: 100%; object-fit: cover;">
+                <div class="position-absolute top-0 start-0 p-2">
+                  <span class="badge bg-primary" style="font-size: 0.9rem;">
+                    {% if part.is_oem %}<i class="fas fa-certificate me-1"></i>OEM{% else %}<i class="fas fa-box me-1"></i>Aftermarket{% endif %}
+                  </span>
+                </div>
+              </div>
+              
+              <!-- Content -->
+              <div class="card-body p-4">
+                <h5 class="fw-bold mb-2" style="color: #1a202c;">{{ part.name }}</h5>
+                
+                <div class="mb-3">
+                  <small class="text-muted">
+                    <i class="fas fa-tag me-1"></i>{{ part.part_number or 'N/A' }}
+                  </small>
+                  <br>
+                  <small class="text-muted">
+                    <i class="fas fa-industry me-1"></i>{{ part.brand or 'Generic' }}
+                  </small>
+                </div>
+
+                <!-- Price & Stock -->
+                <div class="mb-3">
+                  <h4 class="text-primary fw-bold mb-1">₹{{ "%.2f"|format(part.price) }}</h4>
+                  <div class="d-flex align-items-center">
+                    <span class="badge {% if part.stock_quantity > 0 %}bg-success{% else %}bg-danger{% endif %}" style="font-size: 0.9rem;">
+                      <i class="fas fa-box me-1"></i>Stock: {{ part.stock_quantity }}
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Description -->
+                {% if part.description %}
+                  <p class="text-muted small mb-3">{{ part.description[:80] }}...</p>
+                {% endif %}
+
+                <!-- Details -->
+                <div class="border-top pt-3">
+                  <small class="text-muted d-block mb-2">
+                    <i class="fas fa-shield-alt me-1 text-warning"></i>{{ part.warranty_months }}-Month Warranty
+                  </small>
+                  <small class="text-muted d-block">
+                    <i class="fas fa-car me-1 text-info"></i>Compatible: {{ part.compatible_brands or 'All' }}
+                  </small>
+                </div>
+              </div>
+
+              <!-- Footer -->
+              <div class="card-footer bg-light p-3">
+                <button class="btn btn-sm btn-outline-primary w-100" style="border-radius: 8px;">
+                  <i class="fas fa-edit me-1"></i>Edit Part
+                </button>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <div class="col-12">
+            <div class="text-center py-5">
+              <i class="fas fa-inbox fa-5x text-muted mb-3"></i>
+              <h5 class="text-muted">No parts in inventory yet</h5>
+              <p class="text-muted">Add your first spare part using the form above</p>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Orders Tab -->
+    <div class="tab-pane fade" id="orders" role="tabpanel">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="bg-light">
+            <tr style="border-bottom: 3px solid #0d6efd;">
+              <th><i class="fas fa-hashtag me-2"></i>Order ID</th>
+              <th><i class="fas fa-user me-2"></i>Customer</th>
+              <th><i class="fas fa-cube me-2"></i>Part Name</th>
+              <th><i class="fas fa-box me-2"></i>Qty</th>
+              <th><i class="fas fa-rupee-sign me-2"></i>Price</th>
+              <th><i class="fas fa-calendar me-2"></i>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if orders %}
+              {% for order in orders %}
+              <tr style="border-bottom: 1px solid #e0e0e0;">
+                <td><strong>#{{ order.id }}</strong></td>
+                <td>{{ order.customer_name }}</td>
+                <td>
+                  <i class="fas fa-cube me-1" style="color: #0d6efd;"></i>
+                  {% if order.part %}{{ order.part.name }}{% else %}N/A{% endif %}
+                </td>
+                <td>{{ order.quantity }}</td>
+                <td><strong>₹{{ "%.2f"|format(order.unit_price) }}</strong></td>
+                <td>{{ order.order_date.strftime('%d %b %Y') if order.order_date else 'N/A' }}</td>
+              </tr>
+              {% endfor %}
+            {% else %}
+              <tr>
+                <td colspan="6" class="text-center py-4 text-muted">
+                  <i class="fas fa-shopping-cart fa-3x mb-2"></i>
+                  <p>No orders yet</p>
+                </td>
+              </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  /* ===== KEYFRAME ANIMATIONS ===== */
+  @keyframes slideInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  /* ===== PAGE LOAD ANIMATIONS ===== */
+  .container-fluid {
+    animation: fadeIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .row {
+    animation: slideInUp 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* ===== TAB ANIMATIONS ===== */
+  .nav-link {
+    color: #6c757d !important;
+    border: none !important;
+    padding: 12px 20px !important;
+    font-size: 1rem;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    position: relative;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: #0d6efd;
+    transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .nav-link:hover {
+    color: #0d6efd !important;
+    background: rgba(13, 110, 253, 0.05);
+    border-radius: 8px;
+    transform: translateY(-2px);
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+  .nav-link.active {
+    color: #0d6efd !important;
+    border-bottom: 3px solid #0d6efd !important;
+    animation: slideInDown 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .nav-link.active::after {
+    width: 100%;
+  }
+
+  /* ===== CARD ANIMATIONS ===== */
+  .card {
+    animation: slideInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .col-lg-4 .card {
+    animation-delay: 0s;
+  }
+
+  .col-lg-4:nth-child(2) .card {
+    animation-delay: 0.1s;
+  }
+
+  .col-lg-4:nth-child(3) .card {
+    animation-delay: 0.2s;
+  }
+
+  .col-lg-4:nth-child(4) .card {
+    animation-delay: 0.3s;
+  }
+
+  .col-lg-4:nth-child(5) .card {
+    animation-delay: 0.4s;
+  }
+
+  .col-lg-4:nth-child(6) .card {
+    animation-delay: 0.5s;
+  }
+
+  .card:hover {
+    box-shadow: 0 20px 50px rgba(13, 110, 253, 0.2) !important;
+    transform: translateY(-12px);
+  }
+
+  .card:active {
+    transform: translateY(-4px);
+  }
+
+  /* ===== FORM ANIMATIONS ===== */
+  .form-control,
+  .form-select {
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .form-control:focus,
+  .form-select:focus {
+    border-color: #0d6efd !important;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+    transform: translateY(-2px);
+  }
+
+  .form-label {
+    animation: slideInLeft 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* ===== BUTTON ANIMATIONS ===== */
+  .btn {
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .btn:active {
+    transform: translateY(-2px);
+  }
+
+  .btn:active::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  /* ===== TABLE ANIMATIONS ===== */
+  table tbody tr {
+    animation: slideInUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  table tbody tr:nth-child(1) {
+    animation-delay: 0s;
+  }
+
+  table tbody tr:nth-child(2) {
+    animation-delay: 0.05s;
+  }
+
+  table tbody tr:nth-child(3) {
+    animation-delay: 0.1s;
+  }
+
+  table tbody tr:nth-child(n+4) {
+    animation-delay: 0.15s;
+  }
+
+  table tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.08);
+    transform: scale(1.01);
+  }
+
+  /* ===== BADGE ANIMATIONS ===== */
+  .badge {
+    animation: slideInRight 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .badge:hover {
+    transform: scale(1.1);
+  }
+
+  /* ===== ICON ANIMATIONS ===== */
+  i.fas {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .btn i.fas {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .btn:hover i.fas {
+    transform: translateY(-2px);
+  }
+
+  /* ===== TAB PANE ANIMATIONS ===== */
+  .tab-pane {
+    animation: fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .tab-pane.active {
+    animation: slideInUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* ===== HEADER ANIMATIONS ===== */
+  h1, h2, h3, h4, h5, h6 {
+    animation: slideInLeft 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* ===== SMOOTH TRANSITIONS ===== */
+  * {
+    transition-property: background-color, border-color, color;
+    transition-duration: 0.3s;
+    transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+</style>
+
+{% endblock %}

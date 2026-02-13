@@ -3,17 +3,65 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>{% block title %}GAURAV MOTORS LOHAGHAT - Quality Car Service{% endblock %}</title>
+    <meta name="theme-color" content="#0d6efd">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Gaurav Motors Lohaghat - Uttarakhand's #1 Car Workshop. Best car service, repair, denting, painting, wheel alignment, AC service & accessories. Open 7 Days. Call +91 9997612579">
+    <meta name="keywords" content="car service lohaghat, car repair champawat, auto workshop uttarakhand, car mechanic lohaghat, wheel alignment, denting painting, car AC service, car accessories, gaurav motors, best car garage">
+    <meta name="author" content="Gaurav Motors Lohaghat">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="business.business">
+    <meta property="og:title" content="Gaurav Motors Lohaghat - Best Car Service in Uttarakhand">
+    <meta property="og:description" content="Uttarakhand's most trusted auto workshop. Car service, repair, denting, painting & accessories. 15+ years experience. Open 7 days. WhatsApp: +91 9997612579">
+    <meta property="og:url" content="https://gauravmotors.com">
+    <meta property="og:site_name" content="Gaurav Motors Lohaghat">
+    <meta property="og:locale" content="en_IN">
+    <meta property="business:contact_data:street_address" content="Main Road, Lohaghat">
+    <meta property="business:contact_data:locality" content="Lohaghat">
+    <meta property="business:contact_data:region" content="Uttarakhand">
+    <meta property="business:contact_data:postal_code" content="262524">
+    <meta property="business:contact_data:country_name" content="India">
+    <meta property="business:contact_data:phone_number" content="+919997612579">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Gaurav Motors - Best Car Workshop in Lohaghat">
+    <meta name="twitter:description" content="Car service, repair, denting, painting & more. Open 7 days. Call +91 9997612579">
+    
+    <!-- Geo Tags -->
+    <meta name="geo.region" content="IN-UK">
+    <meta name="geo.placename" content="Lohaghat, Champawat, Uttarakhand">
+    
+    <title>{% block title %}GAURAV MOTORS LOHAGHAT - Best Car Service & Repair Workshop in Uttarakhand{% endblock %}</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
     <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/logo.png') }}">
+    
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- CSS Libraries -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Custom Stylesheets -->
     <link href="{{ url_for('static', filename='css/hms.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/modern-ui-light.css') }}" rel="stylesheet">
     <style>
       * {
-        font-family: 'Poppins', sans-serif;
+        font-family: 'Inter', 'Poppins', sans-serif;
+      }
+      
+      h1, h2, h3, h4, h5, h6, .display-1, .display-2, .display-3, .display-4 {
+        font-family: 'Montserrat', 'Poppins', sans-serif;
+        font-weight: 700;
       }
       
       body {
@@ -440,14 +488,16 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        z-index: 9999;
+        z-index: 99999;
         opacity: 1;
+        visibility: visible;
         transition: opacity 0.5s ease, visibility 0.5s ease;
       }
 
       .page-loader.hidden {
-        opacity: 0;
-        visibility: hidden;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
       }
 
       .loader-spinner {
@@ -1003,6 +1053,411 @@
           transition-duration: 0.01ms !important;
         }
       }
+
+      /* ========================================================================
+         GLOBAL SMOOTH ANIMATION SYSTEM - APPLIES TO ALL PAGES
+         ======================================================================== */
+      
+      /* Root smooth scroll behavior */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* ===== KEYFRAME ANIMATIONS ===== */
+      @keyframes slideInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideInLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes scaleIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes float {
+        0%, 100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      @keyframes glow {
+        0%, 100% {
+          box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.7);
+        }
+        50% {
+          box-shadow: 0 0 0 10px rgba(13, 110, 253, 0);
+        }
+      }
+
+      @keyframes shimmer {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(100%);
+        }
+      }
+
+      /* ===== GLOBAL BUTTON ANIMATIONS ===== */
+      .btn {
+        transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .btn:active {
+        transform: translateY(-1px);
+      }
+
+      .btn:active::before {
+        width: 300px;
+        height: 300px;
+      }
+
+      /* ===== GLOBAL CARD ANIMATIONS ===== */
+      .card {
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        animation: slideInUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+      }
+
+      .card:hover {
+        box-shadow: 0 20px 45px rgba(13, 110, 253, 0.15) !important;
+        transform: translateY(-8px);
+      }
+
+      .card:active {
+        transform: translateY(-2px);
+      }
+
+      /* ===== GLOBAL TABLE ANIMATIONS ===== */
+      table tbody tr {
+        animation: slideInUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      table tbody tr:nth-child(1) {
+        animation-delay: 0s;
+      }
+
+      table tbody tr:nth-child(2) {
+        animation-delay: 0.05s;
+      }
+
+      table tbody tr:nth-child(3) {
+        animation-delay: 0.1s;
+      }
+
+      table tbody tr:nth-child(n+4) {
+        animation-delay: 0.15s;
+      }
+
+      table tbody tr:hover {
+        background-color: rgba(13, 110, 253, 0.08);
+        transform: scale(1.01);
+      }
+
+      /* ===== GLOBAL FORM ANIMATIONS ===== */
+      .form-control,
+      .form-select,
+      input,
+      textarea,
+      select {
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .form-control:focus,
+      .form-select:focus,
+      input:focus,
+      textarea:focus,
+      select:focus {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(13, 110, 253, 0.2) !important;
+      }
+
+      /* ===== GLOBAL LINK ANIMATIONS ===== */
+      a {
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      a:hover {
+        transform: translateY(-2px);
+      }
+
+      /* ===== GLOBAL BADGE ANIMATIONS ===== */
+      .badge {
+        animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .badge:hover {
+        transform: scale(1.1);
+      }
+
+      /* ===== GLOBAL ICON ANIMATIONS ===== */
+      i.fas,
+      .icon,
+      .fa,
+      [class^="fa-"] {
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .btn i.fas,
+      .btn [class^="fa-"] {
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .btn:hover i.fas,
+      .btn:hover [class^="fa-"] {
+        transform: translateY(-2px);
+      }
+
+      /* ===== GLOBAL HEADING ANIMATIONS ===== */
+      h1, h2, h3, h4, h5, h6 {
+        animation: slideInLeft 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      /* ===== GLOBAL PARAGRAPH ANIMATIONS ===== */
+      p {
+        animation: fadeIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      /* ===== GLOBAL SECTION ANIMATIONS ===== */
+      section {
+        animation: slideInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      /* ===== GLOBAL DIV ANIMATIONS ===== */
+      .container,
+      .container-fluid,
+      .row {
+        animation: fadeIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      /* ===== LIST ITEM ANIMATIONS ===== */
+      li {
+        animation: slideInLeft 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      li:nth-child(1) {
+        animation-delay: 0s;
+      }
+
+      li:nth-child(2) {
+        animation-delay: 0.1s;
+      }
+
+      li:nth-child(3) {
+        animation-delay: 0.2s;
+      }
+
+      li:nth-child(n+4) {
+        animation-delay: 0.3s;
+      }
+
+      li:hover {
+        transform: translateX(5px);
+      }
+
+      /* ===== GLOBAL MODAL ANIMATIONS ===== */
+      .modal.fade .modal-dialog {
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .modal.show .modal-dialog {
+        animation: slideInUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      /* ===== GLOBAL DROPDOWN ANIMATIONS ===== */
+      .dropdown-menu {
+        animation: slideInDown 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .dropdown-item {
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .dropdown-item:hover {
+        transform: translateX(5px);
+      }
+
+      /* ===== GLOBAL ALERT ANIMATIONS ===== */
+      .alert {
+        animation: slideInDown 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .alert:hover {
+        transform: translateY(-2px);
+      }
+
+      /* ===== GLOBAL PROGRESS BAR ANIMATIONS ===== */
+      .progress {
+        animation: slideInUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        overflow: hidden;
+      }
+
+      .progress-bar {
+        animation: slideInLeft 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      /* ===== GLOBAL LIST GROUP ANIMATIONS ===== */
+      .list-group-item {
+        animation: slideInLeft 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .list-group-item:nth-child(1) {
+        animation-delay: 0s;
+      }
+
+      .list-group-item:nth-child(2) {
+        animation-delay: 0.1s;
+      }
+
+      .list-group-item:nth-child(3) {
+        animation-delay: 0.2s;
+      }
+
+      .list-group-item:nth-child(n+4) {
+        animation-delay: 0.3s;
+      }
+
+      .list-group-item:hover {
+        background-color: rgba(13, 110, 253, 0.08);
+        transform: translateX(5px);
+      }
+
+      /* ===== GLOBAL TAB ANIMATIONS ===== */
+      .nav-tabs .nav-link {
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        position: relative;
+      }
+
+      .nav-tabs .nav-link:hover {
+        transform: translateY(-3px);
+      }
+
+      .nav-tabs .nav-link.active {
+        animation: slideInDown 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .tab-pane {
+        animation: fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .tab-pane.active {
+        animation: slideInUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      /* ===== GLOBAL IMAGE ANIMATIONS ===== */
+      img {
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      img:hover {
+        transform: scale(1.02);
+      }
+
+      /* ===== GLOBAL SMOOTH COLOR TRANSITIONS ===== */
+      * {
+        transition-property: background-color, border-color, color, fill, stroke;
+        transition-duration: 0.3s;
+        transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      /* ===== DISABLE ANIMATIONS FOR PREFERS-REDUCED-MOTION ===== */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+
+      /* ===== END GLOBAL SMOOTH ANIMATION SYSTEM ===== */
       
       /* Print styles */
       @media print {
@@ -1025,144 +1480,194 @@
     </style>
   </head>
   <body>
-    <!-- Professional Workshop Background Pattern -->
-    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; pointer-events: none; opacity: 0.03; background-image: url('{{ url_for('static', filename='images/gm3.jpg') }}'); background-size: cover; background-position: center; background-attachment: fixed;"></div>
+    <!-- CSS Animation to auto-hide loader after 2.5s -->
+    <style>
+      @keyframes hideLoader {
+        0%, 99% { opacity: 1; visibility: visible; }
+        100% { opacity: 0; visibility: hidden; pointer-events: none; }
+      }
+      .page-loader {
+        animation: hideLoader 2.5s forwards !important;
+      }
+    </style>
     
-    <!-- Service Contact Banner -->
-    <div style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); color: white; padding: 12px 0; font-weight: 600; box-shadow: 0 3px 15px rgba(220,53,69,0.2); position: relative; z-index: 999;">
-      <div class="container-fluid">
-        <div class="row align-items-center text-center">
+    <!-- Premium Page Loader -->
+    <div class="page-loader" id="pageLoader">
+      <div class="loader-content text-center">
+        <div class="loader-logo">
+          <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Loading..." style="width: 100%; height: 100%; object-fit: contain;">
+        </div>
+        <div class="loader-spinner-ring mx-auto"></div>
+        <div class="loader-text">GAURAV MOTORS</div>
+      </div>
+    </div>
+    
+    <!-- Inline Loader Hide Script (Fallback) -->
+    <script>
+      // Hide loader when page loads
+      window.addEventListener('load', function() {
+        var loader = document.getElementById('pageLoader');
+        if (loader) {
+          setTimeout(function() {
+            loader.classList.add('hidden');
+            document.body.style.overflow = '';
+          }, 300);
+        }
+      });
+      // Fallback: force hide after 2 seconds
+      setTimeout(function() {
+        var loader = document.getElementById('pageLoader');
+        if (loader) {
+          loader.classList.add('hidden');
+          document.body.style.overflow = '';
+        }
+      }, 2000);
+      // Immediate fallback on DOMContentLoaded
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+          var loader = document.getElementById('pageLoader');
+          if (loader) {
+            loader.classList.add('hidden');
+            document.body.style.overflow = '';
+          }
+        }, 1500);
+      });
+    </script>
+
+    <!-- Professional Workshop Background Pattern -->
+    <div class="bg-pattern-overlay" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; pointer-events: none; opacity: 0.03; background-image: url('{{ url_for('static', filename='images/gm3.jpg') }}'); background-size: cover; background-position: center; background-attachment: fixed;"></div>
+    
+    <!-- Premium Top Bar -->
+    <div class="top-bar-premium d-none d-md-block" style="background: linear-gradient(90deg, #1e293b 0%, #0f172a 100%); padding: 10px 0;">
+      <div class="container">
+        <div class="row align-items-center">
           <div class="col-md-4">
-            <i class="fas fa-phone-volume me-2"></i>
-            <span class="badge bg-white text-danger me-2" style="font-size: 0.75rem;">CALL NOW</span>
-            <strong style="font-size: 1.1rem;">+91 9997612579</strong>
+            <div class="d-flex align-items-center gap-3">
+              <a href="tel:+919997612579" class="text-white text-decoration-none d-flex align-items-center gap-2" style="font-size: 0.9rem;">
+                <i class="fas fa-phone-alt" style="color: #22c55e;"></i>
+                <span>+91 9997612579</span>
+              </a>
+              <span class="text-white opacity-50">|</span>
+              <a href="mailto:gauravmotors@gmail.com" class="text-white text-decoration-none d-flex align-items-center gap-2" style="font-size: 0.9rem;">
+                <i class="fas fa-envelope" style="color: #fbbf24;"></i>
+                <span>gauravmotors@gmail.com</span>
+              </a>
+            </div>
           </div>
-          <div class="col-md-4">
-            <i class="fas fa-clock me-2"></i>
-            <strong>Mon-Sat 9AM-7PM</strong> - Quality Service
+          <div class="col-md-4 text-center">
+            <span class="badge px-3 py-2" style="background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #1a1a2e; font-weight: 600;">
+              <i class="fas fa-clock me-2"></i>Open 7 Days: 9AM-7PM
+            </span>
           </div>
-          <div class="col-md-4">
-            <a href="{{ url_for('list_doctors') }}" class="btn btn-light btn-sm" style="font-weight: 600;">
-              <i class="fas fa-calendar-check me-1"></i>Book Service
-            </a>
+          <div class="col-md-4 text-end">
+            <div class="d-flex align-items-center justify-content-end gap-3">
+              <a href="https://wa.me/919997612579" target="_blank" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-whatsapp"></i></a>
+              <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-facebook"></i></a>
+              <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-youtube"></i></a>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <nav class="navbar navbar-expand-lg navbar-dark main-navbar shadow-lg">
-      <div class="container-fluid">
-        <a class="navbar-brand fw-bold d-flex align-items-center" href="{{ url_for('index') }}" style="gap: 12px;">
-          <div class="logo-wrapper position-relative" style="width: 70px; height: 70px;">
-            <div class="logo-bg position-absolute w-100 h-100 rounded-3" style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); box-shadow: 0 6px 20px rgba(0,0,0,0.15); border: 2px solid rgba(255,255,255,0.5);"></div>
-            <img src="{{ url_for('static', filename='images/logo.png') }}" 
-                 alt="GM Logo" 
-                 class="logo-img position-relative" 
-                 style="width: 100%; height: 100%; object-fit: contain; padding: 10px; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));">
+    
+    <!-- Modern Premium Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top" style="background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%); padding: 0; box-shadow: 0 4px 30px rgba(13,110,253,0.3);">
+      <div class="container">
+        
+        <!-- Brand Logo -->
+        <a class="navbar-brand py-2 d-flex align-items-center gap-3" href="{{ url_for('index') }}">
+          <div class="logo-container position-relative" style="width: 65px; height: 65px;">
+            <div class="logo-bg" style="position: absolute; inset: 0; background: linear-gradient(135deg, #fff, #f8f9fa); border-radius: 16px; box-shadow: 0 8px 25px rgba(0,0,0,0.2);"></div>
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Gaurav Motors" style="position: relative; width: 100%; height: 100%; object-fit: contain; padding: 8px;">
           </div>
-          <div class="brand-text">
-            <div class="d-flex align-items-center gap-2">
-              <strong class="brand-name" style="font-size: 1.4rem; letter-spacing: 1.5px; color: white; text-shadow: 2px 2px 6px rgba(0,0,0,0.3); font-weight: 800;">GAURAV MOTORS</strong>
+          <div class="brand-info d-none d-sm-block">
+            <div class="brand-name fw-bold text-white" style="font-size: 1.3rem; letter-spacing: 1px; text-shadow: 2px 2px 8px rgba(0,0,0,0.3);">GAURAV MOTORS</div>
+            <div class="d-flex align-items-center gap-2 mt-1">
+              <span class="badge" style="background: rgba(251,191,36,0.9); color: #1a1a2e; font-size: 0.65rem; padding: 4px 10px;">
+                <i class="fas fa-map-marker-alt me-1"></i>Lohaghat
+              </span>
+              <span class="badge" style="background: rgba(34,197,94,0.9); color: #fff; font-size: 0.65rem; padding: 4px 10px;">
+                <i class="fas fa-star me-1"></i>4.9★
+              </span>
             </div>
-            <span class="badge bg-warning text-dark" style="font-size: 0.65rem; padding: 4px 10px; margin-top: 2px; box-shadow: 0 2px 8px rgba(255,193,7,0.4);"><i class="fas fa-map-marker-alt me-1"></i>Lohaghat, Uttarakhand</span>
           </div>
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        
+        <!-- Mobile Toggle -->
+        <button class="navbar-toggler border-0 p-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="background: rgba(255,255,255,0.1); border-radius: 10px;">
           <span class="navbar-toggler-icon"></span>
         </button>
+        
+        <!-- Navigation Links -->
         <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav me-auto">
+          <ul class="navbar-nav mx-auto">
             {% if current_user.is_authenticated %}
-              <!-- ADMIN NAVIGATION -->
               {% if current_user.role == 'admin' %}
-                <li class="nav-item"><a class="nav-link active" href="{{ url_for('admin_dashboard') }}"><i class="fas fa-tachometer-alt me-1"></i>Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_patients') }}"><i class="fas fa-users me-1"></i>Customers</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('list_doctors') }}"><i class="fas fa-cogs me-1"></i>Spare Parts</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_appointments') }}"><i class="fas fa-box me-1"></i>Parts Orders</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_appointments') }}"><i class="fas fa-calendar-alt me-1"></i>Service Bookings</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_analytics') }}"><i class="fas fa-chart-bar me-1"></i>Analytics</a></li>
-              
-              <!-- MECHANIC NAVIGATION -->
-              {% elif current_user.role == 'mechanic' %}
-                <li class="nav-item"><a class="nav-link active" href="{{ url_for('doctor_dashboard') }}"><i class="fas fa-tools me-1"></i>Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('doctor_availability') }}"><i class="fas fa-calendar-check me-1"></i>My Schedule</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('list_doctors') }}"><i class="fas fa-boxes me-1"></i>All Parts</a></li>
-              
-              <!-- CUSTOMER NAVIGATION -->
-              {% elif current_user.role == 'patient' %}
-                <li class="nav-item"><a class="nav-link active" href="{{ url_for('patient_dashboard') }}"><i class="fas fa-car me-1"></i>My Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('list_doctors') }}"><i class="fas fa-search me-1"></i>Search Parts</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('patient_edit') }}"><i class="fas fa-user-edit me-1"></i>My Profile</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('services') }}"><i class="fas fa-car-mechanic me-1"></i>Services</a></li>
+                <li class="nav-item"><a class="nav-link text-white px-3 py-3" href="{{ url_for('admin_dashboard') }}"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link text-white px-3 py-3" href="{{ url_for('admin_customers') }}"><i class="fas fa-users me-2"></i>Customers</a></li>
+                <li class="nav-item"><a class="nav-link text-white px-3 py-3" href="{{ url_for('spare_parts_browse') }}"><i class="fas fa-cogs me-2"></i>Spare Parts</a></li>
+                <li class="nav-item"><a class="nav-link text-white px-3 py-3" href="{{ url_for('admin_service_bookings') }}"><i class="fas fa-wrench me-2"></i>Service Bookings</a></li>
+                <li class="nav-item"><a class="nav-link text-white px-3 py-3" href="{{ url_for('admin_analytics') }}"><i class="fas fa-chart-bar me-2"></i>Analytics</a></li>
+              {% elif current_user.role == 'technician' %}
+                <li class="nav-item"><a class="nav-link text-white px-3 py-3" href="{{ url_for('technician_dashboard') }}"><i class="fas fa-tools me-2"></i>Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link text-white px-3 py-3" href="{{ url_for('technician_availability') }}"><i class="fas fa-calendar-check me-2"></i>Schedule</a></li>
+                <li class="nav-item"><a class="nav-link text-white px-3 py-3" href="{{ url_for('spare_parts_browse') }}"><i class="fas fa-boxes me-2"></i>Parts</a></li>
+              {% elif current_user.role == 'customer' %}
+                <li class="nav-item"><a class="nav-link text-white px-3 py-3" href="{{ url_for('customer_dashboard') }}"><i class="fas fa-car me-2"></i>Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link text-white px-3 py-3" href="{{ url_for('spare_parts_browse') }}"><i class="fas fa-search me-2"></i>Parts</a></li>
+                <li class="nav-item"><a class="nav-link text-white px-3 py-3" href="{{ url_for('services') }}"><i class="fas fa-wrench me-2"></i>Services</a></li>
               {% endif %}
             {% else %}
-              <!-- PUBLIC NAVIGATION (Not Logged In) -->
-              <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}"><i class="fas fa-home me-1"></i>Home</a></li>
-              <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}"><i class="fas fa-info-circle me-1"></i>About</a></li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown">
-                  <i class="fas fa-tools me-1"></i>Services
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{{ url_for('services') }}"><i class="fas fa-car me-2"></i>All Services</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="{{ url_for('services') }}#engine"><i class="fas fa-cog me-2 text-danger"></i>Engine Service</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('services') }}#brake"><i class="fas fa-circle-stop me-2 text-info"></i>Brake Service</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('services') }}#electrical"><i class="fas fa-bolt me-2 text-warning"></i>Electrical</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('services') }}#ac"><i class="fas fa-snowflake me-2 text-success"></i>AC Service</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('services') }}#bodywork"><i class="fas fa-car-side me-2 text-primary"></i>Body Work</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('services') }}#general"><i class="fas fa-wrench me-2 text-secondary"></i>General Service</a></li>
-                </ul>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                  <i class="fas fa-shopping-cart me-1"></i>Spare Parts
-                </a>
-                <ul class="dropdown-menu dropdown-menu-dark">
-                  <li><a class="dropdown-item" href="{{ url_for('spare_parts_browse') }}"><i class="fas fa-boxes me-2"></i>Browse All Parts</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><h6 class="dropdown-header text-warning"><i class="fas fa-layer-group me-2"></i>Categories</h6></li>
-                  <li><a class="dropdown-item" href="{{ url_for('spare_parts_browse', category='Engine') }}"><i class="fas fa-engine me-2 text-primary"></i>Engine Components</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('spare_parts_browse', category='Brakes') }}"><i class="fas fa-circle-notch me-2 text-danger"></i>Brake Systems</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('spare_parts_browse', category='Filters') }}"><i class="fas fa-filter me-2 text-success"></i>Filters & Fluids</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('spare_parts_browse', category='Electrical') }}"><i class="fas fa-bolt me-2 text-warning"></i>Electrical Parts</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('spare_parts_browse', category='Suspension') }}"><i class="fas fa-car-side me-2" style="color: #6f42c1;"></i>Suspension</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('spare_parts_browse', category='Transmission') }}"><i class="fas fa-cog me-2" style="color: #fd7e14;"></i>Transmission</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('spare_parts_browse', category='Body') }}"><i class="fas fa-car me-2 text-info"></i>Body & Exterior</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('list_doctors', category=8) }}"><i class="fas fa-couch me-2" style="color: #0dcaf0;"></i>Interior Parts</a></li>
-                </ul>
-              </li>
-              <li class="nav-item"><a class="nav-link" href="{{ url_for('car_accessories') }}"><i class="fas fa-car-side me-1"></i>Accessories</a></li>
-              <li class="nav-item"><a class="nav-link" href="{{ url_for('faq') }}"><i class="fas fa-question-circle me-1"></i>FAQ</a></li>
-              <li class="nav-item"><a class="nav-link" href="{{ url_for('contact') }}"><i class="fas fa-envelope me-1"></i>Contact</a></li>
+              <li class="nav-item"><a class="nav-link text-white px-3 py-3" href="{{ url_for('index') }}"><i class="fas fa-home me-2"></i>Home</a></li>
+              <li class="nav-item"><a class="nav-link text-white px-3 py-3" href="{{ url_for('about') }}"><i class="fas fa-info-circle me-2"></i>About</a></li>
+              <li class="nav-item"><a class="nav-link text-white px-3 py-3" href="{{ url_for('services') }}"><i class="fas fa-tools me-2"></i>Services</a></li>
+              <li class="nav-item"><a class="nav-link text-white px-3 py-3" href="{{ url_for('spare_parts_browse') }}"><i class="fas fa-cog me-2"></i>Parts</a></li>
+              <li class="nav-item"><a class="nav-link text-white px-3 py-3" href="{{ url_for('car_accessories') }}"><i class="fas fa-car-side me-2"></i>Accessories</a></li>
+              <li class="nav-item"><a class="nav-link text-white px-3 py-3" href="{{ url_for('contact') }}"><i class="fas fa-envelope me-2"></i>Contact</a></li>
             {% endif %}
           </ul>
-          <ul class="navbar-nav ms-auto">
-            {% if current_user.is_authenticated %}
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                  <i class="fas fa-user-circle me-1"></i>
-                  <strong>{{ current_user.username }}</strong>
-                  <span class="badge bg-light text-success ms-2" style="font-size: 0.7rem;">{{ current_user.role|title }}</span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                  {% if current_user.role == 'patient' %}
-                    <li><a class="dropdown-item" href="{{ url_for('patient_edit') }}"><i class="fas fa-user-edit me-2"></i>Edit Profile</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                  {% elif current_user.role == 'mechanic' %}
-                    <li><a class="dropdown-item" href="{{ url_for('doctor_availability') }}"><i class="fas fa-calendar me-2"></i>Manage Schedule</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                  {% elif current_user.role == 'admin' %}
-                    <li><a class="dropdown-item" href="{{ url_for('admin_dashboard') }}"><i class="fas fa-tachometer-alt me-2"></i>Admin Panel</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                  {% endif %}
-                  <li><a class="dropdown-item text-danger" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
-                </ul>
-              </li>
-            {% else %}
-              <li class="nav-item"><a class="nav-link btn btn-warning text-dark fw-bold px-4 ms-2" href="{{ url_for('list_doctors') }}" style="border-radius: 25px; box-shadow: 0 4px 15px rgba(251,191,36,0.4);"><i class="fas fa-calendar-check me-1"></i>Book Now</a></li>
-            {% endif %}
+          
+          <!-- Right Side Actions - Always Show Contact Buttons -->
+          <ul class="navbar-nav">
+            <li class="nav-item d-flex align-items-center gap-2 ms-lg-3">
+              <a href="tel:+919997612579" class="btn btn-outline-light btn-sm px-3 py-2 d-none d-md-inline-flex" style="border-radius: 20px;">
+                <i class="fas fa-phone me-1"></i>Call Us
+              </a>
+              <a href="https://wa.me/919997612579?text=Hi%20Gaurav%20Motors!%20I%20want%20to%20book%20a%20car%20service." class="btn btn-sm px-4 py-2 fw-bold whatsapp-pulse" style="background: linear-gradient(135deg, #25D366, #128C7E); color: white; border-radius: 20px; box-shadow: 0 4px 15px rgba(37,211,102,0.4);">
+                <i class="fab fa-whatsapp me-1"></i>Book Now
+              </a>
+            </li>
           </ul>
         </div>
+      </div>
+    </nav>
+    
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav d-lg-none" style="position: fixed; bottom: 0; left: 0; right: 0; background: #fff; box-shadow: 0 -4px 20px rgba(0,0,0,0.1); z-index: 1000; padding: 8px 0;">
+      <div class="d-flex justify-content-around align-items-center">
+        <a href="{{ url_for('index') }}" class="text-center text-decoration-none" style="color: #64748b; flex: 1;">
+          <i class="fas fa-home" style="font-size: 1.2rem;"></i>
+          <div style="font-size: 0.65rem; margin-top: 2px;">Home</div>
+        </a>
+        <a href="{{ url_for('services') }}" class="text-center text-decoration-none" style="color: #64748b; flex: 1;">
+          <i class="fas fa-tools" style="font-size: 1.2rem;"></i>
+          <div style="font-size: 0.65rem; margin-top: 2px;">Services</div>
+        </a>
+        <a href="https://wa.me/919997612579?text=Hi%20Gaurav%20Motors!%20I%20want%20to%20book%20a%20car%20service." class="text-center text-decoration-none" style="flex: 1;">
+          <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #25D366, #128C7E); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: -20px auto 0; box-shadow: 0 4px 15px rgba(37,211,102,0.4);">
+            <i class="fab fa-whatsapp text-white" style="font-size: 1.4rem;"></i>
+          </div>
+          <div style="font-size: 0.65rem; margin-top: 4px; color: #25D366; font-weight: 600;">Book</div>
+        </a>
+        <a href="{{ url_for('spare_parts_browse') }}" class="text-center text-decoration-none" style="color: #64748b; flex: 1;">
+          <i class="fas fa-shopping-bag" style="font-size: 1.2rem;"></i>
+          <div style="font-size: 0.65rem; margin-top: 2px;">Parts</div>
+        </a>
+        <a href="tel:+919997612579" class="text-center text-decoration-none" style="color: #64748b; flex: 1;">
+          <i class="fas fa-phone" style="font-size: 1.2rem; color: #22c55e;"></i>
+          <div style="font-size: 0.65rem; margin-top: 2px;">Call</div>
+        </a>
       </div>
     </nav>
     <div class="container mt-4">
@@ -1178,7 +1683,7 @@
       {% endwith %}
       {% block content %}{% endblock %}
     </div>
-    <!-- Professional Hospital Footer -->
+    <!-- Professional Automotive Footer -->
     <footer class="mt-5 text-white shadow-lg" style="background: linear-gradient(135deg, #0b5bb0 0%, #0d6efd 50%, #0b84d9 100%); position: relative; overflow: hidden;">
       <!-- Decorative Background Pattern -->
       <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.05; background: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,0.05) 35px, rgba(255,255,255,0.05) 70px);"></div>
@@ -1259,7 +1764,7 @@
             <ul class="list-unstyled">
               <li class="mb-2"><a href="{{ url_for('index') }}" class="text-white text-decoration-none hover-link" style="opacity: 0.85; transition: all 0.3s;"><i class="fas fa-chevron-right me-2"></i>Home</a></li>
               <li class="mb-2"><a href="{{ url_for('about') }}" class="text-white text-decoration-none hover-link" style="opacity: 0.85; transition: all 0.3s;"><i class="fas fa-chevron-right me-2"></i>About Gaurav Motors</a></li>
-              <li class="mb-2"><a href="{{ url_for('list_doctors') }}" class="text-white text-decoration-none hover-link" style="opacity: 0.85; transition: all 0.3s;"><i class="fas fa-chevron-right me-2"></i>Find a Mechanic</a></li>
+              <li class="mb-2"><a href="{{ url_for('services') }}" class="text-white text-decoration-none hover-link" style="opacity: 0.85; transition: all 0.3s;"><i class="fas fa-chevron-right me-2"></i>Our Services</a></li>
               <li class="mb-2"><a href="{{ url_for('services') }}" class="text-white text-decoration-none hover-link" style="opacity: 0.85; transition: all 0.3s;"><i class="fas fa-chevron-right me-2"></i>Car Services</a></li>
               <li class="mb-2"><a href="{{ url_for('faq') }}" class="text-white text-decoration-none hover-link" style="opacity: 0.85; transition: all 0.3s;"><i class="fas fa-chevron-right me-2"></i>FAQ & Help Center</a></li>
               <li class="mb-2"><a href="{{ url_for('contact') }}" class="text-white text-decoration-none hover-link" style="opacity: 0.85; transition: all 0.3s;"><i class="fas fa-chevron-right me-2"></i>Contact Us</a></li>
@@ -1307,8 +1812,8 @@
                   <i class="fas fa-clock me-3 mt-1" style="color: #fff; font-size: 1.1rem;"></i>
                   <div>
                     <strong class="d-block mb-1">Hours:</strong>
-                    <span class="badge bg-success" style="font-size: 0.75rem;">Mon-Sat 9AM-7PM</span><br>
-                    <span class="small">Sunday: Closed</span>
+                    <span class="badge bg-success" style="font-size: 0.75rem;">Open 7 Days a Week</span><br>
+                    <span class="small">Mon-Sun: 9AM - 7PM</span>
                   </div>
                 </div>
               </li>
@@ -1358,112 +1863,152 @@
       <i class="fas fa-arrow-up"></i>
     </button>
 
-    <!-- ============= PREMIUM CHATBOT SYSTEM ============= -->
-    <!-- Chatbot FAB Button -->
-    <!-- Premium Chatbot FAB Button -->
-    <button id="chatbot-fab" class="chatbot-fab" title="Chat with us">
-        <i class="fas fa-comments"></i>
-        <span class="chat-badge">AI</span>
-        <div class="fab-ripple"></div>
+    <!-- ============= ULTRA PREMIUM CHATBOT SYSTEM V2 ============= -->
+    
+    <!-- Stunning Chatbot FAB Button -->
+    <button id="chatbot-fab" class="chatbot-fab-v2" title="Chat with Gaurav Motors AI">
+        <div class="fab-bg"></div>
+        <div class="fab-icon">
+            <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=100&h=100&fit=crop" alt="AI" class="fab-robot-img">
+        </div>
+        <div class="fab-badge">
+            <span>AI</span>
+            <div class="fab-badge-pulse"></div>
+        </div>
+        <div class="fab-ring fab-ring-1"></div>
+        <div class="fab-ring fab-ring-2"></div>
+        <div class="fab-particles">
+            <span></span><span></span><span></span>
+        </div>
     </button>
 
-    <!-- Premium Chatbot Window -->
-    <div id="chatbot-window" class="chatbot-window">
-        <!-- Modern Header with Gradient -->
-        <div class="chatbot-header">
-            <div class="chatbot-header-left">
-                <div class="chatbot-avatar">
-                    <i class="fas fa-robot"></i>
-                    <div class="avatar-pulse"></div>
-                </div>
-                <div class="chatbot-info">
-                    <h5 class="chatbot-title">Gaurav Motors AI</h5>
-                    <small class="chatbot-status">
-                        <span class="status-dot"></span> 
-                        <span class="status-text">Online - Ready to Help</span>
-                    </small>
-                </div>
+    <!-- Premium Chatbot Window V2 -->
+    <div id="chatbot-window" class="chatbot-window-v2">
+        
+        <!-- Stunning Header with Background -->
+        <div class="chat-header-v2">
+            <div class="header-bg">
+                <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=500&h=200&fit=crop" alt="bg">
             </div>
-            <button id="chatbot-close" class="chatbot-close-btn" title="Close chat">
-                <i class="fas fa-times"></i>
+            <div class="header-content-v2">
+                <div class="header-left-v2">
+                    <div class="bot-avatar-v2">
+                        <img src="https://images.unsplash.com/photo-1535378917042-10a22c95931a?w=80&h=80&fit=crop" alt="AI Bot">
+                    </div>
+                    <div class="bot-info-v2">
+                        <h4>Gaurav Motors <span class="ai-tag">AI</span></h4>
+                        <div class="status-v2">
+                            <span class="status-dot-v2"></span>
+                            <span>Online • Instant Reply</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="close-btn-v2">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Quick Actions Bar -->
+        <div class="quick-actions-v2">
+            <button class="quick-btn" onclick="sendQuickReply('hello')">
+                <i class="fas fa-hand-sparkles"></i>
+                <span>Hi</span>
+            </button>
+            <button class="quick-btn" onclick="sendQuickReply('services')">
+                <i class="fas fa-tools"></i>
+                <span>Services</span>
+            </button>
+            <button class="quick-btn" onclick="sendQuickReply('book service')">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Book</span>
+            </button>
+            <button class="quick-btn" onclick="sendQuickReply('price')">
+                <i class="fas fa-rupee-sign"></i>
+                <span>Prices</span>
+            </button>
+            <button class="quick-btn" onclick="sendQuickReply('emergency')">
+                <i class="fas fa-ambulance"></i>
+                <span>SOS</span>
             </button>
         </div>
         
-        <!-- Smart Quick Action Pills -->
-        <div class="chatbot-quick-replies">
-            <div class="quick-replies-scroll">
-                <button class="quick-reply-btn" onclick="sendQuickReply('hello')">
-                    <i class="fas fa-hand-wave"></i> Hi
-                </button>
-                <button class="quick-reply-btn" onclick="sendQuickReply('services')">
-                    <i class="fas fa-tools"></i> Services
-                </button>
-                <button class="quick-reply-btn" onclick="sendQuickReply('book appointment')">
-                    <i class="fas fa-calendar-check"></i> Book Now
-                </button>
-                <button class="quick-reply-btn" onclick="sendQuickReply('spare parts')">
-                    <i class="fas fa-cogs"></i> Spare Parts
-                </button>
-                <button class="quick-reply-btn" onclick="sendQuickReply('accessories')">
-                    <i class="fas fa-shopping-bag"></i> Accessories
-                </button>
-                <button class="quick-reply-btn" onclick="sendQuickReply('price')">
-                    <i class="fas fa-tag"></i> Pricing
-                </button>
-                <button class="quick-reply-btn" onclick="sendQuickReply('contact')">
-                    <i class="fas fa-phone"></i> Contact
-                </button>
-                <button class="quick-reply-btn" onclick="sendQuickReply('emergency')">
-                    <i class="fas fa-exclamation-triangle"></i> Emergency
-                </button>
-            </div>
-        </div>
-        
-        <!-- Chat Messages Area -->
-        <div id="chatbot-messages" class="chatbot-messages">
-            <div class="welcome-message">
-                <div class="welcome-icon-wrapper">
-                    <div class="welcome-icon">🚗</div>
-                    <div class="welcome-icon-bg"></div>
+        <!-- Messages Container -->
+        <div id="chatbot-messages" class="chat-messages-v2">
+            
+            <!-- Welcome Card -->
+            <div class="welcome-card-v2">
+                <div class="welcome-image-v2">
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=200&fit=crop" alt="Car Service">
                 </div>
-                <h4 class="welcome-title">Welcome to Gaurav Motors!</h4>
-                <p class="welcome-text">Uttarakhand's #1 Auto Workshop. I'm your AI assistant, here to help you with:</p>
-                <div class="welcome-features">
-                    <div class="feature-item">✓ Service Bookings</div>
-                    <div class="feature-item">✓ Spare Parts</div>
-                    <div class="feature-item">✓ Price Quotes</div>
-                    <div class="feature-item">✓ Emergency Support</div>
+                <div class="welcome-body-v2">
+                    <div class="welcome-avatar-v2">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="welcome-badges">
+                        <span class="badge-v2 primary"><i class="fas fa-star"></i> #1 in Uttarakhand</span>
+                        <span class="badge-v2 gold"><i class="fas fa-award"></i> 15+ Years</span>
+                    </div>
+                    <h4 class="welcome-title-v2">Welcome to <span>Gaurav Motors</span> 🚗</h4>
+                    <p class="welcome-subtitle-v2">I'm your AI assistant! How can I help you today?</p>
+                    <div class="feature-chips">
+                        <div class="feature-chip">
+                            <i class="fas fa-wrench"></i>
+                            <span>Services</span>
+                        </div>
+                        <div class="feature-chip">
+                            <i class="fas fa-cogs"></i>
+                            <span>Parts</span>
+                        </div>
+                        <div class="feature-chip">
+                            <i class="fas fa-tag"></i>
+                            <span>Quotes</span>
+                        </div>
+                        <div class="feature-chip">
+                            <i class="fas fa-clock"></i>
+                            <span>24/7</span>
+                        </div>
+                    </div>
+                    <div class="welcome-cta-v2">
+                        <button class="cta-btn primary" onclick="sendQuickReply('Hello')">
+                            <i class="fas fa-comment-dots"></i>
+                            Start Chat
+                        </button>
+                        <button class="cta-btn secondary" onclick="sendQuickReply('book service')">
+                            <i class="fas fa-calendar-check"></i>
+                            Book Now
+                        </button>
+                    </div>
                 </div>
-                <p class="welcome-cta">👋 Say <strong>Hi</strong> to get started!</p>
             </div>
+            
         </div>
         
         <!-- Typing Indicator -->
-        <div id="typing-indicator" class="typing-indicator">
+        <div id="typing-indicator" class="typing-indicator-v2">
             <div class="typing-avatar">
                 <i class="fas fa-robot"></i>
             </div>
             <div class="typing-bubble">
-                <div class="typing-dots">
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                </div>
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </div>
         
-        <!-- Modern Input Area -->
-        <div class="chatbot-input-area">
-            <div class="input-wrapper">
-                <input type="text" id="chatbot-input" placeholder="Type your message here..." autocomplete="off">
-                <button id="chatbot-send" class="chatbot-send-btn">
+        <!-- Input Area -->
+        <div class="chat-input-v2">
+            <div class="input-container">
+                <input type="text" id="chatbot-input" placeholder="Type a message..." autocomplete="off">
+                <button id="chatbot-send" class="send-btn-v2">
                     <i class="fas fa-paper-plane"></i>
                 </button>
             </div>
             <div class="input-footer">
-                <small>Powered by Gaurav Motors AI</small>
+                <span><i class="fas fa-bolt"></i> Powered by Gaurav Motors AI</span>
             </div>
         </div>
+        
     </div>
 
     <style>
@@ -1607,6 +2152,54 @@
             animation: ripple 3s infinite ease-out;
         }
         
+        .fab-inner {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0d6efd 0%, #0846aa 100%);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .fab-glow {
+            position: absolute;
+            inset: -10px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fbbf24, #0d6efd, #fbbf24);
+            opacity: 0.6;
+            filter: blur(15px);
+            z-index: -1;
+            animation: glowRotate 4s linear infinite;
+        }
+        
+        .fab-neon {
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00f5ff, #0d6efd, #ff00ff, #fbbf24, #00f5ff);
+            background-size: 300% 300%;
+            z-index: -1;
+            animation: neonGlow 3s linear infinite, glowRotate 4s linear infinite;
+            filter: blur(2px);
+        }
+        
+        .fab-ripple-2 {
+            animation-delay: 1.5s !important;
+        }
+        
+        @keyframes neonGlow {
+            0%, 100% { background-position: 0% 50%; opacity: 0.8; }
+            50% { background-position: 100% 50%; opacity: 1; }
+        }
+        
+        @keyframes glowRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
         /* ULTRA PREMIUM CHATBOT WINDOW */
         .chatbot-window {
             position: fixed;
@@ -1715,6 +2308,30 @@
                 inset 0 2px 10px rgba(255, 255, 255, 0.2);
         }
         
+        .avatar-icon-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: #fff;
+        }
+        
+        .avatar-status-ring {
+            position: absolute;
+            inset: -3px;
+            border: 3px solid #22c55e;
+            border-radius: 50%;
+            border-right-color: transparent;
+            animation: spinRing 2s linear infinite;
+        }
+        
+        @keyframes spinRing {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
         .avatar-pulse {
             position: absolute;
             inset: -5px;
@@ -1729,16 +2346,61 @@
         
         .chatbot-title {
             margin: 0;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 800;
             letter-spacing: 0.5px;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .title-gradient {
+            background: linear-gradient(135deg, #fff, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .ai-badge {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1a1a2e;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 0.65rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            z-index: 1;
+        }
+        
+        .header-action-btn {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .header-action-btn:hover {
+            background: rgba(34, 197, 94, 0.8);
+            transform: scale(1.1);
         }
         
         .chatbot-status {
             display: flex;
             align-items: center;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             opacity: 0.95;
             margin-top: 4px;
         }
@@ -1763,8 +2425,8 @@
             backdrop-filter: blur(10px);
             border: 2px solid rgba(255, 255, 255, 0.3);
             color: white;
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
@@ -1896,8 +2558,149 @@
         /* Enhanced Welcome Message */
         .welcome-message {
             text-align: center;
-            padding: 30px 20px;
+            padding: 25px 20px;
             animation: slideUp 0.6s ease;
+        }
+        
+        .welcome-header {
+            margin-bottom: 20px;
+        }
+        
+        .welcome-avatar {
+            position: relative;
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            margin-bottom: 15px;
+        }
+        
+        .welcome-avatar-inner {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0d6efd, #0846aa);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: #fff;
+            border: 4px solid #fff;
+            box-shadow: 0 10px 30px rgba(13,110,253,0.4);
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .welcome-avatar-glow {
+            position: absolute;
+            inset: -5px;
+            background: linear-gradient(135deg, #fbbf24, #0d6efd, #22c55e);
+            border-radius: 50%;
+            opacity: 0.6;
+            filter: blur(10px);
+            z-index: -1;
+            animation: glowRotate 4s linear infinite;
+        }
+        
+        .welcome-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1a1a2e;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        
+        .welcome-title {
+            color: #1e293b;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #0d6efd, #0846aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .welcome-text {
+            color: #64748b;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .welcome-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .feature-item {
+            background: linear-gradient(135deg, rgba(13, 110, 253, 0.08), rgba(8, 70, 170, 0.04));
+            padding: 12px 14px;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #0d6efd;
+            border: 2px solid rgba(13, 110, 253, 0.15);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .feature-item i {
+            font-size: 1rem;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(13, 110, 253, 0.2);
+            border-color: rgba(13, 110, 253, 0.3);
+        }
+        
+        .welcome-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .welcome-btn {
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+        
+        .welcome-btn.primary {
+            background: linear-gradient(135deg, #0d6efd, #0846aa);
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(13,110,253,0.4);
+        }
+        
+        .welcome-btn.primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(13,110,253,0.5);
+        }
+        
+        .welcome-btn.secondary {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1a1a2e;
+            box-shadow: 0 6px 20px rgba(251,191,36,0.4);
+        }
+        
+        .welcome-btn.secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(251,191,36,0.5);
         }
         
         .welcome-icon-wrapper {
@@ -1921,48 +2724,6 @@
             border-radius: 50%;
             z-index: 0;
             animation: pulse 3s infinite;
-        }
-        
-        .welcome-title {
-            color: #1e293b;
-            font-size: 1.5rem;
-            margin-bottom: 12px;
-            font-weight: 900;
-            letter-spacing: 0.5px;
-            background: linear-gradient(135deg, #0d6efd, #0846aa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .welcome-text {
-            color: #64748b;
-            font-size: 1rem;
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-        
-        .welcome-features {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin: 20px 0;
-        }
-        
-        .feature-item {
-            background: linear-gradient(135deg, rgba(13, 110, 253, 0.1), rgba(8, 70, 170, 0.05));
-            padding: 12px 16px;
-            border-radius: 15px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #0d6efd;
-            border: 2px solid rgba(13, 110, 253, 0.2);
-            transition: all 0.3s;
-        }
-        
-        .feature-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(13, 110, 253, 0.2);
         }
         
         .welcome-cta {
@@ -2328,33 +3089,846 @@
                 font-size: 12px;
             }
         }
+        
+        /* =============================================
+           CHATBOT V2 - ULTRA PREMIUM DESIGN WITH IMAGES
+           ============================================= */
+        
+        /* V2 FAB Button with Image */
+        .chatbot-fab-v2 {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            z-index: 999998;
+            padding: 0;
+            overflow: visible;
+            background: linear-gradient(135deg, #0d6efd 0%, #0846aa 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 
+                0 10px 40px rgba(13, 110, 253, 0.5),
+                0 0 30px rgba(13, 110, 253, 0.3);
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .chatbot-fab-v2 .fab-bg {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0d6efd 0%, #0846aa 100%);
+            z-index: 1;
+        }
+        
+        .chatbot-fab-v2 .fab-icon {
+            position: relative;
+            z-index: 3;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .chatbot-fab-v2 .fab-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .chatbot-fab-v2 .fab-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1a1a2e;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.6);
+            border: 2px solid white;
+        }
+        
+        .chatbot-fab-v2 .fab-badge-pulse {
+            position: absolute;
+            inset: -3px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            animation: fabBadgePulse 2s infinite;
+            z-index: -1;
+        }
+        
+        @keyframes fabBadgePulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0; }
+        }
+        
+        .chatbot-fab-v2 .fab-ring {
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 3px solid rgba(13, 110, 253, 0.4);
+            animation: fabRingPulse 2s ease-out infinite;
+            z-index: 0;
+        }
+        
+        .chatbot-fab-v2 .fab-ring-2 {
+            animation-delay: 1s;
+            border-color: rgba(251, 191, 36, 0.3);
+        }
+        
+        .chatbot-fab-v2 .fab-particles {
+            position: absolute;
+            inset: -15px;
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .chatbot-fab-v2 .fab-particles span {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #fbbf24;
+            border-radius: 50%;
+            animation: fabParticle 3s infinite;
+        }
+        
+        .chatbot-fab-v2 .fab-particles span:nth-child(1) {
+            top: 0; left: 50%;
+            animation-delay: 0s;
+        }
+        
+        .chatbot-fab-v2 .fab-particles span:nth-child(2) {
+            top: 50%; right: 0;
+            animation-delay: 1s;
+        }
+        
+        .chatbot-fab-v2 .fab-particles span:nth-child(3) {
+            bottom: 0; left: 50%;
+            animation-delay: 2s;
+        }
+        
+        @keyframes fabParticle {
+            0%, 100% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.5); opacity: 1; }
+        }
+        
+        @keyframes fabRingPulse {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        
+        .chatbot-fab-v2:hover {
+            transform: scale(1.15) translateY(-5px);
+            box-shadow: 
+                0 20px 60px rgba(13, 110, 253, 0.6),
+                0 0 50px rgba(13, 110, 253, 0.4);
+        }
+        
+        .chatbot-fab-v2:hover .fab-icon img {
+            transform: scale(1.1);
+        }
+        
+        /* V2 Window */
+        .chatbot-window-v2 {
+            position: fixed;
+            bottom: 130px;
+            left: 30px;
+            width: 420px;
+            max-width: 95vw;
+            height: 650px;
+            max-height: 80vh;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 
+                0 25px 80px rgba(0, 0, 0, 0.25),
+                0 0 0 1px rgba(13, 110, 253, 0.1);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 999997;
+            animation: windowSlideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .chatbot-window-v2.open {
+            display: flex;
+        }
+        
+        @keyframes windowSlideIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        /* V2 Header with Background Image */
+        .chat-header-v2 {
+            position: relative;
+            padding: 0;
+            overflow: hidden;
+            min-height: 140px;
+        }
+        
+        .header-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+        }
+        
+        .header-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .header-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(13, 110, 253, 0.85), rgba(5, 52, 170, 0.9));
+        }
+        
+        .header-content-v2 {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .header-left-v2 {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .bot-avatar-v2 {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .bot-avatar-v2 img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .bot-info-v2 h4 {
+            color: white;
+            margin: 0 0 5px 0;
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .ai-tag {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1a1a2e;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-v2 {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.8rem;
+        }
+        
+        .status-dot-v2 {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
+            animation: pulse 2s infinite;
+        }
+        
+        .close-btn-v2 {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .close-btn-v2:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: rotate(90deg);
+        }
+        
+        /* Quick Actions V2 */
+        .quick-actions-v2 {
+            background: linear-gradient(180deg, rgba(13, 110, 253, 0.05), transparent);
+            padding: 12px 16px;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            border-bottom: 1px solid rgba(13, 110, 253, 0.1);
+        }
+        
+        .quick-actions-v2::-webkit-scrollbar {
+            height: 4px;
+        }
+        
+        .quick-actions-v2::-webkit-scrollbar-thumb {
+            background: linear-gradient(90deg, #0d6efd, #fbbf24);
+            border-radius: 4px;
+        }
+        
+        .quick-btn {
+            flex-shrink: 0;
+            padding: 8px 16px;
+            background: white;
+            border: 1.5px solid rgba(13, 110, 253, 0.2);
+            border-radius: 20px;
+            color: #0d6efd;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .quick-btn:hover {
+            background: linear-gradient(135deg, #0d6efd, #0846aa);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
+        }
+        
+        .quick-btn i {
+            font-size: 0.75rem;
+        }
+        
+        /* Chat Messages V2 */
+        .chat-messages-v2 {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: linear-gradient(180deg, #f8fafc 0%, #ffffff 50%, #f8fafc 100%);
+        }
+        
+        .chat-messages-v2::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .chat-messages-v2::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #0d6efd, #0846aa);
+            border-radius: 6px;
+        }
+        
+        /* Welcome Card V2 */
+        .welcome-card-v2 {
+            background: white;
+            border-radius: 20px;
+            padding: 0;
+            overflow: hidden;
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.08),
+                0 0 0 1px rgba(13, 110, 253, 0.08);
+            border: 1px solid rgba(13, 110, 253, 0.1);
+        }
+        
+        .welcome-image-v2 {
+            width: 100%;
+            height: 120px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .welcome-image-v2 img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .welcome-image-v2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(transparent, white);
+        }
+        
+        .welcome-body-v2 {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .welcome-avatar-v2 {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #0d6efd, #0846aa);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: -50px auto 15px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 8px 25px rgba(13, 110, 253, 0.4);
+            border: 4px solid white;
+        }
+        
+        .welcome-avatar-v2 i {
+            font-size: 28px;
+            color: white;
+        }
+        
+        .welcome-badges {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .badge-v2 {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .badge-v2.primary {
+            background: linear-gradient(135deg, #0d6efd, #0846aa);
+            color: white;
+        }
+        
+        .badge-v2.gold {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1a1a2e;
+        }
+        
+        .welcome-title-v2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0 0 8px 0;
+        }
+        
+        .welcome-title-v2 span {
+            background: linear-gradient(135deg, #0d6efd, #0846aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .welcome-subtitle-v2 {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin: 0 0 15px 0;
+        }
+        
+        .feature-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .feature-chip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #0369a1;
+            border: 1px solid rgba(13, 110, 253, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .feature-chip:hover {
+            background: linear-gradient(135deg, #0d6efd, #0846aa);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .feature-chip i {
+            font-size: 0.8rem;
+        }
+        
+        .welcome-cta-v2 {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .cta-btn {
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+        
+        .cta-btn.primary {
+            background: linear-gradient(135deg, #0d6efd, #0846aa);
+            color: white;
+            box-shadow: 0 5px 20px rgba(13, 110, 253, 0.3);
+        }
+        
+        .cta-btn.primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(13, 110, 253, 0.5);
+        }
+        
+        .cta-btn.secondary {
+            background: white;
+            color: #0d6efd;
+            border: 2px solid rgba(13, 110, 253, 0.3);
+        }
+        
+        .cta-btn.secondary:hover {
+            background: rgba(13, 110, 253, 0.05);
+            border-color: #0d6efd;
+        }
+        
+        /* Typing Indicator V2 */
+        .typing-indicator-v2 {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 20px;
+        }
+        
+        .typing-indicator-v2.active {
+            display: flex;
+        }
+        
+        .typing-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #0d6efd, #0846aa);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .typing-bubble {
+            display: flex;
+            gap: 5px;
+            padding: 12px 18px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .typing-bubble span {
+            width: 8px;
+            height: 8px;
+            background: linear-gradient(135deg, #0d6efd, #0846aa);
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite;
+        }
+        
+        .typing-bubble span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-bubble span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-8px); opacity: 1; }
+        }
+        
+        /* Input Area V2 */
+        .chat-input-v2 {
+            padding: 16px 20px;
+            background: white;
+            border-top: 1px solid rgba(13, 110, 253, 0.1);
+        }
+        
+        .input-container {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .chat-input-v2 input {
+            flex: 1;
+            padding: 14px 20px;
+            border: 2px solid rgba(13, 110, 253, 0.15);
+            border-radius: 16px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s;
+            background: #f8fafc;
+        }
+        
+        .chat-input-v2 input:focus {
+            border-color: #0d6efd;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1);
+        }
+        
+        .chat-input-v2 input::placeholder {
+            color: #94a3b8;
+        }
+        
+        .send-btn-v2 {
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #0d6efd, #0846aa);
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(13, 110, 253, 0.3);
+        }
+        
+        .send-btn-v2:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(13, 110, 253, 0.5);
+        }
+        
+        .send-btn-v2:active {
+            transform: scale(0.95);
+        }
+        
+        .chat-input-v2 .input-footer {
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .chat-input-v2 .input-footer span {
+            color: #94a3b8;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .chat-input-v2 .input-footer i {
+            color: #fbbf24;
+        }
+        
+        /* V2 Messages */
+        .message-v2 {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            animation: messageSlide 0.3s ease-out;
+        }
+        
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .message-v2.bot {
+            flex-direction: row;
+        }
+        
+        .message-v2.user {
+            flex-direction: row-reverse;
+        }
+        
+        .message-avatar-v2 {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .message-v2.bot .message-avatar-v2 {
+            background: linear-gradient(135deg, #0d6efd, #0846aa);
+            color: white;
+        }
+        
+        .message-v2.user .message-avatar-v2 {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+        }
+        
+        .message-bubble-v2 {
+            max-width: 75%;
+            padding: 14px 18px;
+            border-radius: 18px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .message-v2.bot .message-bubble-v2 {
+            background: white;
+            color: #1e293b;
+            border: 1px solid rgba(13, 110, 253, 0.1);
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.06);
+            border-bottom-left-radius: 4px;
+        }
+        
+        .message-v2.user .message-bubble-v2 {
+            background: linear-gradient(135deg, #0d6efd, #0846aa);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        
+        /* V2 Mobile Responsive */
+        @media (max-width: 768px) {
+            .chatbot-fab-v2 {
+                bottom: 20px;
+                left: 20px;
+                width: 65px;
+                height: 65px;
+            }
+            
+            .chatbot-window-v2 {
+                width: 100%;
+                height: 100%;
+                max-height: 100vh;
+                bottom: 0;
+                left: 0;
+                border-radius: 0;
+            }
+            
+            .chat-header-v2 {
+                min-height: 120px;
+            }
+            
+            .welcome-image-v2 {
+                height: 100px;
+            }
+            
+            .feature-chips {
+                gap: 6px;
+            }
+            
+            .feature-chip {
+                padding: 6px 10px;
+                font-size: 0.7rem;
+            }
+            
+            .welcome-cta-v2 {
+                flex-direction: column;
+            }
+            
+            .cta-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
     </style>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // ============= PREMIUM CHATBOT JAVASCRIPT =============
-        console.log('🚀 Initializing Premium Chatbot...');
+        // ============= PREMIUM CHATBOT V2 JAVASCRIPT =============
+        console.log('🚀 Initializing Premium Chatbot V2...');
         
         document.addEventListener('DOMContentLoaded', function() {
             const fab = document.getElementById('chatbot-fab');
             const chatWindow = document.getElementById('chatbot-window');
-            const closeBtn = document.getElementById('chatbot-close');
+            const closeBtn = document.querySelector('.close-btn-v2');
             const sendBtn = document.getElementById('chatbot-send');
             const input = document.getElementById('chatbot-input');
             const messages = document.getElementById('chatbot-messages');
             const typingIndicator = document.getElementById('typing-indicator');
             
+            // Toggle chatbot window
+            if (fab) {
+                fab.onclick = function() {
+                    chatWindow.classList.toggle('open');
+                    if (chatWindow.classList.contains('open')) {
+                        fab.style.transform = 'scale(0)';
+                        setTimeout(() => { fab.style.display = 'none'; }, 300);
+                        if (input) input.focus();
+                    }
+                };
+            }
             
-            // Chat responses database
+            // Close chatbot
+            if (closeBtn) {
+                closeBtn.onclick = function() {
+                    chatWindow.classList.remove('open');
+                    fab.style.display = 'flex';
+                    setTimeout(() => { fab.style.transform = 'scale(1)'; }, 50);
+                };
+            }
+            
+            // Chat responses database - Enhanced with more responses
             const responses = {
-                "hello": "🙏 Hello! Welcome to Gaurav Motors! I can help you book services, check prices, find spare parts, and answer questions. What's your name?",
-                "hi": "👋 Hi there! I'm here to assist with all your car service needs. May I know your name?",
-                "services": "🔧 **Our Services:**\n\n1. Oil Change (₹1,500)\n2. Brake Service (₹2,000)\n3. Engine Diagnostic (₹1,000)\n4. AC Service (₹1,800)\n5. Battery Replacement (₹3,000)\n6. Full Service (₹5,000)\n\nWhich service do you need?",
-                "spare parts": "🛠️ **Spare Parts Available:**\n\n• Oil Filters (₹350+)\n• Brake Pads (₹1,800+)\n• Air Filters (₹550+)\n• Batteries (₹4,500+)\n• Wipers (₹400+)\n\nWhat part do you need?",
-                "price": "💰 **Pricing:**\n• Oil Change: ₹1,500\n• Brake Service: ₹2,000\n• Engine Check: ₹1,000\n• AC Service: ₹1,800\n• Full Service: ₹5,000\n\nNeed a detailed quote?",
-                "book appointment": "📅 **Book Appointment:**\n\nPlease share:\n1. Your name\n2. Phone number\n3. Service needed\n4. Preferred date\n\nOr call: +91 9997612579",
-                "phone": "📞 **Contact Us:**\n• Phone: +91 9997612579\n• Email: info@gauravmotors.com\n• Hours: Mon-Sat 9AM-6PM\n\nHow can I help you today?",
-                "default": "I can help you with:\n\n✓ Book appointments\n✓ Service information\n✓ Spare parts\n✓ Pricing\n✓ Contact details\n\nWhat would you like to know?"
+                "hello": "🙏 Namaste! Welcome to **Gaurav Motors** - Uttarakhand's #1 Auto Workshop!\n\nI'm your AI assistant. How can I help you today?\n\n🔧 Services | 🛠️ Spare Parts | 📅 Book Now",
+                "hi": "👋 Hi there! Welcome to Gaurav Motors!\n\n15+ years of trusted automotive care. What can I help you with?",
+                "hey": "👋 Hey! Great to see you at Gaurav Motors!\n\nI can help with bookings, prices, spare parts & more. What do you need?",
+                "services": "🔧 **Our Premium Services:**\n\n⚙️ General Service - ₹2,999\n🛢️ Oil Change - ₹1,500\n🔴 Brake Service - ₹2,000\n❄️ AC Service - ₹1,800\n🔋 Battery Check - FREE\n🔍 Engine Diagnostic - ₹1,000\n✨ Car Wash & Detailing - ₹500\n🛡️ Full Comprehensive Service - ₹5,000\n\nWhich service interests you?",
+                "spare parts": "🛠️ **Genuine Spare Parts:**\n\n• Oil Filters - ₹350+\n• Brake Pads - ₹1,800+\n• Air Filters - ₹550+\n• Batteries - ₹4,500+\n• Wipers - ₹400+\n• Clutch Plates - ₹2,500+\n• Suspension Parts - ₹3,000+\n\n✅ 100% Genuine | 🛡️ Warranty Available\n\nWhat part do you need?",
+                "accessories": "🎨 **Car Accessories:**\n\n• Seat Covers - ₹2,000+\n• Floor Mats - ₹800+\n• Music System - ₹5,000+\n• Car Perfumes - ₹200+\n• Mobile Holders - ₹300+\n• Dashcam - ₹3,000+\n\nWant to see our full catalog?",
+                "price": "💰 **Service Pricing:**\n\n• Oil Change: ₹1,500\n• Brake Service: ₹2,000\n• AC Repair: ₹1,800\n• Engine Tune-up: ₹1,000\n• Full Service: ₹5,000\n• Wheel Alignment: ₹800\n• Car Wash: ₹500\n\n📱 For detailed quote, call: +91 9997612579",
+                "book service": "📅 **Book Your Service:**\n\nPlease share:\n1️⃣ Your Name\n2️⃣ Phone Number\n3️⃣ Car Model\n4️⃣ Service Needed\n5️⃣ Preferred Date\n\n📞 Quick Book: +91 9997612579\n📱 WhatsApp: wa.me/919997612579",
+                "book": "📅 Ready to book a service?\n\n📞 Call: +91 9997612579\n📱 WhatsApp: Tap to chat instantly\n\nOr share your details here and we'll call you back!",
+                "phone": "📞 **Contact Gaurav Motors:**\n\n📱 Phone: +91 9997612579\n📧 Email: gauravmotors@gmail.com\n📍 Location: Lohaghat, Uttarakhand\n⏰ Hours: Open 7 Days 9AM-7PM\n\nWe're here to help! 🚗",
+                "contact": "📞 **Get in Touch:**\n\n📱 Call: +91 9997612579\n💬 WhatsApp: wa.me/919997612579\n📧 Email: gauravmotors@gmail.com\n📍 Visit: Lohaghat, Uttarakhand\n\nWe respond within minutes! ⚡",
+                "location": "📍 **Find Us Here:**\n\nGaurav Motors\nMain Road, Lohaghat\nChampawat District, Uttarakhand\n\n🗺️ Google Maps: Search 'Gaurav Motors Lohaghat'\n📞 Directions: +91 9997612579",
+                "address": "📍 **Our Workshop Location:**\n\nGaurav Motors Auto Care\nMain Market Road\nLohaghat - 262524\nUttarakhand, India\n\n🚗 Easy parking available!",
+                "timing": "⏰ **Working Hours:**\n\n🗓️ Open 7 Days a Week!\n🗓️ Monday - Sunday: 9:00 AM - 7:00 PM\n\n🚨 Emergency: +91 9997612579 (24/7)",
+                "hours": "⏰ **Workshop Timings:**\n\n• Open 7 Days: 9AM - 7PM\n• No Weekly Off!\n• Emergency: 24/7 Available\n\nCall us anytime! 📞 +91 9997612579",
+                "emergency": "🚨 **24/7 Emergency Service:**\n\n📞 Helpline: +91 9997612579\n\nServices Available:\n• Roadside Assistance\n• Towing Service\n• Breakdown Support\n• Emergency Repairs\n\nWe'll reach you ASAP! 🚗💨",
+                "towing": "🚗 **Towing Service:**\n\n📞 Emergency: +91 9997612579\n\n• Available 24/7\n• Within 30 mins response\n• Safe vehicle handling\n• Affordable rates\n\nCall us now for immediate help!",
+                "warranty": "🛡️ **Our Warranty Policy:**\n\n✅ 6 months warranty on all services\n✅ Genuine spare parts only\n✅ Free re-service if issues persist\n✅ Transparent pricing\n\nYour satisfaction is guaranteed! 💯",
+                "offers": "🎉 **Current Offers:**\n\n🔥 20% OFF on Full Service\n✨ FREE Car Wash with any service\n🛢️ Synthetic Oil Change @ ₹1,299\n🔋 FREE Battery Health Check\n\n📞 Book now: +91 9997612579",
+                "discount": "💸 **Special Discounts:**\n\n• First-time customers: 10% OFF\n• Refer a friend: ₹500 credit\n• Full service: 20% OFF (limited time)\n\n📱 Mention 'AI DISCOUNT' when booking!",
+                "owner": "👔 **About Our Founder:**\n\nMadan Mohan Chilkoti\n15+ Years Experience | Automotive Expert\n\nPersonally oversees every major repair. Committed to quality and customer satisfaction.\n\n📞 Connect: +91 9997612579",
+                "about": "🏢 **About Gaurav Motors:**\n\n• Established: 2010\n• Experience: 15+ Years\n• Team: 10+ Expert Mechanics\n• Customers Served: 5000+\n• Rating: 4.9★\n\nUttarakhand's most trusted workshop! 🏆",
+                "thank": "🙏 Thank you for choosing Gaurav Motors!\n\nWe appreciate your trust. See you soon at our workshop!\n\n📞 +91 9997612579 | ⭐ Rate us 5 stars!",
+                "thanks": "😊 You're welcome! Happy to help!\n\nFor any more questions, feel free to ask. Drive safe! 🚗",
+                "bye": "👋 Goodbye! Thank you for chatting with Gaurav Motors AI.\n\nSafe travels! 🚗 See you at our workshop soon!",
+                "ok": "👍 Great! Is there anything else I can help you with?\n\n📅 Book Service | 💰 Check Prices | 📞 Contact Us",
+                "default": "🤖 I can help you with:\n\n🔧 Service Information\n📅 Book a Service\n🛠️ Spare Parts & Accessories\n💰 Get Price Quotes\n📍 Location & Timings\n🚨 Emergency Assistance\n\nJust ask! What do you need? 😊"
             };
             
             // Open chatbot
@@ -2419,15 +3993,21 @@
                 }
             }
             
-            // Add message to chat
+            // Add message to chat with V2 styling
             function addMessage(text, sender) {
+                // Hide welcome card if it's the first message
+                const welcomeCard = document.querySelector('.welcome-card-v2');
+                if (welcomeCard) {
+                    welcomeCard.style.display = 'none';
+                }
+                
                 const msgDiv = document.createElement('div');
-                msgDiv.className = `chat-message ${sender}`;
+                msgDiv.className = `message-v2 ${sender}`;
                 msgDiv.innerHTML = `
-                    <div class="message-avatar">
+                    <div class="message-avatar-v2">
                         <i class="fas fa-${sender === 'user' ? 'user' : 'robot'}"></i>
                     </div>
-                    <div class="message-content">${text}</div>
+                    <div class="message-bubble-v2">${text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</div>
                 `;
                 messages.appendChild(msgDiv);
                 messages.scrollTop = messages.scrollHeight;
@@ -2542,6 +4122,15 @@
           box-shadow: 0 10px 40px rgba(37,211,102,0.6), 0 0 0 20px rgba(37,211,102,0);
         }
         100% {
+          box-shadow: 0 10px 40px rgba(37,211,102,0.6), 0 0 0 0 rgba(37,211,102,0.7);
+        }
+      }
+      
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+      }
+      
       @media (max-width: 768px) {
         .whatsapp-float {
           width: 60px;
@@ -2550,11 +4139,10 @@
           bottom: 20px;
           right: 20px;
         }
-      }   font-size: 24px;
-          bottom: 70px;
-          right: 20px;
-        }
       }
     </style>
-  </body>
-</html>
+    
+    <!-- Lightweight Dynamic UI JavaScript -->
+    <script src="{{ url_for('static', filename='js/dynamic-ui-light.js') }}?v={{ range(1000, 9999) | random }}"></script>
+    
+    {% block extra_js %}{% endblock %}

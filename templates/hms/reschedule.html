@@ -1,7 +1,7 @@
 {% extends 'hms/base.html' %}
 {% block content %}
-<h2>Reschedule Appointment</h2>
-<p>Current: {{ appt.date }} {{ appt.time }} with Dr. {{ appt.doctor.name }}</p>
+<h2>Reschedule Booking</h2>
+<p>Current: {{ booking.booking_date }} {{ booking.booking_time }} - {{ booking.customer_name }}</p>
 <h4>Select New Slot</h4>
 <form method="post">
   <ul class="list-group mb-3">
@@ -13,10 +13,10 @@
         </div>
       </li>
     {% else %}
-      <li class="list-group-item">No available slots for this doctor</li>
+      <li class="list-group-item">No available slots</li>
     {% endfor %}
   </ul>
   <button class="btn btn-primary">Reschedule</button>
-  <a class="btn btn-secondary" href="{{ url_for('patient_dashboard') }}">Cancel</a>
+  <a class="btn btn-secondary" href="{{ url_for('customer_dashboard') }}">Cancel</a>
 </form>
 {% endblock %}

@@ -99,7 +99,7 @@
       <div class="card-body p-4" style="background: linear-gradient(to bottom, #ffffff, #f8f9fa);">
         <p class="text-muted small mb-3">{{ category.description }}</p>
         <div class="d-grid gap-2">
-          <a href="{{ url_for('list_doctors', category=category.id) }}" class="btn btn-lg" style="background: {{ category.color }}; color: white; border: none; border-radius: 12px; font-weight: 600;">
+          <a href="{{ url_for('spare_parts_browse', category=category.id) }}" class="btn btn-lg" style="background: {{ category.color }}; color: white; border: none; border-radius: 12px; font-weight: 600;">
             <i class="fas fa-shopping-cart me-2"></i>View Parts
           </a>
         </div>
@@ -407,7 +407,7 @@
           <a href="tel:+919997612579" class="btn btn-light btn-lg fw-bold mb-2 d-block" style="border-radius: 15px;">
             <i class="fas fa-phone me-2"></i>+91 9997612579
           </a>
-          <small class="text-white d-block"><i class="fas fa-clock me-2"></i>Mon-Sat: 9:00 AM - 7:00 PM</small>
+          <small class="text-white d-block"><i class="fas fa-clock me-2"></i>Open 7 Days: 9:00 AM - 7:00 PM</small>
         </div>
       </div>
     </div>

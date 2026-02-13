@@ -1,111 +1,22 @@
 {% extends 'hms/base.html' %}
+
+{% block title %}Cart - Coming Soon | Gaurav Motors{% endblock %}
+
 {% block content %}
-
-<div class="container my-5">
-    <div class="row">
-        <div class="col-12">
-            <h2 class="fw-bold mb-4"><i class="fas fa-shopping-cart text-danger"></i> Shopping Cart</h2>
+<div style="min-height: 100vh; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); margin-top: -24px; display: flex; align-items: center; justify-content: center;">
+    <div class="container text-center text-white py-5">
+        <i class="fas fa-shopping-cart fa-5x mb-4" style="color: #fbbf24;"></i>
+        <h1 class="display-4 fw-bold mb-3">Shopping Cart</h1>
+        <h2 class="display-6 mb-4" style="color: #fbbf24;">Coming Soon!</h2>
+        <p class="lead mb-5">Online ordering will be available soon. Contact us directly!</p>
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+            <a href="https://wa.me/919997612579?text=Hi%20Gaurav%20Motors!%20I%20want%20to%20order%20parts." class="btn btn-lg px-5 py-3 fw-bold" style="background: linear-gradient(135deg, #25D366, #128C7E); color: white; border-radius: 50px;">
+                <i class="fab fa-whatsapp me-2"></i>WhatsApp Us
+            </a>
+            <a href="{{ url_for('services') }}" class="btn btn-warning btn-lg px-5 py-3 rounded-pill fw-bold">
+                <i class="fas fa-tools me-2"></i>View Services
+            </a>
         </div>
     </div>
-
-    {% if cart_items %}
-    <div class="row">
-        <div class="col-lg-8 mb-4">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    {% for item in cart_items %}
-                    <div class="row align-items-center mb-4 pb-4 {% if not loop.last %}border-bottom{% endif %}">
-                        <div class="col-md-2 text-center">
-                            <i class="fas fa-cog fa-3x text-danger"></i>
-                        </div>
-                        <div class="col-md-5">
-                            <h6 class="fw-bold mb-1">{{ item.part.name }}</h6>
-                            <p class="text-muted small mb-1">Brand: {{ item.part.brand }}</p>
-                            <p class="text-muted small mb-0">Part #: {{ item.part.part_number }}</p>
-                            {% if item.quantity > item.part.stock_quantity %}
-                            <small class="text-danger"><i class="fas fa-exclamation-triangle"></i> Not enough stock!</small>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-3">
-                            <form action="{{ url_for('update_cart_item', item_id=item.id) }}" method="POST" class="d-inline">
-                                <div class="input-group input-group-sm">
-                                    <button class="btn btn-outline-secondary" type="button" 
-                                            onclick="this.nextElementSibling.stepDown(); this.form.submit();">-</button>
-                                    <input type="number" name="quantity" class="form-control text-center" 
-                                           value="{{ item.quantity }}" min="1" max="{{ item.part.stock_quantity }}"
-                                           onchange="this.form.submit();">
-                                    <button class="btn btn-outline-secondary" type="button"
-                                            onclick="this.previousElementSibling.stepUp(); this.form.submit();">+</button>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-md-2 text-end">
-                            <p class="mb-1 fw-bold">₹{{ (item.part.price * item.quantity)|int }}</p>
-                            <form action="{{ url_for('remove_cart_item', item_id=item.id) }}" method="POST" class="d-inline">
-                                <button type="submit" class="btn btn-sm btn-outline-danger">
-                                    <i class="fas fa-trash"></i> Remove
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4">
-            <div class="card shadow-lg border-0 sticky-top" style="top: 20px;">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0"><i class="fas fa-receipt"></i> Order Summary</h5>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between mb-3">
-                        <span>Subtotal ({{ cart_items|length }} items):</span>
-                        <strong>₹{{ total|int }}</strong>
-                    </div>
-                    <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
-                        <span>Installation (optional):</span>
-                        <strong>+ ₹500</strong>
-                    </div>
-                    
-                    <div class="alert alert-info mb-3">
-                        <strong><i class="fas fa-info-circle"></i> Payment Terms</strong>
-                        <p class="mb-0 small">Pay 50% advance, rest on delivery</p>
-                    </div>
-                    
-                    <div class="d-flex justify-content-between mb-4">
-                        <span class="h5">Advance (50%):</span>
-                        <span class="h5 text-success">₹{{ (total * 0.5)|int }}</span>
-                    </div>
-                    
-                    <div class="d-grid gap-2">
-                        <a href="{{ url_for('checkout_parts') }}" class="btn btn-danger btn-lg">
-                            <i class="fas fa-lock"></i> Proceed to Checkout
-                        </a>
-                        <a href="{{ url_for('spare_parts_browse') }}" class="btn btn-outline-secondary">
-                            <i class="fas fa-arrow-left"></i> Continue Shopping
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% else %}
-    <div class="row">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body text-center py-5">
-                    <i class="fas fa-shopping-cart fa-4x text-muted mb-4"></i>
-                    <h4 class="mb-3">Your cart is empty</h4>
-                    <p class="text-muted mb-4">Add some spare parts to get started!</p>
-                    <a href="{{ url_for('spare_parts_browse') }}" class="btn btn-primary">
-                        <i class="fas fa-shopping-bag"></i> Browse Spare Parts
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endif %}
 </div>
-
 {% endblock %}

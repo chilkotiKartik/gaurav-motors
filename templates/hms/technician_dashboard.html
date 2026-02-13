@@ -1,0 +1,202 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+
+<!-- Dashboard Header -->
+<div class="dashboard-header mb-4 p-4 rounded-4 shadow-lg position-relative overflow-hidden" style="background: linear-gradient(135deg, rgba(76,175,80,0.1) 0%, rgba(46,125,50,0.05) 100%);">
+  <div style="position: absolute; right: -50px; top: -30px; opacity: 0.08; pointer-events: none;">
+    <i class="fas fa-wrench" style="font-size: 200px; color: #4caf50;"></i>
+  </div>
+  <div class="row align-items-center position-relative" style="z-index: 1;">
+    <div class="col-md-8">
+      <h2 class="mb-0">
+        <i class="fas fa-tools text-success me-2"></i>
+        Technician Dashboard
+      </h2>
+      <p class="text-muted mb-0 mt-2">
+        <i class="fas fa-user-cog me-1"></i> <strong>{{ technician.name }}</strong> | {{ technician.specialization }}
+      </p>
+    </div>
+    <div class="col-md-4 text-end">
+      <a class="btn btn-outline-success" href="{{ url_for('technician_availability') }}">
+        <i class="fas fa-calendar-check me-1"></i> Manage Availability
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Stats Cards -->
+<div class="row mb-4 g-4">
+  <div class="col-md-3">
+    <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #4caf50 !important;">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="text-muted mb-2">Active Bookings</h6>
+            <h3 class="mb-0 text-success">{{ upcoming|length }}</h3>
+          </div>
+          <div class="bg-success bg-opacity-10 p-3 rounded">
+            <i class="fas fa-calendar-day fa-2x text-success"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-3">
+    <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #2196F3 !important;">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="text-muted mb-2">Specialization</h6>
+            <h6 class="mb-0">{{ technician.specialization }}</h6>
+          </div>
+          <div class="bg-primary bg-opacity-10 p-3 rounded">
+            <i class="fas fa-cogs fa-2x text-primary"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-3">
+    <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #ff9800 !important;">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="text-muted mb-2">Vehicles Serviced</h6>
+            <h3 class="mb-0 text-warning">{{ upcoming|length * 10 }}</h3>
+          </div>
+          <div class="bg-warning bg-opacity-10 p-3 rounded">
+            <i class="fas fa-car fa-2x text-warning"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-3">
+    <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #9c27b0 !important;">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="text-muted mb-2">Rating</h6>
+            <h6 class="mb-0"><i class="fas fa-star text-warning"></i> 4.8/5</h6>
+          </div>
+          <div class="bg-purple bg-opacity-10 p-3 rounded">
+            <i class="fas fa-trophy fa-2x" style="color: #9c27b0;"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Upcoming Service Bookings -->
+<div class="card border-0 shadow-sm mb-4">
+  <div class="card-header bg-white border-bottom py-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">
+        <i class="fas fa-calendar-alt text-success me-2"></i>
+        Assigned Service Bookings
+      </h5>
+      <span class="badge bg-success">{{ upcoming|length }} Active</span>
+    </div>
+  </div>
+  <div class="card-body p-0">
+    {% if upcoming %}
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="bg-light">
+            <tr>
+              <th><i class="fas fa-calendar me-1"></i> Date</th>
+              <th><i class="fas fa-clock me-1"></i> Time</th>
+              <th><i class="fas fa-user me-1"></i> Customer</th>
+              <th><i class="fas fa-car me-1"></i> Vehicle</th>
+              <th><i class="fas fa-info-circle me-1"></i> Status</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for b in upcoming %}
+            <tr>
+              <td><strong>{{ b.date }}</strong></td>
+              <td>{{ b.time }}</td>
+              <td>{{ b.customer_name or 'N/A' }}</td>
+              <td>{{ b.vehicle_info or 'N/A' }}</td>
+              <td>
+                <span class="badge {% if b.status == 'In-Progress' %}bg-warning{% elif b.status == 'Scheduled' %}bg-primary{% elif b.status == 'Confirmed' %}bg-success{% else %}bg-secondary{% endif %}">
+                  {{ b.status }}
+                </span>
+              </td>
+              <td class="text-end">
+                <a class="btn btn-sm btn-success" href="{{ url_for('booking_detail', booking_id=b.id) }}">
+                  <i class="fas fa-eye"></i> View
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="text-center py-5">
+        <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+        <h5 class="text-muted">No Active Bookings</h5>
+        <p class="text-muted mb-3">Your schedule is clear. Manage your availability for new bookings!</p>
+        <a class="btn btn-success" href="{{ url_for('technician_availability') }}">
+          <i class="fas fa-calendar-check me-2"></i>Manage Availability
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row g-4">
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm h-100 hover-lift">
+      <div class="card-body text-center p-4">
+        <i class="fas fa-calendar-check fa-3x text-success mb-3"></i>
+        <h5>Manage Availability</h5>
+        <p class="text-muted small">Set your working hours and available days</p>
+        <a href="{{ url_for('technician_availability') }}" class="btn btn-success w-100">
+          <i class="fas fa-clock me-2"></i>Set Schedule
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm h-100 hover-lift">
+      <div class="card-body text-center p-4">
+        <i class="fas fa-star fa-3x text-warning mb-3"></i>
+        <h5>My Reviews</h5>
+        <p class="text-muted small">View customer feedback and ratings</p>
+        <a href="{{ url_for('technician_reviews', technician_id=technician.id) }}" class="btn btn-warning w-100">
+          <i class="fas fa-comments me-2"></i>View Reviews
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm h-100 hover-lift">
+      <div class="card-body text-center p-4">
+        <i class="fas fa-cogs fa-3x text-primary mb-3"></i>
+        <h5>Parts Catalog</h5>
+        <p class="text-muted small">Browse available spare parts</p>
+        <a href="{{ url_for('spare_parts_browse') }}" class="btn btn-primary w-100">
+          <i class="fas fa-search me-2"></i>Browse Parts
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .hover-lift { transition: all 0.3s ease; }
+  .hover-lift:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important; }
+  .avatar-sm { width: 35px; height: 35px; font-size: 14px; }
+</style>
+
+{% endblock %}

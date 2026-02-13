@@ -1,0 +1,110 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+
+<div class="container my-5">
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{ url_for('spare_parts_browse') }}">Spare Parts</a></li>
+      <li class="breadcrumb-item active">{{ part.name }}</li>
+    </ol>
+  </nav>
+
+  <div class="row">
+    <!-- Part Image -->
+    <div class="col-lg-5 mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body text-center p-5">
+          {% if part.image_url %}
+            <img src="{{ part.image_url }}" alt="{{ part.name }}" class="img-fluid rounded" style="max-height: 400px;">
+          {% else %}
+            <div class="bg-light rounded p-5">
+              <i class="fas fa-cog fa-5x text-muted"></i>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Part Details -->
+    <div class="col-lg-7">
+      <h2 class="fw-bold mb-2">{{ part.name }}</h2>
+      {% if part.brand %}
+        <span class="badge bg-info mb-2">{{ part.brand }}</span>
+      {% endif %}
+      {% if part.is_oem %}
+        <span class="badge bg-success mb-2">OEM</span>
+      {% endif %}
+      {% if part.part_number %}
+        <p class="text-muted mb-2">Part #: {{ part.part_number }}</p>
+      {% endif %}
+
+      <h3 class="text-primary fw-bold my-3">&#8377;{{ '%.2f'|format(part.price) }}</h3>
+
+      <div class="mb-3">
+        {% if part.stock_quantity > 0 %}
+          <span class="badge bg-success fs-6"><i class="fas fa-check-circle me-1"></i> In Stock ({{ part.stock_quantity }} available)</span>
+        {% else %}
+          <span class="badge bg-danger fs-6"><i class="fas fa-times-circle me-1"></i> Out of Stock</span>
+        {% endif %}
+      </div>
+
+      {% if part.description %}
+        <div class="mb-3">
+          <h6 class="fw-bold">Description</h6>
+          <p>{{ part.description }}</p>
+        </div>
+      {% endif %}
+
+      {% if part.compatible_brands %}
+        <div class="mb-3">
+          <h6 class="fw-bold">Compatible Vehicles</h6>
+          <p>{{ part.compatible_brands }}</p>
+        </div>
+      {% endif %}
+
+      {% if part.warranty_months %}
+        <div class="mb-3">
+          <h6 class="fw-bold"><i class="fas fa-shield-alt text-success me-1"></i> Warranty</h6>
+          <p>{{ part.warranty_months }} months</p>
+        </div>
+      {% endif %}
+
+      <div class="d-flex gap-2 mt-4">
+        {% if part.stock_quantity > 0 %}
+          <a href="{{ url_for('order_part', part_id=part.id) }}" class="btn btn-primary btn-lg">
+            <i class="fas fa-shopping-cart me-2"></i>Order Now
+          </a>
+        {% endif %}
+        <a href="{{ url_for('spare_parts_browse') }}" class="btn btn-outline-secondary btn-lg">
+          <i class="fas fa-arrow-left me-2"></i>Back to Parts
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Related Parts -->
+  {% if related_parts %}
+  <hr class="my-5">
+  <h4 class="mb-4"><i class="fas fa-th-large me-2"></i>Related Parts</h4>
+  <div class="row g-4">
+    {% for rp in related_parts %}
+    <div class="col-md-3">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body text-center">
+          {% if rp.image_url %}
+            <img src="{{ rp.image_url }}" alt="{{ rp.name }}" class="img-fluid rounded mb-2" style="max-height: 120px;">
+          {% else %}
+            <div class="bg-light rounded p-3 mb-2"><i class="fas fa-cog fa-2x text-muted"></i></div>
+          {% endif %}
+          <h6 class="fw-bold">{{ rp.name }}</h6>
+          <p class="text-primary fw-bold mb-2">&#8377;{{ '%.2f'|format(rp.price) }}</p>
+          <a href="{{ url_for('part_detail', part_id=rp.id) }}" class="btn btn-sm btn-outline-primary">View Details</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}

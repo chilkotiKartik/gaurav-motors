@@ -1,0 +1,184 @@
+{% extends 'hms/base.html' %}
+{% block content %}
+
+<!-- Dashboard Header -->
+<div class="dashboard-header mb-4 p-4 rounded-4 shadow-lg position-relative overflow-hidden" style="background: linear-gradient(135deg, #0d6efd 0%, #0b84d9 100%);">
+  <div class="position-absolute" style="top: 10%; right: 5%; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+  <div class="row align-items-center position-relative" style="z-index: 2;">
+    <div class="col-md-8">
+      <h2 class="mb-0 text-white">
+        <i class="fas fa-car me-2"></i>
+        Customer Dashboard
+      </h2>
+      <p class="text-white mb-0 mt-2 opacity-75">
+        <i class="fas fa-user-circle me-1"></i> Welcome back, <strong>{{ customer.name }}</strong>
+      </p>
+    </div>
+    <div class="col-md-4 text-end">
+      <a class="btn btn-light me-2" href="{{ url_for('customer_edit') }}" style="border-radius: 25px;">
+        <i class="fas fa-user-edit me-1"></i> Edit Profile
+      </a>
+      <a class="btn btn-warning" href="{{ url_for('book_car_service') }}" style="border-radius: 25px;">
+        <i class="fas fa-calendar-plus me-1"></i> Book Service
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Stats Cards -->
+<div class="row mb-4 g-4">
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #0d6efd !important; border-radius: 15px;">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="text-muted mb-2">Upcoming Services</h6>
+            <h3 class="mb-0 text-primary fw-bold">{{ upcoming|length }}</h3>
+          </div>
+          <div class="bg-primary bg-opacity-10 p-3 rounded-circle">
+            <i class="fas fa-calendar-check fa-2x text-primary"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #198754 !important; border-radius: 15px;">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="text-muted mb-2">Contact</h6>
+            <h6 class="mb-0 text-success">{{ customer.contact or 'Not Set' }}</h6>
+          </div>
+          <div class="bg-success bg-opacity-10 p-3 rounded-circle">
+            <i class="fas fa-phone fa-2x text-success"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #ffc107 !important; border-radius: 15px;">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="text-muted mb-2">Account</h6>
+            <h6 class="mb-0 text-warning">{{ current_user.username }}</h6>
+          </div>
+          <div class="bg-warning bg-opacity-10 p-3 rounded-circle">
+            <i class="fas fa-user fa-2x text-warning"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Upcoming Service Bookings -->
+<div class="card border-0 shadow-sm mb-4">
+  <div class="card-header bg-white border-bottom py-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">
+        <i class="fas fa-calendar-alt text-primary me-2"></i>
+        Upcoming Service Bookings
+      </h5>
+      <span class="badge bg-primary">{{ upcoming|length }} Active</span>
+    </div>
+  </div>
+  <div class="card-body p-0">
+    {% if upcoming %}
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="bg-light">
+            <tr>
+              <th><i class="fas fa-calendar me-1"></i> Date</th>
+              <th><i class="fas fa-clock me-1"></i> Time</th>
+              <th><i class="fas fa-wrench me-1"></i> Service</th>
+              <th><i class="fas fa-info-circle me-1"></i> Status</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for b in upcoming %}
+            <tr>
+              <td><strong>{{ b.date }}</strong></td>
+              <td>{{ b.time }}</td>
+              <td>{{ b.service_type or 'General Service' }}</td>
+              <td>
+                <span class="badge {% if b.status == 'Confirmed' %}bg-success{% elif b.status == 'Scheduled' %}bg-primary{% else %}bg-secondary{% endif %}">
+                  {{ b.status }}
+                </span>
+              </td>
+              <td class="text-end">
+                <a class="btn btn-sm btn-outline-warning" href="{{ url_for('reschedule', booking_id=b.id) }}">
+                  <i class="fas fa-calendar-alt"></i> Reschedule
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="text-center py-5">
+        <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+        <h5 class="text-muted">No Upcoming Bookings</h5>
+        <p class="text-muted mb-3">Book your first service now!</p>
+        <a class="btn btn-primary" href="{{ url_for('book_car_service') }}">
+          <i class="fas fa-wrench me-2"></i>Book a Service
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row g-4">
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm h-100 hover-lift">
+      <div class="card-body text-center p-4">
+        <i class="fas fa-wrench fa-3x text-primary mb-3"></i>
+        <h5>Book a Service</h5>
+        <p class="text-muted small">Schedule your next vehicle service</p>
+        <a href="{{ url_for('book_car_service') }}" class="btn btn-primary w-100">
+          <i class="fas fa-calendar-plus me-2"></i>Book Now
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm h-100 hover-lift">
+      <div class="card-body text-center p-4">
+        <i class="fas fa-cogs fa-3x text-success mb-3"></i>
+        <h5>Spare Parts</h5>
+        <p class="text-muted small">Browse and order genuine spare parts</p>
+        <a href="{{ url_for('spare_parts_browse') }}" class="btn btn-success w-100">
+          <i class="fas fa-shopping-cart me-2"></i>Browse Parts
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm h-100 hover-lift">
+      <div class="card-body text-center p-4">
+        <i class="fas fa-user-edit fa-3x text-warning mb-3"></i>
+        <h5>Update Profile</h5>
+        <p class="text-muted small">Keep your information up to date</p>
+        <a href="{{ url_for('customer_edit') }}" class="btn btn-warning w-100">
+          <i class="fas fa-edit me-2"></i>Edit Profile
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .hover-lift { transition: all 0.3s ease; }
+  .hover-lift:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important; }
+</style>
+
+{% endblock %}

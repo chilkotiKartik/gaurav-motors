@@ -14,11 +14,11 @@
             <!-- Search Form -->
             <form method="GET" class="mb-4">
                 <div class="input-group input-group-lg">
-                    <input type="text" name="q" class="form-control" placeholder="Search doctors, services, spare parts..." 
+                    <input type="text" name="q" class="form-control" placeholder="Search technicians, services, spare parts..." 
                            value="{{ query }}" required>
                     <select name="category" class="form-select" style="max-width: 200px;">
                         <option value="all" {% if category == 'all' %}selected{% endif %}>All Categories</option>
-                        <option value="doctors" {% if category == 'doctors' %}selected{% endif %}>Doctors</option>
+                        <option value="technicians" {% if category == 'technicians' %}selected{% endif %}>Technicians</option>
                         <option value="services" {% if category == 'services' %}selected{% endif %}>Services</option>
                         <option value="parts" {% if category == 'parts' %}selected{% endif %}>Spare Parts</option>
                     </select>
@@ -31,29 +31,29 @@
     </div>
 
     {% if query %}
-    <!-- Doctors Results -->
-    {% if results.doctors or category in ['all', 'doctors'] %}
+    <!-- Technicians Results -->
+    {% if results.technicians or category in ['all', 'technicians'] %}
     <div class="mb-5">
-        <h4 class="fw-bold mb-3"><i class="fas fa-user-md text-primary"></i> Doctors ({{ results.doctors|length }})</h4>
-        {% if results.doctors %}
+        <h4 class="fw-bold mb-3"><i class="fas fa-user-cog text-primary"></i> Technicians ({{ results.technicians|length }})</h4>
+        {% if results.technicians %}
         <div class="row">
-            {% for doctor in results.doctors %}
+            {% for technician in results.technicians %}
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card h-100 shadow-sm hover-card">
                     <div class="card-body">
                         <div class="text-center mb-3">
                             <div class="rounded-circle bg-primary d-inline-flex align-items-center justify-content-center" 
                                  style="width: 80px; height: 80px;">
-                                <i class="fas fa-user-md fa-2x text-white"></i>
+                                <i class="fas fa-user-cog fa-2x text-white"></i>
                             </div>
                         </div>
-                        <h5 class="card-title fw-bold text-center">{{ doctor.name }}</h5>
-                        <p class="text-center text-muted mb-3">{{ doctor.specialization }}</p>
+                        <h5 class="card-title fw-bold text-center">{{ technician.name }}</h5>
+                        <p class="text-center text-muted mb-3">{{ technician.specialization }}</p>
                         <div class="d-grid gap-2">
-                            <a href="{{ url_for('doctor_reviews', doctor_id=doctor.id) }}" class="btn btn-outline-primary btn-sm">
+                            <a href="{{ url_for('technician_reviews', technician_id=technician.id) }}" class="btn btn-outline-primary btn-sm">
                                 <i class="fas fa-star"></i> View Reviews
                             </a>
-                            <a href="{{ url_for('book_appointment') }}?doctor_id={{ doctor.id }}" class="btn btn-primary btn-sm">
+                            <a href="{{ url_for('book_car_service') }}" class="btn btn-primary btn-sm">
                                 <i class="fas fa-calendar-check"></i> Book
                             </a>
                         </div>
@@ -63,7 +63,7 @@
             {% endfor %}
         </div>
         {% else %}
-        <div class="alert alert-light">No doctors found.</div>
+        <div class="alert alert-light">No technicians found.</div>
         {% endif %}
     </div>
     {% endif %}
@@ -84,7 +84,7 @@
                             <span class="h5 mb-0 text-primary">₹{{ service.price }}</span>
                             <span class="badge bg-info">{{ service.duration_minutes }} mins</span>
                         </div>
-                        <a href="{{ url_for('book_service') }}" class="btn btn-primary btn-sm w-100 mt-3">
+                        <a href="{{ url_for('book_car_service') }}" class="btn btn-primary btn-sm w-100 mt-3">
                             <i class="fas fa-calendar-plus"></i> Book Service
                         </a>
                     </div>
@@ -141,7 +141,7 @@
     {% else %}
     <div class="text-center py-5 text-muted">
         <i class="fas fa-search fa-3x mb-3"></i>
-        <p>Enter a search term to find doctors, services, or spare parts.</p>
+        <p>Enter a search term to find technicians, services, or spare parts.</p>
     </div>
     {% endif %}
 </div>
