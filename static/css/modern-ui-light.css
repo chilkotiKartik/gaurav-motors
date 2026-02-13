@@ -5,20 +5,25 @@
 
 /* ===== CSS VARIABLES ===== */
 :root {
-  --primary: #0d6efd;
-  --primary-dark: #0a58ca;
-  --secondary: #fbbf24;
+  --primary: #1a1a2e;        /* Dark Navy - Professional & Modern */
+  --primary-dark: #0f0f1e;   /* Darker Navy */
+  --accent: #ff6b35;         /* Vibrant Orange - Automotive Energy */
+  --accent-hover: #ff5722;   /* Darker Orange on hover */
+  --secondary: #fbbf24;      /* Gold accent */
   --success: #22c55e;
   --danger: #ef4444;
   --dark: #1e293b;
   --light: #f8fafc;
-  --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.15);
-  --shadow-glow: 0 0 30px rgba(13, 110, 253, 0.3);
+  --gray: #94a3b8;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.12);
+  --shadow-glow: 0 0 30px rgba(255, 107, 53, 0.2);
   --radius: 16px;
   --radius-lg: 24px;
   --radius-xl: 32px;
   --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --gradient-primary: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  --gradient-accent: linear-gradient(135deg, #ff6b35 0%, #ff5722 100%);
 }
 
 /* ===== GLOBAL SMOOTHNESS ===== */
@@ -37,7 +42,7 @@ html {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+  background: var(--gradient-primary);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -110,13 +115,15 @@ html {
 }
 
 .navbar-scrolled .btn-outline-light {
-  border-color: #0d6efd !important;
-  color: #0d6efd !important;
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
 }
 
 .navbar-scrolled .btn-outline-light:hover {
-  background: #0d6efd !important;
+  background: var(--gradient-accent) !important;
   color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
 }
 
 /* ===== BUTTONS ===== */
@@ -135,14 +142,41 @@ html {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  background: var(--gradient-accent);
   border: none;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.btn-primary:hover {
+  background: var(--gradient-accent);
+  filter: brightness(1.1);
 }
 
 .btn-warning {
   background: linear-gradient(135deg, #fbbf24, #f59e0b);
   border: none;
   color: #1a1a2e;
+  font-weight: 600;
+}
+
+.btn-secondary {
+  background: var(--gradient-primary);
+  border: none;
+  color: white;
+}
+
+.btn-outline-primary {
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  background: transparent;
+}
+
+.btn-outline-primary:hover {
+  background: var(--gradient-accent);
+  color: white;
+  border-color: var(--accent);
 }
 
 /* ===== PREMIUM ROUNDED CARDS ===== */
