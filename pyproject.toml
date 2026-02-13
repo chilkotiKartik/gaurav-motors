@@ -1,9 +1,0 @@
-[build-system]
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
-
-[project]
-name = "gaurav-motors"
-version = "1.0.0"
-description = "Gaurav Motors - Automotive Service Center Management"
-requires-python = ">=3.9"
