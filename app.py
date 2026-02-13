@@ -14,14 +14,25 @@ from urllib.parse import quote
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'hmsdevsecret-change-in-production')
 
-# Database - use /tmp on Vercel (read-only filesystem), local path otherwise
+# Database Configuration - supports PostgreSQL (Render/Production) and SQLite (Local)
 IS_VERCEL = os.environ.get('VERCEL', False)
-if IS_VERCEL:
-    DB_PATH = '/tmp/hms.db'
+IS_RENDER = os.environ.get('RENDER', False)
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
+if DATABASE_URL:
+    # Use PostgreSQL in production (Render, Heroku, etc.)
+    db_uri = DATABASE_URL
+    if db_uri.startswith('postgres://'):
+        db_uri = db_uri.replace('postgres://', 'postgresql://', 1)
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+elif IS_VERCEL:
+    # Use in-memory SQLite for Vercel (read-only filesystem)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
 else:
+    # Use local SQLite for development
     DB_PATH = os.path.join(os.path.dirname(__file__), 'hms.db')
-DB_URI = f"sqlite:///{DB_PATH.replace(chr(92), '/')}"
-app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
+    app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{DB_PATH.replace(chr(92), '/')}"
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Email Configuration

@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: gaurav-motors
+    runtime: python
+    plan: standard
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --workers 4 --timeout 120
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: PYTHON_VERSION
+        value: 3.11.0
+    healthCheckPath: /
+    autoDeploy: true
+    maxInstances: 3
+    minInstances: 1
+    staticPublicPath: ./static
+    routes:
+      - path: /static
+        middleware: cache-control: public, max-age=31536000
+databases:
+  - name: gaurav-motors-db
+    databaseName: gaurav_motors
+    user: postgres
+    plan: standard
+    postgresDatabaseVersion: 15
