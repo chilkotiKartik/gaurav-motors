@@ -19,7 +19,6 @@ IS_VERCEL = os.environ.get('VERCEL', False)
 IS_RENDER = os.environ.get('RENDER', False)
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
-# For production (Vercel/Render), DATABASE_URL must be set
 if DATABASE_URL:
     # Use PostgreSQL in production (Render, Heroku, Vercel, etc.)
     db_uri = DATABASE_URL
@@ -27,12 +26,9 @@ if DATABASE_URL:
         db_uri = db_uri.replace('postgres://', 'postgresql://', 1)
     app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 elif IS_VERCEL or IS_RENDER:
-    # Production environment without DATABASE_URL - this will cause an error
-    # Force user to set DATABASE_URL environment variable
-    raise RuntimeError(
-        "DATABASE_URL environment variable is required for production deployment. "
-        "Please set DATABASE_URL in your Vercel/Render environment settings."
-    )
+    # Use in-memory SQLite for Vercel/Render if DATABASE_URL not set
+    # This allows app to start without crashing
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
 else:
     # Use local SQLite for development
     DB_PATH = os.path.join(os.path.dirname(__file__), 'hms.db')

@@ -4,6 +4,7 @@ Routes all requests through the Flask app
 """
 import sys
 import os
+import logging
 
 # Set VERCEL env var to trigger Vercel-specific config
 os.environ['VERCEL'] = '1'
@@ -11,23 +12,29 @@ os.environ['VERCEL'] = '1'
 # Add parent directory to path so we can import app
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# Import Flask app (this will verify DATABASE_URL is set)
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 try:
     from app import app
-except RuntimeError as e:
-    # Database configuration error - return error response
+    
+    # Check for DATABASE_URL in Vercel
+    if not os.environ.get('DATABASE_URL'):
+        logger.warning(
+            "DATABASE_URL not set. App running with in-memory SQLite. "
+            "Set DATABASE_URL environment variable to use persistent database."
+        )
+except Exception as e:
+    logger.error(f"Failed to import app: {e}", exc_info=True)
+    # Create error app if import fails
     from flask import Flask
-    error_app = Flask(__name__)
+    app = Flask(__name__)
     
-    @error_app.route('/', defaults={'path': ''})
-    @error_app.route('/<path:path>')
+    @app.route('/', defaults={'path': ''})
+    @app.route('/<path:path>')
     def error_handler(path):
-        return {
-            'error': str(e),
-            'message': 'Application configuration error. Check environment variables.'
-        }, 500
-    
-    app = error_app
+        return f"<h1>Application Error</h1><p>{str(e)}</p><p>Check logs for details.</p>", 500
 
 # Vercel expects the WSGI app object
 
