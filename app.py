@@ -403,9 +403,7 @@ def init_vercel_db():
             user_id=tech_user.id,
             name='Rajesh Kumar',
             specialization='Engine Specialist',
-            experience=10,
-            phone='9876543210',
-            fee=500.0
+            availability='Mon-Sat 9AM-6PM'
         )
         db.session.add(tech_profile)
         
@@ -422,18 +420,22 @@ def init_vercel_db():
         cust_profile = CustomerProfile(
             user_id=cust_user.id,
             name='Karan Singh',
-            contact='9998887770',
-            address='Lohaghat, Uttarakhand'
+            contact='9998887770'
         )
         db.session.add(cust_profile)
         
         # Add sample services
+        # Create a service category first
+        svc_cat = ServiceCategory(name='General', icon='🔧', description='General automotive services')
+        db.session.add(svc_cat)
+        db.session.flush()
+        
         services = [
-            CarService(name='General Service', description='Complete car checkup and maintenance', price=2999.0, duration=120, category='maintenance'),
-            CarService(name='Brake Service', description='Brake pad replacement and inspection', price=3500.0, duration=90, category='repair'),
-            CarService(name='AC Service', description='AC gas refill and cleaning', price=2000.0, duration=60, category='maintenance'),
-            CarService(name='Engine Repair', description='Engine diagnostics and repair', price=5000.0, duration=180, category='repair'),
-            CarService(name='Oil Change', description='Engine oil and filter replacement', price=1500.0, duration=45, category='maintenance'),
+            CarService(name='General Service', description='Complete car checkup and maintenance', price=2999.0, duration_minutes=120, category_id=svc_cat.id, is_popular=True),
+            CarService(name='Brake Service', description='Brake pad replacement and inspection', price=3500.0, duration_minutes=90, category_id=svc_cat.id),
+            CarService(name='AC Service', description='AC gas refill and cleaning', price=2000.0, duration_minutes=60, category_id=svc_cat.id, is_popular=True),
+            CarService(name='Engine Repair', description='Engine diagnostics and repair', price=5000.0, duration_minutes=180, category_id=svc_cat.id),
+            CarService(name='Oil Change', description='Engine oil and filter replacement', price=1500.0, duration_minutes=45, category_id=svc_cat.id, is_popular=True),
         ]
         db.session.add_all(services)
         
@@ -830,7 +832,7 @@ def admin_delete_customer(customer_id):
         return redirect(url_for('index'))
     customer = CustomerProfile.query.get_or_404(customer_id)
     # check if customer has service bookings
-    if ServiceBooking.query.filter_by(customer_id=customer.user_id).first():
+    if ServiceBooking.query.filter_by(customer_email=customer.user.email).first():
         flash('Cannot delete customer with existing service bookings', 'danger')
         return redirect(url_for('admin_customers'))
     db.session.delete(customer.user)
@@ -962,7 +964,7 @@ def book(technician_id):
             flash('Slot no longer available', 'danger')
             return redirect(url_for('book', technician_id=technician_id))
         # double-check no booking exists
-        existing = ServiceBooking.query.filter_by(technician_id=technician.id, date=slot.date, time=slot.time, status='Scheduled').first()
+        existing = ServiceBooking.query.filter_by(technician_id=technician.id, booking_date=slot.date, booking_time=slot.time, status='Scheduled').first()
         if existing:
             slot.is_available = False
             db.session.commit()
@@ -979,17 +981,24 @@ def book(technician_id):
             return redirect(url_for('index'))
         
         # Create service booking
+        import random, string
+        booking_id_str = 'GM' + ''.join(random.choices(string.digits, k=6))
+        # Get first available service or default
+        first_service = CarService.query.first()
+        service_id = first_service.id if first_service else 1
+        service_amount = first_service.price if first_service else 0.0
         booking = ServiceBooking(
-            customer_id=current_user.id,
+            booking_id=booking_id_str,
             customer_name=customer_profile.name,
             customer_email=current_user.email,
             customer_phone=customer_profile.contact or '',
-            vehicle_make='', vehicle_model='', vehicle_year=None, vehicle_registration='',
-            service_id=0,  # Default service
+            vehicle_brand='', vehicle_model='', vehicle_year=None, vehicle_registration='',
+            service_id=service_id,
+            technician_id=technician.id,
             booking_date=slot.date,
             booking_time=slot.time,
             status='Scheduled',
-            total_amount=0.0,
+            total_amount=service_amount,
             notes=f'Booked with technician: {technician.name}'
         )
         slot.is_available = False
@@ -1007,12 +1016,12 @@ def book(technician_id):
 @login_required
 def cancel(booking_id):
     booking = ServiceBooking.query.get_or_404(booking_id)
-    if current_user.role == 'customer' and booking.customer_id != current_user.id:
+    if current_user.role == 'customer' and booking.customer_email != current_user.email:
         flash('Not authorized', 'danger')
         return redirect(url_for('index'))
     booking.status = 'Cancelled'
     # free the availability slot if it exists
-    slot = Availability.query.filter_by(technician_id=booking.technician_id, date=booking.date, time=booking.time).first()
+    slot = Availability.query.filter_by(technician_id=booking.technician_id, date=booking.booking_date, time=booking.booking_time).first()
     if slot:
         slot.is_available = True
     db.session.commit()
@@ -1024,7 +1033,7 @@ def cancel(booking_id):
 @login_required
 def reschedule(booking_id):
     booking = ServiceBooking.query.get_or_404(booking_id)
-    if current_user.role == 'customer' and booking.customer_id != current_user.id:
+    if current_user.role == 'customer' and booking.customer_email != current_user.email:
         flash('Not authorized', 'danger')
         return redirect(url_for('index'))
     if booking.status not in ['Scheduled', 'Confirmed']:
@@ -1044,7 +1053,7 @@ def reschedule(booking_id):
             return redirect(url_for('reschedule', booking_id=booking_id))
         
         # free old slot
-        old_slot = Availability.query.filter_by(technician_id=booking.technician_id, date=booking.date, time=booking.time).first()
+        old_slot = Availability.query.filter_by(technician_id=booking.technician_id, date=booking.booking_date, time=booking.booking_time).first()
         if old_slot:
             old_slot.is_available = True
         
@@ -1109,17 +1118,32 @@ def order_part(part_id):
             flash(f'Sorry, only {part.stock_quantity} units available in stock', 'warning')
             return redirect(url_for('order_part', part_id=part_id))
         
-        # Calculate total
-        total_price = part.price * quantity
+        # Calculate pricing
+        unit_price = part.price
+        subtotal = unit_price * quantity
+        installation_charges = 500.0 if installation else 0.0
+        total_price_final = subtotal + installation_charges
+        advance_amount = round(total_price_final * 0.5, 2)
+        remaining_amount = round(total_price_final - advance_amount, 2)
+        
+        # Generate order number
+        import random, string
+        order_number = 'GM-PART-' + ''.join(random.choices(string.digits, k=5))
         
         # Create order
         order = PartOrder(
+            order_number=order_number,
             customer_name=customer_name,
             customer_phone=customer_phone,
             customer_email=customer_email,
             part_id=part.id,
             quantity=quantity,
-            total_price=total_price,
+            unit_price=unit_price,
+            subtotal=subtotal,
+            advance_amount=advance_amount,
+            remaining_amount=remaining_amount,
+            total_price=total_price_final,
+            installation_charges=installation_charges,
             car_brand=car_brand,
             car_model=car_model,
             car_year=int(car_year) if car_year else None,
@@ -1133,7 +1157,7 @@ def order_part(part_id):
         db.session.add(order)
         db.session.commit()
         
-        flash(f'Order placed successfully! Order ID: #{order.id}. We will contact you at {customer_phone}', 'success')
+        flash(f'Order placed successfully! Order #{order.order_number}. We will contact you at {customer_phone}', 'success')
         return redirect(url_for('spare_parts_browse'))
     
     return render_template('hms/order_part.html', part=part)
@@ -1823,7 +1847,7 @@ def export_revenue():
     output.write(b'ID,Payment ID,Amount,Currency,Method,Date,Type\n')
     
     for payment in payments:
-        payment_type = 'Booking' if payment.appointment_id else 'Service' if payment.service_booking_id else 'Part Order'
+        payment_type = 'Service' if payment.service_booking_id else 'Part Order' if payment.part_order_id else 'Other'
         line = f'{payment.id},{payment.payment_id},{payment.amount},{payment.currency},{payment.payment_method},{payment.transaction_date},{payment_type}\n'
         output.write(line.encode('utf-8'))
     
@@ -2229,7 +2253,7 @@ def cancel_part_order(order_id):
     db.session.commit()
     
     flash(f'Order {order.order_number} has been cancelled', 'info')
-    return redirect(url_for('my_part_orders_search'))
+    return redirect(url_for('my_part_orders'))
 
 def send_order_confirmation_email(order):
     """Send order confirmation email"""
