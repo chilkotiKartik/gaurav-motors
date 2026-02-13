@@ -559,9 +559,20 @@ def services():
 
 @app.route('/book-car-service')
 def book_car_service():
-    """Enhanced car service booking page"""
-    from datetime import date
-    return render_template('hms/book_service.html', today=date.today().isoformat())
+    """Redirect to WhatsApp for quick service booking"""
+    phone = "919997612579"  # Gaurav Motors WhatsApp number
+    message = ("🚗 *Hi Gaurav Motors!*\n\n"
+               "I want to book a car service.\n\n"
+               "📋 *My Details:*\n"
+               "• Name: \n"
+               "• Phone: \n"
+               "• Car Model: \n"
+               "• Service Needed: \n"
+               "• Preferred Date: \n\n"
+               "Please confirm availability. Thank you! 🙏")
+    
+    whatsapp_url = f"https://wa.me/{phone}?text={message}"
+    return redirect(whatsapp_url)
 
 @app.route('/book-service', methods=['POST'])
 def confirm_car_service():
