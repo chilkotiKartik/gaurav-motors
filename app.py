@@ -440,9 +440,11 @@ def init_vercel_db():
         db.session.add_all(services)
         
         db.session.commit()
-        print("Vercel DB initialized with sample data")
+        print("DB initialized with sample data")
 
-if IS_VERCEL:
+# Auto-initialize DB on any deployment (Vercel, Railway, Render, etc.)
+IS_PRODUCTION = os.environ.get('RAILWAY_ENVIRONMENT') or os.environ.get('RENDER') or IS_VERCEL
+if IS_PRODUCTION:
     with app.app_context():
         init_vercel_db()
 
@@ -2331,5 +2333,16 @@ def add_accessory_to_cart(accessory_id):
 
 # Run
 if __name__ == '__main__':
-    # Start development server
-    app.run(debug=True)
+    with app.app_context():
+        db.create_all()
+        # Auto-initialize with admin user if DB is empty
+        if not User.query.first():
+            from werkzeug.security import generate_password_hash
+            admin = User(username='admin', email='admin@gauravmotors.com',
+                        password_hash=generate_password_hash('Admin@123456'), role='admin')
+            db.session.add(admin)
+            db.session.commit()
+            print("Database initialized with admin user (admin / Admin@123456)")
+    port = int(os.environ.get('PORT', 5000))
+    debug = os.environ.get('FLASK_ENV') != 'production'
+    app.run(host='0.0.0.0', port=port, debug=debug)
