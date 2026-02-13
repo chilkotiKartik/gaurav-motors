@@ -1,388 +1,272 @@
 /**
- * GAURAV MOTORS - Premium Dynamic UI JavaScript
- * Clean, Fast & Beautiful with Animations
+ * GAURAV MOTORS - Clean UI JavaScript
+ * Minimal, fast, no gimmicks
  */
 
 (function() {
     'use strict';
 
-    // ===== DOM READY =====
     document.addEventListener('DOMContentLoaded', init);
 
     function init() {
-        initPageLoader();
-        initNavbarEffects();
+        hidePageLoader();
+        initNavbar();
         initSmoothScroll();
         initScrollToTop();
-        initFormEnhancements();
         initTooltips();
         initWhatsAppFloat();
         initScrollReveal();
-        initCounterAnimation();
-        initHoverEffects();
+        initCounters();
+        forceWhiteInputs();
     }
 
     // ===== PAGE LOADER =====
-    function initPageLoader() {
-        function hideLoader() {
-            const pageLoader = document.querySelector('.page-loader');
-            if (pageLoader) {
-                pageLoader.classList.add('hidden');
-                pageLoader.style.opacity = '0';
-                pageLoader.style.visibility = 'hidden';
-                pageLoader.style.pointerEvents = 'none';
+    function hidePageLoader() {
+        function hide() {
+            var loader = document.querySelector('.page-loader');
+            if (loader) {
+                loader.classList.add('hidden');
+                loader.style.opacity = '0';
+                loader.style.visibility = 'hidden';
+                loader.style.pointerEvents = 'none';
                 document.body.style.overflow = '';
             }
         }
         
-        // Hide loader on window load
-        window.addEventListener('load', () => {
-            setTimeout(hideLoader, 200);
+        window.addEventListener('load', function() {
+            setTimeout(hide, 150);
         });
         
-        // Fallback: hide after 2 seconds
-        setTimeout(hideLoader, 2000);
+        setTimeout(hide, 1500);
         
-        // Immediate hide if already loaded
-        if (document.readyState === 'complete') {
-            hideLoader();
-        }
+        if (document.readyState === 'complete') hide();
     }
 
-    // ===== PREMIUM NAVBAR EFFECTS =====
-    function initNavbarEffects() {
-        const navbar = document.querySelector('.navbar');
-        const topBar = document.querySelector('.top-bar-premium');
+    // ===== FORCE WHITE INPUTS (for dark mode users) =====
+    function forceWhiteInputs() {
+        var inputs = document.querySelectorAll('input, textarea, select, .form-control, .form-select');
+        inputs.forEach(function(el) {
+            el.style.backgroundColor = '#ffffff';
+            el.style.color = '#334155';
+        });
+
+        // Also apply on any dynamically added inputs
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(m) {
+                m.addedNodes.forEach(function(node) {
+                    if (node.nodeType === 1) {
+                        var newInputs = node.querySelectorAll ? node.querySelectorAll('input, textarea, select, .form-control, .form-select') : [];
+                        newInputs.forEach(function(el) {
+                            el.style.backgroundColor = '#ffffff';
+                            el.style.color = '#334155';
+                        });
+                        if (node.matches && node.matches('input, textarea, select, .form-control, .form-select')) {
+                            node.style.backgroundColor = '#ffffff';
+                            node.style.color = '#334155';
+                        }
+                    }
+                });
+            });
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+    }
+
+    // ===== NAVBAR =====
+    function initNavbar() {
+        var navbar = document.querySelector('.navbar');
+        var topBar = document.querySelector('.top-bar-premium');
         if (!navbar) return;
 
-        let lastScroll = 0;
-        const scrollThreshold = 80;
+        if (topBar) {
+            topBar.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+        }
+        navbar.style.transition = 'background 0.3s ease, box-shadow 0.3s ease';
 
-        function updateNavbar() {
-            const currentScroll = window.pageYOffset;
+        function update() {
+            var scrollY = window.pageYOffset;
             
-            if (currentScroll > scrollThreshold) {
+            if (scrollY > 60) {
                 navbar.classList.add('navbar-scrolled');
                 navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-                navbar.style.boxShadow = '0 4px 30px rgba(0,0,0,0.1)';
-                navbar.style.backdropFilter = 'blur(20px)';
+                navbar.style.boxShadow = '0 2px 12px rgba(0,0,0,0.06)';
+                navbar.style.backdropFilter = 'blur(12px)';
                 
-                // Update nav links color
-                navbar.querySelectorAll('.nav-link').forEach(link => {
-                    link.style.color = '#1e293b';
+                navbar.querySelectorAll('.nav-link').forEach(function(link) {
+                    link.style.color = '#334155';
                 });
                 
-                // Update brand name color
-                const brandName = navbar.querySelector('.brand-name');
+                var brandName = navbar.querySelector('.brand-name');
                 if (brandName) {
                     brandName.style.color = '#1e293b';
                     brandName.style.textShadow = 'none';
                 }
                 
-                // Hide top bar smoothly
                 if (topBar) {
                     topBar.style.transform = 'translateY(-100%)';
                     topBar.style.opacity = '0';
                 }
             } else {
                 navbar.classList.remove('navbar-scrolled');
-                navbar.style.background = 'linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%)';
-                navbar.style.boxShadow = '0 4px 30px rgba(13,110,253,0.3)';
+                navbar.style.background = '#2563eb';
+                navbar.style.boxShadow = '0 2px 12px rgba(37,99,235,0.15)';
                 navbar.style.backdropFilter = 'none';
                 
-                // Reset nav links color
-                navbar.querySelectorAll('.nav-link').forEach(link => {
+                navbar.querySelectorAll('.nav-link').forEach(function(link) {
                     link.style.color = '#fff';
                 });
                 
-                // Reset brand name color
-                const brandName = navbar.querySelector('.brand-name');
+                var brandName = navbar.querySelector('.brand-name');
                 if (brandName) {
                     brandName.style.color = '#fff';
-                    brandName.style.textShadow = '2px 2px 8px rgba(0,0,0,0.3)';
+                    brandName.style.textShadow = '1px 1px 4px rgba(0,0,0,0.15)';
                 }
                 
-                // Show top bar
                 if (topBar) {
                     topBar.style.transform = 'translateY(0)';
                     topBar.style.opacity = '1';
                 }
             }
-            
-            lastScroll = currentScroll;
         }
 
-        // Add transition to topBar
-        if (topBar) {
-            topBar.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
-        }
-        navbar.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
-
-        window.addEventListener('scroll', updateNavbar, { passive: true });
-        updateNavbar(); // Initial call
+        window.addEventListener('scroll', update, { passive: true });
+        update();
     }
 
-    // ===== SCROLL REVEAL ANIMATION =====
+    // ===== SCROLL REVEAL =====
     function initScrollReveal() {
-        const revealElements = document.querySelectorAll('.reveal, [data-reveal]');
+        var elements = document.querySelectorAll('.reveal, [data-reveal]');
         
-        if (revealElements.length === 0) {
-            // Auto-add reveal to common elements
-            const autoRevealSelectors = [
-                'section > .container > .row > div',
-                '.stat-card',
-                '.feature-card',
-                '.service-card',
-                '.card'
-            ];
-            
-            autoRevealSelectors.forEach(selector => {
-                document.querySelectorAll(selector).forEach((el, index) => {
+        if (elements.length === 0) {
+            // Auto-add to common elements
+            ['.stat-card', '.feature-card', '.service-card'].forEach(function(sel) {
+                document.querySelectorAll(sel).forEach(function(el, i) {
                     if (!el.classList.contains('reveal')) {
                         el.classList.add('reveal');
-                        el.style.animationDelay = `${index * 0.1}s`;
                     }
                 });
             });
         }
 
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px 0px -50px 0px',
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
                     entry.target.style.opacity = '1';
                     entry.target.style.transform = 'translateY(0)';
                 }
             });
-        }, observerOptions);
+        }, {
+            rootMargin: '0px 0px -30px 0px',
+            threshold: 0.1
+        });
 
-        document.querySelectorAll('.reveal').forEach(el => {
+        document.querySelectorAll('.reveal').forEach(function(el) {
             el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            el.style.transform = 'translateY(16px)';
+            el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
             observer.observe(el);
         });
     }
 
     // ===== COUNTER ANIMATION =====
-    function initCounterAnimation() {
-        const counters = document.querySelectorAll('[data-counter], .counter-value');
+    function initCounters() {
+        var counters = document.querySelectorAll('[data-counter], .counter-value');
         
-        counters.forEach(counter => {
-            const target = parseInt(counter.textContent.replace(/[^0-9]/g, ''));
-            const suffix = counter.textContent.replace(/[0-9]/g, '');
-            
+        counters.forEach(function(counter) {
+            var target = parseInt(counter.textContent.replace(/[^0-9]/g, ''));
+            var suffix = counter.textContent.replace(/[0-9]/g, '');
             if (isNaN(target)) return;
             
-            const observerOptions = {
-                threshold: 0.5
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
                     if (entry.isIntersecting) {
-                        animateCounter(counter, target, suffix);
+                        animateCount(counter, target, suffix);
                         observer.unobserve(entry.target);
                     }
                 });
-            }, observerOptions);
+            }, { threshold: 0.5 });
 
             observer.observe(counter);
         });
     }
 
-    function animateCounter(element, target, suffix) {
-        let current = 0;
-        const increment = target / 50;
-        const duration = 2000;
-        const stepTime = duration / 50;
-
-        const timer = setInterval(() => {
-            current += increment;
+    function animateCount(el, target, suffix) {
+        var current = 0;
+        var step = target / 40;
+        var interval = setInterval(function() {
+            current += step;
             if (current >= target) {
                 current = target;
-                clearInterval(timer);
+                clearInterval(interval);
             }
-            element.textContent = Math.floor(current) + suffix;
-        }, stepTime);
-    }
-
-    // ===== HOVER EFFECTS =====
-    function initHoverEffects() {
-        // Add hover glow to buttons
-        document.querySelectorAll('.btn').forEach(btn => {
-            btn.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-3px)';
-            });
-            btn.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-            });
-        });
-
-        // Add tilt effect to cards
-        document.querySelectorAll('.feature-card, .stat-card, .service-card').forEach(card => {
-            card.addEventListener('mousemove', function(e) {
-                const rect = this.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = (y - centerY) / 20;
-                const rotateY = (centerX - x) / 20;
-                
-                this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
-            });
-        });
+            el.textContent = Math.floor(current) + suffix;
+        }, 40);
     }
 
     // ===== SMOOTH SCROLL =====
     function initSmoothScroll() {
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
             anchor.addEventListener('click', function(e) {
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const target = document.querySelector(targetId);
+                var id = this.getAttribute('href');
+                if (id === '#') return;
+                var target = document.querySelector(id);
                 if (target) {
                     e.preventDefault();
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
         });
     }
 
-    // ===== SCROLL TO TOP BUTTON =====
+    // ===== SCROLL TO TOP =====
     function initScrollToTop() {
-        const scrollTopBtn = document.createElement('button');
-        scrollTopBtn.className = 'scroll-top-btn';
-        scrollTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
-        scrollTopBtn.setAttribute('aria-label', 'Scroll to top');
-        scrollTopBtn.style.cssText = `
-            position: fixed;
-            bottom: 90px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #0d6efd, #0a58ca);
-            color: white;
-            border: none;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 999;
-            box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-        `;
-        document.body.appendChild(scrollTopBtn);
+        var btn = document.createElement('button');
+        btn.className = 'scroll-top-btn';
+        btn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+        btn.setAttribute('aria-label', 'Scroll to top');
+        btn.style.cssText = 'position:fixed;bottom:90px;right:25px;width:44px;height:44px;border-radius:50%;background:#2563eb;color:white;border:none;cursor:pointer;opacity:0;visibility:hidden;transition:all 0.2s ease;z-index:999;box-shadow:0 2px 8px rgba(37,99,235,0.2);display:flex;align-items:center;justify-content:center;font-size:1rem;';
+        document.body.appendChild(btn);
 
-        // Show/hide based on scroll
-        window.addEventListener('scroll', () => {
+        window.addEventListener('scroll', function() {
             if (window.pageYOffset > 300) {
-                scrollTopBtn.style.opacity = '1';
-                scrollTopBtn.style.visibility = 'visible';
+                btn.style.opacity = '1';
+                btn.style.visibility = 'visible';
             } else {
-                scrollTopBtn.style.opacity = '0';
-                scrollTopBtn.style.visibility = 'hidden';
+                btn.style.opacity = '0';
+                btn.style.visibility = 'hidden';
             }
         }, { passive: true });
 
-        // Scroll to top on click
-        scrollTopBtn.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+        btn.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
 
-    // ===== FORM ENHANCEMENTS =====
-    function initFormEnhancements() {
-        // Floating labels
-        document.querySelectorAll('.form-control, .form-select').forEach(input => {
-            input.addEventListener('focus', function() {
-                this.parentElement.classList.add('focused');
-            });
-            
-            input.addEventListener('blur', function() {
-                if (!this.value) {
-                    this.parentElement.classList.remove('focused');
-                }
-            });
-            
-            // Check initial state
-            if (input.value) {
-                input.parentElement.classList.add('focused');
-            }
-        });
-    }
-
-    // ===== TOOLTIPS (Bootstrap) =====
+    // ===== TOOLTIPS =====
     function initTooltips() {
         if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
-            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            tooltipTriggerList.forEach(function(tooltipTriggerEl) {
-                new bootstrap.Tooltip(tooltipTriggerEl);
+            [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]')).forEach(function(el) {
+                new bootstrap.Tooltip(el);
             });
         }
     }
 
-    // ===== WHATSAPP FLOAT BUTTON =====
+    // ===== WHATSAPP FLOAT =====
     function initWhatsAppFloat() {
-        // Check if already exists
         if (document.querySelector('.whatsapp-float')) return;
 
-        const whatsappBtn = document.createElement('a');
-        whatsappBtn.className = 'whatsapp-float';
-        whatsappBtn.href = 'https://wa.me/919997612579?text=Hi%20Gaurav%20Motors!';
-        whatsappBtn.target = '_blank';
-        whatsappBtn.innerHTML = '<i class="fab fa-whatsapp"></i>';
-        whatsappBtn.setAttribute('aria-label', 'Chat on WhatsApp');
-        whatsappBtn.style.cssText = `
-            position: fixed;
-            bottom: 25px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #25d366, #128c7e);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            text-decoration: none;
-            z-index: 1000;
-            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
-            transition: transform 0.3s ease;
-        `;
+        var btn = document.createElement('a');
+        btn.className = 'whatsapp-float';
+        btn.href = 'https://wa.me/919997612579?text=Hi%20Gaurav%20Motors!';
+        btn.target = '_blank';
+        btn.innerHTML = '<i class="fab fa-whatsapp"></i>';
+        btn.setAttribute('aria-label', 'Chat on WhatsApp');
+        btn.style.cssText = 'position:fixed;bottom:20px;right:25px;width:56px;height:56px;border-radius:50%;background:#25d366;color:white;display:flex;align-items:center;justify-content:center;font-size:1.8rem;text-decoration:none;z-index:1000;box-shadow:0 3px 12px rgba(37,211,102,0.3);transition:transform 0.2s ease;';
         
-        whatsappBtn.addEventListener('mouseenter', function() {
-            this.style.transform = 'scale(1.1)';
-        });
+        btn.addEventListener('mouseenter', function() { this.style.transform = 'scale(1.08)'; });
+        btn.addEventListener('mouseleave', function() { this.style.transform = 'scale(1)'; });
         
-        whatsappBtn.addEventListener('mouseleave', function() {
-            this.style.transform = 'scale(1)';
-        });
-        
-        document.body.appendChild(whatsappBtn);
+        document.body.appendChild(btn);
     }
 
 })();

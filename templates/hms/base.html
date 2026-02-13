@@ -1,8 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" style="color-scheme: light only;">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light only">
     <meta name="theme-color" content="#0d6efd">
     
     <!-- SEO Meta Tags -->
@@ -48,27 +49,45 @@
     <!-- CSS Libraries -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Custom Stylesheets -->
-    <link href="{{ url_for('static', filename='css/hms.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/modern-ui-light.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/hms.css') }}?v=2" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/modern-ui-light.css') }}?v=2" rel="stylesheet">
     <style>
       * {
-        font-family: 'Inter', 'Poppins', sans-serif;
+        font-family: 'Inter', 'Segoe UI', -apple-system, sans-serif;
       }
       
       h1, h2, h3, h4, h5, h6, .display-1, .display-2, .display-3, .display-4 {
-        font-family: 'Montserrat', 'Poppins', sans-serif;
+        font-family: 'Inter', 'Segoe UI', sans-serif;
         font-weight: 700;
+        color: #1e293b;
       }
       
       body {
-        background: linear-gradient(180deg, #f5f9ff 0%, #eef6ff 50%, #e8f5ff 100%);
-        background-attachment: fixed;
+        background: #f8fafc;
         min-height: 100vh;
         overflow-x: hidden;
+        color-scheme: light only !important;
+      }
+      
+      /* Force ALL form inputs to white background */
+      input, textarea, select,
+      .form-control, .form-select {
+        background-color: #ffffff !important;
+        color: #334155 !important;
+        border-color: #e2e8f0 !important;
+      }
+      input:focus, textarea:focus, select:focus,
+      .form-control:focus, .form-select:focus {
+        background-color: #ffffff !important;
+        color: #334155 !important;
+        border-color: #2563eb !important;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+      }
+      input::placeholder, textarea::placeholder {
+        color: #94a3b8 !important;
       }
       
       
@@ -1034,12 +1053,25 @@
         }
       }
       
-      /* Dark mode support (if device prefers) */
+      /* Force light mode - override any system dark mode */
       @media (prefers-color-scheme: dark) {
-        /* Respect system dark mode preferences */
         :root {
-          --bs-body-bg: #1a1a1a;
-          --bs-body-color: #e0e0e0;
+          --bs-body-bg: #f8fafc !important;
+          --bs-body-color: #334155 !important;
+          color-scheme: light only !important;
+        }
+        body {
+          background: #f8fafc !important;
+          color: #334155 !important;
+        }
+        input, textarea, select,
+        .form-control, .form-select {
+          background-color: #ffffff !important;
+          color: #334155 !important;
+        }
+        .card, .modal-content, .dropdown-menu {
+          background-color: #ffffff !important;
+          color: #334155 !important;
         }
       }
       

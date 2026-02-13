@@ -9,6 +9,7 @@ import os
 import json
 import secrets
 from io import BytesIO
+from urllib.parse import quote
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'hmsdevsecret-change-in-production')
@@ -571,7 +572,7 @@ def book_car_service():
                "• Preferred Date: \n\n"
                "Please confirm availability. Thank you! 🙏")
     
-    whatsapp_url = f"https://wa.me/{phone}?text={message}"
+    whatsapp_url = f"https://wa.me/{phone}?text={quote(message)}"
     return redirect(whatsapp_url)
 
 @app.route('/book-service', methods=['POST'])
@@ -671,7 +672,7 @@ def confirm_car_service():
         
     except Exception as e:
         flash(f'Error processing booking: {str(e)}', 'danger')
-        return redirect(url_for('book_car_service'))
+        return redirect(url_for('services'))
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
@@ -998,8 +999,11 @@ def book(technician_id):
         booking_id_str = 'GM' + ''.join(random.choices(string.digits, k=6))
         # Get first available service or default
         first_service = CarService.query.first()
-        service_id = first_service.id if first_service else 1
-        service_amount = first_service.price if first_service else 0.0
+        if not first_service:
+            flash('No services available for booking at the moment', 'danger')
+            return redirect(url_for('customer_dashboard'))
+        service_id = first_service.id
+        service_amount = first_service.price
         booking = ServiceBooking(
             booking_id=booking_id_str,
             customer_name=customer_profile.name,
@@ -1725,8 +1729,12 @@ def submit_review(booking_id):
         if hasattr(booking, 'technician_id'):
             technician_id = booking.technician_id
         
+        if not technician_id:
+            flash('Cannot submit review: no technician assigned to this booking', 'warning')
+            return redirect(url_for('customer_dashboard'))
+        
         review = TechnicianReview(
-            technician_id=technician_id or 0,
+            technician_id=technician_id,
             customer_id=customer.id,
             service_booking_id=booking_id,
             rating=rating,
@@ -2002,7 +2010,15 @@ def update_cart_item(item_id):
     cart_item = CartItem.query.get_or_404(item_id)
     quantity = int(request.form.get('quantity', 1))
     
-    if quantity > cart_item.part.stock_quantity:
+    # Check stock based on whether it's a part or accessory
+    if cart_item.part:
+        max_stock = cart_item.part.stock_quantity
+    elif cart_item.accessory:
+        max_stock = cart_item.accessory.stock
+    else:
+        max_stock = 0
+    
+    if quantity > max_stock:
         flash('Not enough stock available', 'danger')
     elif quantity < 1:
         db.session.delete(cart_item)
@@ -2056,14 +2072,27 @@ def checkout_parts():
         
         for item in cart_items:
             part = item.part
+            accessory = item.accessory
+            
+            # Determine product details
+            if part:
+                product_name = part.name
+                product_stock = part.stock_quantity
+                product_price = part.price
+            elif accessory:
+                product_name = accessory.name
+                product_stock = accessory.stock
+                product_price = accessory.price
+            else:
+                continue
             
             # Check stock
-            if item.quantity > part.stock_quantity:
-                flash(f'Not enough stock for {part.name}', 'danger')
+            if item.quantity > product_stock:
+                flash(f'Not enough stock for {product_name}', 'danger')
                 return redirect(url_for('view_cart'))
             
             # Calculate pricing
-            subtotal = part.price * item.quantity
+            subtotal = product_price * item.quantity
             installation_charges = 500 if installation else 0
             total = subtotal + installation_charges
             advance = total * 0.5
@@ -2078,9 +2107,9 @@ def checkout_parts():
                 customer_name=customer_name,
                 customer_phone=customer_phone,
                 customer_email=customer_email,
-                part_id=part.id,
+                part_id=part.id if part else None,
                 quantity=item.quantity,
-                unit_price=part.price,
+                unit_price=product_price,
                 subtotal=subtotal,
                 installation_charges=installation_charges,
                 total_price=total,
@@ -2093,7 +2122,10 @@ def checkout_parts():
             )
             
             # Update stock
-            part.stock_quantity -= item.quantity
+            if part:
+                part.stock_quantity -= item.quantity
+            elif accessory:
+                accessory.stock -= item.quantity
             
             db.session.add(order)
             orders_created.append(order.id)
@@ -2111,7 +2143,10 @@ def checkout_parts():
         
         return redirect(url_for('part_orders_payment'))
     
-    subtotal = sum(item.part.price * item.quantity for item in cart_items)
+    subtotal = sum(
+        (item.part.price if item.part else (item.accessory.price if item.accessory else 0)) * item.quantity
+        for item in cart_items
+    )
     
     return render_template('hms/checkout_parts.html', cart_items=cart_items, subtotal=subtotal)
 
@@ -2253,7 +2288,7 @@ def update_part_order_status(order_id):
     flash(f'Order {order.order_number} updated to {new_status}', 'success')
     return redirect(url_for('admin_part_orders'))
 
-@app.route('/order/<int:order_id>/cancel')
+@app.route('/order/<int:order_id>/cancel', methods=['GET', 'POST'])
 def cancel_part_order(order_id):
     """Cancel a part order"""
     order = PartOrder.query.get_or_404(order_id)
