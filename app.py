@@ -14,20 +14,25 @@ from urllib.parse import quote
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'hmsdevsecret-change-in-production')
 
-# Database Configuration - supports PostgreSQL (Render/Production) and SQLite (Local)
+# Database Configuration - supports PostgreSQL (Render/Vercel/Production) and SQLite (Local)
 IS_VERCEL = os.environ.get('VERCEL', False)
 IS_RENDER = os.environ.get('RENDER', False)
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
+# For production (Vercel/Render), DATABASE_URL must be set
 if DATABASE_URL:
-    # Use PostgreSQL in production (Render, Heroku, etc.)
+    # Use PostgreSQL in production (Render, Heroku, Vercel, etc.)
     db_uri = DATABASE_URL
     if db_uri.startswith('postgres://'):
         db_uri = db_uri.replace('postgres://', 'postgresql://', 1)
     app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
-elif IS_VERCEL:
-    # Use in-memory SQLite for Vercel (read-only filesystem)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+elif IS_VERCEL or IS_RENDER:
+    # Production environment without DATABASE_URL - this will cause an error
+    # Force user to set DATABASE_URL environment variable
+    raise RuntimeError(
+        "DATABASE_URL environment variable is required for production deployment. "
+        "Please set DATABASE_URL in your Vercel/Render environment settings."
+    )
 else:
     # Use local SQLite for development
     DB_PATH = os.path.join(os.path.dirname(__file__), 'hms.db')
