@@ -391,7 +391,13 @@ def load_user(user_id):
 # Auto-initialize database on Vercel (ephemeral /tmp filesystem)
 def init_vercel_db():
     """Create tables and seed data for Vercel deployment"""
-    if not os.path.exists(DB_PATH):
+    try:
+        inspector = db.inspect(db.engine)
+        has_user_table = inspector.has_table('user')
+    except Exception:
+        has_user_table = False
+
+    if not has_user_table:
         db.create_all()
         # Create default admin user
         admin = User(
