@@ -1,0 +1,251 @@
+/* ============================================================
+   DARK THEME OVERRIDE - Forces beautiful dark theme
+   Overrides light theme CSS conflicts
+   ============================================================ */
+
+/* ===== FORCE DARK THEME ===== */
+:root {
+  color-scheme: dark !important;
+}
+
+html, body {
+  background: #0a0e27 !important;
+  color: #e2e8f0 !important;
+}
+
+/* ===== OVERRIDE NAVBAR LIGHT ===== */
+.navbar {
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%) !important;
+  backdrop-filter: blur(10px) !important;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2) !important;
+}
+
+.navbar-scrolled {
+  background: linear-gradient(135deg, rgba(26, 31, 58, 0.95), rgba(13, 17, 37, 0.95)) !important;
+  backdrop-filter: blur(20px) !important;
+}
+
+.navbar-scrolled .nav-link,
+.nav-link {
+  color: #e2e8f0 !important;
+}
+
+.navbar-scrolled .brand-name,
+.brand-name {
+  color: #ffd700 !important;
+  text-shadow: none !important;
+}
+
+.navbar-scrolled .logo-container,
+.logo-container {
+  filter: brightness(1.1) !important;
+}
+
+/* ===== OVERRIDE BUTTONS ===== */
+.btn-outline-light {
+  border-color: #ffd700 !important;
+  color: #ffd700 !important;
+}
+
+.btn-outline-light:hover {
+  background: rgba(255, 215, 0, 0.1) !important;
+  color: #fff !important;
+  border-color: #ff8c00 !important;
+}
+
+/* ===== OVERRIDE BACKGROUNDS ===== */
+.container, .container-fluid {
+  background: transparent !important;
+}
+
+.card {
+  background: linear-gradient(135deg, rgba(26, 31, 58, 0.8), rgba(45, 55, 72, 0.6)) !important;
+  border: 1px solid rgba(255, 215, 0, 0.1) !important;
+  color: #e2e8f0 !important;
+}
+
+.card-header {
+  background: rgba(26, 31, 58, 0.7) !important;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.1) !important;
+  color: #ffd700 !important;
+}
+
+.card-body {
+  background: transparent !important;
+  color: #e2e8f0 !important;
+}
+
+/* ===== OVERRIDE FORM CONTROLS ===== */
+.form-control, .form-select {
+  background: rgba(26, 31, 58, 0.6) !important;
+  border: 1px solid rgba(255, 215, 0, 0.2) !important;
+  color: #e2e8f0 !important;
+}
+
+.form-control:focus, .form-select:focus {
+  background: rgba(26, 31, 58, 0.8) !important;
+  border-color: #ffd700 !important;
+  color: #e2e8f0 !important;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2) !important;
+}
+
+.form-control::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* ===== OVERRIDE TABLE ===== */
+.table {
+  color: #e2e8f0 !important;
+  border-color: rgba(255, 215, 0, 0.1) !important;
+}
+
+.table-hover tbody tr:hover {
+  background: rgba(255, 215, 0, 0.1) !important;
+}
+
+.table thead th {
+  background: rgba(26, 31, 58, 0.8) !important;
+  border-color: rgba(255, 215, 0, 0.2) !important;
+  color: #ffd700 !important;
+}
+
+/* ===== OVERRIDE ALERTS ===== */
+.alert {
+  background: rgba(26, 31, 58, 0.7) !important;
+  border: 1px solid rgba(255, 215, 0, 0.2) !important;
+  color: #e2e8f0 !important;
+}
+
+.alert-success {
+  background: rgba(34, 197, 94, 0.15) !important;
+  border-color: rgba(34, 197, 94, 0.3) !important;
+  color: #86efac !important;
+}
+
+.alert-danger {
+  background: rgba(239, 68, 68, 0.15) !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+  color: #fca5a5 !important;
+}
+
+.alert-warning {
+  background: rgba(255, 215, 0, 0.15) !important;
+  border-color: rgba(255, 215, 0, 0.3) !important;
+  color: #fef08a !important;
+}
+
+/* ===== OVERRIDE DROPDOWNS ===== */
+.dropdown-menu {
+  background: rgba(26, 31, 58, 0.95) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 215, 0, 0.2) !important;
+}
+
+.dropdown-item {
+  color: #e2e8f0 !important;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background: rgba(255, 215, 0, 0.2) !important;
+  color: #ffd700 !important;
+}
+
+/* ===== OVERRIDE PAGINATION ===== */
+.pagination {
+  background: rgba(26, 31, 58, 0.5) !important;
+  border-radius: 10px !important;
+  padding: 5px !important;
+}
+
+.page-link {
+  background: transparent !important;
+  border: 1px solid rgba(255, 215, 0, 0.2) !important;
+  color: #e2e8f0 !important;
+}
+
+.page-link:hover {
+  background: rgba(255, 215, 0, 0.1) !important;
+  border-color: #ffd700 !important;
+  color: #ffd700 !important;
+}
+
+.page-link.active {
+  background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%) !important;
+  border-color: #ffd700 !important;
+  color: #000 !important;
+}
+
+/* ===== OVERRIDE TEXT ===== */
+h1, h2, h3, h4, h5, h6 {
+  color: #ffd700 !important;
+}
+
+label {
+  color: #cbd5e1 !important;
+}
+
+.text-muted {
+  color: #94a3b8 !important;
+}
+
+.text-secondary {
+  color: #94a3b8 !important;
+}
+
+/* ===== OVERRIDE LINKS ===== */
+a {
+  color: #60a5fa !important;
+}
+
+a:hover {
+  color: #ffd700 !important;
+}
+
+/* ===== OVERRIDE BADGES ===== */
+.badge {
+  background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%) !important;
+}
+
+.badge-primary {
+  background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%) !important;
+}
+
+.badge-success {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%) !important;
+}
+
+.badge-danger {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+}
+
+.badge-warning {
+  background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%) !important;
+  color: #000 !important;
+}
+
+/* ===== OVERRIDE MODALS ===== */
+.modal-content {
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%) !important;
+  border: 1px solid rgba(255, 215, 0, 0.2) !important;
+}
+
+.modal-header {
+  background: rgba(26, 31, 58, 0.8) !important;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2) !important;
+  color: #ffd700 !important;
+}
+
+.modal-body {
+  color: #e2e8f0 !important;
+}
+
+/* ===== SMOOTH TRANSITIONS ===== */
+* {
+  transition: all 0.3s ease !important;
+}
+
+button:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 25px rgba(255, 215, 0, 0.2) !important;
+}
