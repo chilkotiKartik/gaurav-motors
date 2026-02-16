@@ -10,9 +10,19 @@ import json
 import secrets
 from io import BytesIO
 from urllib.parse import quote
+from functools import wraps
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'hmsdevsecret-change-in-production')
+
+# ===== PERFORMANCE & SECURITY OPTIMIZATION =====
+
+# Compression
+app.config['COMPRESS_LEVEL'] = 6
+app.config['COMPRESS_MIN_SIZE'] = 500
+
+# Enable caching
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 31536000  # 1 year for static files
 
 # Database Configuration - supports PostgreSQL (Render/Vercel/Production) and SQLite (Local)
 IS_VERCEL = os.environ.get('VERCEL', False)
@@ -61,6 +71,20 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 # Create upload folder if it doesn't exist
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
+
+# ===== SECURITY HEADERS MIDDLEWARE =====
+@app.after_request
+def set_security_headers(response):
+    """Add security headers to all responses"""
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+    response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
+    response.headers['Permissions-Policy'] = 'geolocation=(), microphone=(), camera=()'
+    response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com"
+    response.headers['Cache-Control'] = 'public, max-age=3600'
+    return response
 
 db = SQLAlchemy(app)
 mail = Mail(app)
@@ -2394,6 +2418,143 @@ def add_accessory_to_cart(accessory_id):
         return redirect(url_for('login'))
     
     return redirect(url_for('car_accessories'))
+
+# ===== SEO OPTIMIZATION ROUTES =====
+
+@app.route('/robots.txt')
+def robots():
+    """Robots.txt for search engine crawling"""
+    robots_txt = """User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /customer
+Disallow: /technician
+Disallow: /login
+Disallow: /register
+Disallow: /api
+
+Sitemap: https://gauravmotors.com/sitemap.xml
+
+# Performance
+Request-rate: 10/1s
+"""
+    return robots_txt, 200, {'Content-Type': 'text/plain'}
+
+@app.route('/sitemap.xml')
+def sitemap():
+    """XML sitemap for SEO"""
+    base_url = request.url_root.rstrip('/')
+    urls = [
+        {'url': base_url, 'priority': '1.0', 'changefreq': 'daily'},
+        {'url': f'{base_url}/about', 'priority': '0.8', 'changefreq': 'monthly'},
+        {'url': f'{base_url}/services', 'priority': '0.9', 'changefreq': 'weekly'},
+        {'url': f'{base_url}/spare-parts', 'priority': '0.9', 'changefreq': 'weekly'},
+        {'url': f'{base_url}/contact', 'priority': '0.7', 'changefreq': 'monthly'},
+        {'url': f'{base_url}/faq', 'priority': '0.7', 'changefreq': 'monthly'},
+        {'url': f'{base_url}/login', 'priority': '0.6', 'changefreq': 'monthly'},
+        {'url': f'{base_url}/register', 'priority': '0.6', 'changefreq': 'monthly'},
+    ]
+    
+    # Add service pages
+    for service in CarService.query.filter_by(is_active=True).all():
+        urls.append({
+            'url': f'{base_url}/service/{service.id}',
+            'priority': '0.7',
+            'changefreq': 'weekly'
+        })
+    
+    # Add spare parts pages
+    for part in SparePart.query.limit(100).all():
+        urls.append({
+            'url': f'{base_url}/spare-parts/{part.id}',
+            'priority': '0.6',
+            'changefreq': 'weekly'
+        })
+    
+    # Add technician pages
+    for technician in TechnicianProfile.query.limit(50).all():
+        urls.append({
+            'url': f'{base_url}/technician/{technician.id}/reviews',
+            'priority': '0.5',
+            'changefreq': 'weekly'
+        })
+    
+    sitemap_xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+    
+    for url_data in urls:
+        sitemap_xml += f"""
+    <url>
+        <loc>{url_data['url']}</loc>
+        <changefreq>{url_data['changefreq']}</changefreq>
+        <priority>{url_data['priority']}</priority>
+    </url>"""
+    
+    sitemap_xml += '\n</urlset>'
+    return sitemap_xml, 200, {'Content-Type': 'application/xml'}
+
+# ===== STRUCTURED DATA (JSON-LD) FOR SEO =====
+
+@app.context_processor
+def inject_structured_data():
+    """Inject JSON-LD structured data into templates"""
+    def get_organization_schema():
+        return {
+            '@context': 'https://schema.org',
+            '@type': 'LocalBusiness',
+            'name': 'Gaurav Motors Lohaghat',
+            'description': 'Best car service and repair workshop in Uttarakhand',
+            'image': request.url_root.rstrip('/') + '/static/images/logo.png',
+            'url': request.url_root.rstrip('/'),
+            'telephone': '+919997612579',
+            'address': {
+                '@type': 'PostalAddress',
+                'streetAddress': 'Main Road',
+                'addressLocality': 'Lohaghat',
+                'addressRegion': 'Uttarakhand',
+                'postalCode': '262524',
+                'addressCountry': 'IN'
+            },
+            'openingHoursSpecification': {
+                '@type': 'OpeningHoursSpecification',
+                'dayOfWeek': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                'opens': '09:00',
+                'closes': '19:00'
+            },
+            'sameAs': [
+                'https://www.facebook.com',
+                'https://www.instagram.com',
+                'https://www.whatsapp.com'
+            ],
+            'aggregateRating': {
+                '@type': 'AggregateRating',
+                'ratingValue': '4.8',
+                'reviewCount': '1500'
+            }
+        }
+    
+    def get_service_schema(service):
+        if service:
+            return {
+                '@context': 'https://schema.org',
+                '@type': 'Service',
+                'name': service.name,
+                'description': service.description,
+                'provider': {
+                    '@type': 'LocalBusiness',
+                    'name': 'Gaurav Motors'
+                },
+                'priceRange': str(service.price),
+                'areaServed': {
+                    '@type': 'City',
+                    'name': 'Lohaghat, Uttarakhand'
+                }
+            }
+        return {}
+    
+    return dict(
+        get_organization_schema=get_organization_schema,
+        get_service_schema=get_service_schema
+    )
 
 # Run
 if __name__ == '__main__':

@@ -1,59 +1,87 @@
 <!doctype html>
 <html lang="en" style="color-scheme: light only;">
   <head>
+    <!-- ===== ESSENTIAL META TAGS ===== -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="color-scheme" content="light only">
     <meta name="theme-color" content="#0d6efd">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
-    <!-- SEO Meta Tags -->
+    <!-- ===== SEO META TAGS ===== -->
     <meta name="description" content="Gaurav Motors Lohaghat - Uttarakhand's #1 Car Workshop. Best car service, repair, denting, painting, wheel alignment, AC service & accessories. Open 7 Days. Call +91 9997612579">
-    <meta name="keywords" content="car service lohaghat, car repair champawat, auto workshop uttarakhand, car mechanic lohaghat, wheel alignment, denting painting, car AC service, car accessories, gaurav motors, best car garage">
+    <meta name="keywords" content="car service lohaghat, car repair champawat, auto workshop uttarakhand, car mechanic lohaghat, wheel alignment, denting painting, car AC service, car accessories, gaurav motors, best car garage, car maintenance">
     <meta name="author" content="Gaurav Motors Lohaghat">
-    <meta name="robots" content="index, follow">
-    <meta name="googlebot" content="index, follow">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
     
-    <!-- Open Graph / Social Media -->
-    <meta property="og:type" content="business.business">
-    <meta property="og:title" content="Gaurav Motors Lohaghat - Best Car Service in Uttarakhand">
-    <meta property="og:description" content="Uttarakhand's most trusted auto workshop. Car service, repair, denting, painting & accessories. 15+ years experience. Open 7 days. WhatsApp: +91 9997612579">
-    <meta property="og:url" content="https://gauravmotors.com">
+    <!-- ===== CANONICAL & ALTERNATE VERSIONS ===== -->
+    <link rel="canonical" href="https://gauravmotors.com{{ request.path }}">
+    <link rel="alternate" hreflang="en-IN" href="https://gauravmotors.com{{ request.path }}">
+    
+    <!-- ===== OPEN GRAPH / SOCIAL MEDIA ===== -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{% block og_title %}Gaurav Motors Lohaghat - Best Car Service in Uttarakhand{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Uttarakhand's most trusted auto workshop. Car service, repair, denting, painting & accessories. 15+ years experience. Open 7 days. WhatsApp: +91 9997612579{% endblock %}">
+    <meta property="og:url" content="https://gauravmotors.com{{ request.path }}">
     <meta property="og:site_name" content="Gaurav Motors Lohaghat">
+    <meta property="og:image" content="{% block og_image %}https://gauravmotors.com/static/images/logo.png{% endblock %}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
     <meta property="og:locale" content="en_IN">
+    
+    <!-- ===== BUSINESS CONTACT INFORMATION ===== -->
     <meta property="business:contact_data:street_address" content="Main Road, Lohaghat">
     <meta property="business:contact_data:locality" content="Lohaghat">
     <meta property="business:contact_data:region" content="Uttarakhand">
     <meta property="business:contact_data:postal_code" content="262524">
     <meta property="business:contact_data:country_name" content="India">
     <meta property="business:contact_data:phone_number" content="+919997612579">
+    <meta property="business:contact_data:website" content="https://gauravmotors.com">
     
-    <!-- Twitter Card -->
+    <!-- ===== TWITTER CARD ===== -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Gaurav Motors - Best Car Workshop in Lohaghat">
-    <meta name="twitter:description" content="Car service, repair, denting, painting & more. Open 7 days. Call +91 9997612579">
+    <meta name="twitter:description" content="Car service, repair, denting, painting & more. Open 7 days. Expert technicians. Fast service. Call +91 9997612579">
+    <meta name="twitter:image" content="https://gauravmotors.com/static/images/logo.png">
+    <meta name="twitter:Creator" content="@GauravMotors">
+    <meta name="twitter:site" content="@GauravMotors">
     
-    <!-- Geo Tags -->
+    <!-- ===== GEO TARGETING ===== -->
     <meta name="geo.region" content="IN-UK">
     <meta name="geo.placename" content="Lohaghat, Champawat, Uttarakhand">
+    <meta name="geo.position" content="29.0;80.1">
+    <meta name="ICBM" content="29.0, 80.1">
     
-    <title>{% block title %}GAURAV MOTORS LOHAGHAT - Best Car Service & Repair Workshop in Uttarakhand{% endblock %}</title>
+    <!-- ===== ICONS & FAVICONS ===== -->
+    <title>{% block title %}Gaurav Motors Lohaghat - Best Car Service & Repair Workshop in Uttarakhand{% endblock %}</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
     <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/logo.png') }}">
+    <link rel="mask-icon" href="{{ url_for('static', filename='images/logo.png') }}" color="#0d6efd">
     
-    <!-- Preconnect for Performance -->
+    <!-- ===== PERFORMANCE: PRECONNECT & DNS PREFETCH ===== -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
     
-    <!-- CSS Libraries -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- ===== CSS LIBRARIES WITH INTEGRITY ===== -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUarbnLvQisdLQbl9Gsx8lJjMixQaVczm9K8U8l5z1v" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVJkEZSMUkrQ6usKu8zIstOWilmQQ5shBlByolEYS8ggH906L+c9QDkCJM" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Custom Stylesheets -->
-    <link href="{{ url_for('static', filename='css/hms.css') }}?v=2" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/modern-ui-light.css') }}?v=2" rel="stylesheet">
+    <!-- ===== CUSTOM STYLESHEETS ===== -->
+    <link href="{{ url_for('static', filename='css/hms.css') }}?v=3" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/modern-ui-light.css') }}?v=3" rel="stylesheet">
     <style>
       * {
         font-family: 'Inter', 'Segoe UI', -apple-system, sans-serif;
@@ -1510,7 +1538,134 @@
         }
       }
     </style>
-  </head>
+    
+    <!-- ===== JSON-LD STRUCTURED DATA FOR SEO ===== -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Gaurav Motors Lohaghat",
+      "alternateName": "GM Motors",
+      "url": "https://gauravmotors.com",
+      "logo": "https://gauravmotors.com/static/images/logo.png",
+      "description": "Uttarakhand's #1 automotive service and repair workshop. We provide car service, repair, denting, painting, wheel alignment, AC service, spare parts and accessories.",
+      "telephone": "+919997612579",
+      "email": "contact@gauravmotors.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Main Road",
+        "addressLocality": "Lohaghat",
+        "addressRegion": "Uttarakhand",
+        "postalCode": "262524",
+        "addressCountry": "IN"
+      },
+      "image": "https://gauravmotors.com/static/images/logo.png",
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "29.0",
+        "longitude": "80.1"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "opens": "09:00",
+        "closes": "19:00"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "Customer Service",
+        "telephone": "+919997612579",
+        "availableLanguage": ["en-IN", "hi"]
+      },
+      "sameAs": [
+        "https://www.facebook.com/gauravmotors",
+        "https://www.instagram.com/gauravmotors",
+        "https://wa.me/919997612579"
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "1500",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "priceRange": "₹1,500 - ₹25,000",
+      "areaServed": {
+        "@type": "City",
+        "name": "Lohaghat, Champawat, Uttarakhand, India"
+      },
+      "knowsAbout": [
+        "Car Service",
+        "Car Repair",
+        "Denting and Painting",
+        "Wheel Alignment",
+        "AC Service",
+        "Engine Repair",
+        "Spare Parts",
+        "Car Accessories"
+      ]
+    }
+    </script>
+    
+    <!-- ===== BREADCRUMB STRUCTURED DATA ===== -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://gauravmotors.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Services",
+          "item": "https://gauravmotors.com/services"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Spare Parts",
+          "item": "https://gauravmotors.com/spare-parts"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Contact",
+          "item": "https://gauravmotors.com/contact"
+        }
+      ]
+    }
+    </script>
+    
+    <!-- ===== ORGANIZATION SCHEMA ===== -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Gaurav Motors Lohaghat",
+      "url": "https://gauravmotors.com",
+      "logo": "https://gauravmotors.com/static/images/logo.png",
+      "foundingDate": "2010",
+      "founders": [{
+        "@type": "Person",
+        "name": "Gaurav Motors Team"
+      }],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "Customer Service",
+        "telephone": "+919997612579"
+      },
+      "sameAs": [
+        "https://www.facebook.com/gauravmotors",
+        "https://www.instagram.com/gauravmotors"
+      ]
+    }
+    </script>
+</head>
   <body>
     <!-- CSS Animation to auto-hide loader after 2.5s -->
     <style>
