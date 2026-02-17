@@ -442,7 +442,43 @@ a:hover {
   .hero-section h1 { font-size: 2rem; }
   .btn { padding: 0.5rem 1rem; }
   .card { margin-bottom: 1rem; }
+
+  /* Reduce very large hero / fixed-height images on small screens */
+  section.position-relative[style*="min-height: 100vh"] { min-height: 60vh !important; padding: 60px 0 !important; }
+  [style*="min-height: 100vh"] { min-height: 60vh !important; padding-top: 40px !important; padding-bottom: 40px !important; }
+  img[style*="height: 680px"] { height: auto !important; max-height: 420px !important; }
+  img[style*="height: 500px"] { height: auto !important; max-height: 360px !important; }
+  img[style*="height: 450px"] { height: auto !important; max-height: 360px !important; }
+  [style*="height: 500px"] { height: auto !important; max-height: 420px !important; }
+  .position-relative.h-100[style*="min-height: 550px"] { min-height: 420px !important; }
+
+  /* Founder image & avatar scaling */
+  .founder-image-wrapper { width: 100% !important; max-width: 320px !important; height: auto !important; margin: 0 auto; }
+  .founder-image-wrapper img { width: 100% !important; height: auto !important; object-fit: cover; }
+
+  .mechanic-avatar, .avatar-sm, .icon-wrapper, .time-box { width: auto !important; height: auto !important; min-width: 40px !important; min-height: 40px !important; }
+  .mechanic-avatar { width: 64px !important; height: 64px !important; }
+
+  /* Reduce service-card visual height so cards don't become too tall on phones */
+  .service-card .position-relative[style*="height: 220px"], .parts-category-card .position-relative[style*="height: 240px"] { height: 160px !important; }
+
+  /* Reduce large mobile-only spacer */
+  .d-lg-none[style*="height: 70px"] { height: 40px !important; }
+
+  /* Tighter container padding on small screens */
+  .container { padding-left: 0.75rem; padding-right: 0.75rem; }
 }
+
+@media (max-width: 576px) {
+  h1 { font-size: 1.6rem; }
+  .display-2, .display-3 { font-size: 1.6rem; }
+  .badge { padding: 0.35rem 0.75rem; font-size: 0.78rem; }
+  .btn { font-size: 0.95rem; padding: 0.45rem 0.9rem; }
+  .slot-card { padding: 1rem; }
+  .booking-summary, .service-benefits { padding: 1rem; }
+  .founder-image-wrapper { max-width: 280px !important; }
+}
+
 
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar {

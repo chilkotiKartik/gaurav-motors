@@ -92,7 +92,7 @@
           
           <!-- Main Image with Glow -->
           <div class="img-hover-zoom shadow-lg" style="border-radius: 32px; border: 4px solid rgba(255,255,255,0.2); overflow: hidden;">
-            <img src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=800&q=80" alt="Gaurav Motors Workshop" class="w-100" style="height: 450px; object-fit: cover;">
+            <img src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=800&q=80" alt="Gaurav Motors Workshop" class="img-fluid w-100" style="max-height: 450px; height: auto; object-fit: cover; display:block;">
           </div>
           
           <!-- Floating Rating Card -->
@@ -242,11 +242,10 @@
       <!-- Founder Image -->
       <div class="col-lg-5 text-center">
         <div class="position-relative d-inline-block">
-          <div class="founder-image-wrapper position-relative" style="width: 420px; height: 480px; margin: 0 auto; max-width: 100%;">
-            <div style="width: 100%; height: 100%; border-radius: 16px; border: 4px solid #e2e8f0; padding: 8px; background: white; box-shadow: 0 8px 24px rgba(0,0,0,0.08);">
-              <div style="width: 100%; height: 100%; border-radius: 12px; overflow: hidden;">
-                <img src="{{ url_for('static', filename='images/owner.jpg') }}" alt="Gaurav - Founder & Chief Mechanic" style="width: 100%; height: 100%; object-fit: cover;">
-              </div>
+          <div class="founder-image-wrapper position-relative" style="width: 100%; max-width: 420px; height: auto; margin: 0 auto;">
+            <div style="width: 100%; border-radius: 16px; border: 4px solid #e2e8f0; padding: 8px; background: white; box-shadow: 0 8px 24px rgba(0,0,0,0.08);">
+              <div style="width: 100%; border-radius: 12px; overflow: hidden;">
+                <img src="{{ url_for('static', filename='images/owner.jpg') }}" alt="Gaurav - Founder & Chief Mechanic" style="width: 100%; height: auto; object-fit: cover; display: block;">
             </div>
           </div>
           
