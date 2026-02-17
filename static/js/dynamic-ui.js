@@ -53,6 +53,9 @@
             const pageLoader = document.querySelector('.page-loader');
             if (pageLoader && !pageLoader.classList.contains('hidden')) {
                 pageLoader.classList.add('hidden');
+                pageLoader.style.display = 'none';
+                pageLoader.style.opacity = '0';
+                pageLoader.style.visibility = 'hidden';
                 document.body.style.overflow = '';
                 
                 // Trigger entrance animations
@@ -64,14 +67,19 @@
         
         // Multiple fallbacks to ensure loader hides
         window.addEventListener('load', () => {
-            setTimeout(hideLoader, 300);
+            setTimeout(hideLoader, 200);
         });
         
-        // Fallback: hide after 3 seconds max
-        setTimeout(hideLoader, 3000);
+        // Fallback: hide after 1.5 seconds max
+        setTimeout(hideLoader, 1500);
         
         // Fallback: hide when DOM is interactive
         if (document.readyState === 'complete') {
+            setTimeout(hideLoader, 200);
+        }
+        
+        // Immediate hide if already loaded
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
             setTimeout(hideLoader, 300);
         }
     }

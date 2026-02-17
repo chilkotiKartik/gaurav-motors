@@ -12,14 +12,14 @@
         Genuine OEM parts and certified aftermarket components with warranty. Browse our extensive inventory of quality automotive parts.
       </p>
       <div class="d-flex gap-3 flex-wrap">
-        <span class="badge px-4 py-2" style="background: rgba(255,255,255,0.2); font-size: 0.9rem;">
-          <i class="fas fa-shield-alt me-2"></i>Warranty Included
+        <span class="badge px-4 py-2" style="background: rgba(255,255,255,0.2); font-size: 0.9rem; white-space: nowrap;">
+          <i class="fas fa-shield-alt me-2" style="flex-shrink: 0;"></i>Warranty Included
         </span>
-        <span class="badge px-4 py-2" style="background: rgba(255,255,255,0.2); font-size: 0.9rem;">
-          <i class="fas fa-truck me-2"></i>Free Installation
+        <span class="badge px-4 py-2" style="background: rgba(255,255,255,0.2); font-size: 0.9rem; white-space: nowrap;">
+          <i class="fas fa-truck me-2" style="flex-shrink: 0;"></i>Free Installation
         </span>
-        <span class="badge px-4 py-2" style="background: rgba(255,255,255,0.2); font-size: 0.9rem;">
-          <i class="fas fa-certificate me-2"></i>Certified Quality
+        <span class="badge px-4 py-2" style="background: rgba(255,255,255,0.2); font-size: 0.9rem; white-space: nowrap;">
+          <i class="fas fa-certificate me-2" style="flex-shrink: 0;"></i>Certified Quality
         </span>
       </div>
     </div>
@@ -363,7 +363,7 @@
           </div>
           <div class="card-body p-4">
             <div class="mb-3">
-              <span class="badge bg-primary px-3 py-2 rounded-pill"><i class="fas fa-wrench me-1"></i>{{ d.specialization }}</span>
+              <span class="badge bg-primary px-3 py-2 rounded-pill" style="white-space: nowrap;"><i class="fas fa-wrench me-1"></i>{{ d.specialization }}</span>
             </div>
             <p class="mb-3 small text-muted">
               <i class="fas fa-calendar-check text-success me-2"></i>Available Slots: <strong class="text-primary">{{ doc_avail[d.id]|length }}</strong> (Next 7 days)

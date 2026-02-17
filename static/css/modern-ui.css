@@ -100,8 +100,10 @@ body::before {
 }
 
 .page-loader.hidden {
-  opacity: 0;
-  visibility: hidden;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  display: none !important;
+  pointer-events: none !important;
 }
 
 .loader-logo {

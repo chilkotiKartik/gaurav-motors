@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="color-scheme" content="light only">
-    <meta name="theme-color" content="#0d6efd">
+    <meta name="theme-color" content="#0d47a1">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -91,7 +91,6 @@
         background: #ffffff;
         color: #1f2937;
       }
-    </style>
       
       @keyframes slideDown {
         from { transform: translateY(-100%); opacity: 0; }
@@ -109,26 +108,41 @@
         transform: scale(1.05);
       }
       
+      /* Bootstrap Navbar Override - Force Blue Background */
+      .navbar.sticky-top {
+        background: linear-gradient(135deg, #0a1628 0%, #0d47a1 50%, #1565c0 100%) !important;
+        box-shadow: 0 2px 20px rgba(13,71,161,0.4) !important;
+      }
+      
+      .navbar.navbar-expand-lg {
+        background: linear-gradient(135deg, #0a1628 0%, #0d47a1 50%, #1565c0 100%) !important;
+      }
+      
+      .navbar {
+        background: linear-gradient(135deg, #0a1628 0%, #0d47a1 50%, #1565c0 100%) !important;
+      }
+      
       /* Enhanced Navbar */
       .main-navbar {
-        background: rgba(13, 110, 253, 0.96);
+        background: linear-gradient(135deg, #0a1628 0%, #0d47a1 50%, #1565c0 100%);
         backdrop-filter: blur(8px);
-        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 2px 20px rgba(13,71,161,0.3);
         transition: all 0.3s;
         position: sticky;
         top: 0;
         z-index: 1000;
-        animation: fadeIn 0.8s ease-out;
+        animation: navSlideDown 0.6s ease-out;
       }
       
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
+      @keyframes navSlideDown {
+        from { opacity: 0; transform: translateY(-100%); }
+        to { opacity: 1; transform: translateY(0); }
       }
       
       .main-navbar.scrolled {
         padding: 5px 0;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 10px 40px rgba(13,71,161,0.5);
+        background: linear-gradient(135deg, #0a1628 0%, #0d47a1 100%);
       }
       
       .navbar-brand {
@@ -140,6 +154,20 @@
         display: flex;
         align-items: center;
         gap: 10px;
+        color: white !important;
+      }
+      
+      .navbar-brand:hover {
+        color: white !important;
+      }
+      
+      .navbar-toggler {
+        border-color: rgba(255,255,255,0.3) !important;
+        background: rgba(255,255,255,0.1) !important;
+      }
+      
+      .navbar-toggler-icon {
+        filter: brightness(0) invert(1);
       }
       
       .logo-wrapper {
@@ -152,7 +180,7 @@
           box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         }
         50% {
-          box-shadow: 0 8px 30px rgba(255,193,7,0.5), 0 0 20px rgba(255,193,7,0.3);
+          box-shadow: 0 8px 30px rgba(66,165,245,0.6), 0 0 20px rgba(66,165,245,0.3);
         }
       }
       
@@ -186,7 +214,7 @@
       
       .navbar-brand:hover .logo-wrapper {
         transform: rotate(-8deg) scale(1.15);
-        box-shadow: 0 10px 40px rgba(13, 110, 253, 0.4), 0 0 30px rgba(255,193,7,0.4) !important;
+        box-shadow: 0 10px 40px rgba(13,71,161,0.5), 0 0 30px rgba(66,165,245,0.4) !important;
       }
       
       .navbar-brand:hover .logo-img {
@@ -214,6 +242,16 @@
         padding: 10px 15px !important;
         margin: 0 5px;
         border-radius: 8px;
+        color: white !important;
+      }
+      
+      .navbar-nav .nav-link {
+        color: white !important;
+      }
+      
+      .navbar-nav .nav-link:hover,
+      .navbar-nav .nav-link:focus {
+        color: white !important;
       }
       
       .nav-link::before {
@@ -223,9 +261,10 @@
         left: 50%;
         width: 0;
         height: 3px;
-        background: #0d6efd;
+        background: linear-gradient(90deg, #42a5f5, #90caf9);
         transition: all 0.3s;
         transform: translateX(-50%);
+        border-radius: 2px;
       }
       
       .nav-link:hover {
@@ -296,7 +335,7 @@
         right: 30px;
         width: 50px;
         height: 50px;
-        background: linear-gradient(135deg, #0d6efd 0%, #0b84d9 100%);
+        background: linear-gradient(135deg, #0d47a1, #1565c0);
         color: white;
         border: none;
         border-radius: 50%;
@@ -305,7 +344,7 @@
         opacity: 0;
         transition: all 0.3s;
         z-index: 1000;
-        box-shadow: 0 5px 20px rgba(13,110,253,0.18);
+        box-shadow: 0 5px 20px rgba(13,71,161,0.3);
       }
       
       .scroll-top.visible {
@@ -315,7 +354,7 @@
       
       .scroll-top:hover {
         transform: translateY(-10px) scale(1.1);
-        box-shadow: 0 10px 30px rgba(76, 175, 80, 0.6);
+        box-shadow: 0 10px 30px rgba(13,71,161,0.6);
       }
 
       /* ========================================
@@ -349,14 +388,14 @@
       }
 
       .dropdown-item:hover {
-        background: linear-gradient(90deg, rgba(13,110,253,0.1) 0%, transparent 100%);
-        border-left-color: #0d6efd;
+        background: linear-gradient(90deg, rgba(66,165,245,0.1) 0%, transparent 100%);
+        border-left-color: #42a5f5;
         transform: translateX(5px);
       }
 
       .dropdown-menu-dark .dropdown-item:hover {
         background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, transparent 100%);
-        border-left-color: #fbbf24;
+        border-left-color: #42a5f5;
       }
 
       .dropdown-header {
@@ -369,11 +408,11 @@
       /* Mobile Menu Enhancements */
       @media (max-width: 991px) {
         .navbar-collapse {
-          background: linear-gradient(135deg, rgba(13,110,253,0.98) 0%, rgba(11,132,217,0.98) 100%);
+          background: linear-gradient(135deg, #0a1628, #0d47a1);
           padding: 1.5rem;
           border-radius: 15px;
           margin-top: 1rem;
-          box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+          box-shadow: 0 10px 40px rgba(13,71,161,0.4);
           max-height: 70vh;
           overflow-y: auto;
           animation: mobileMenuSlide 0.4s ease;
@@ -415,7 +454,7 @@
 
         .nav-link:hover, .nav-link.active {
           background: rgba(255,255,255,0.15);
-          border-left-color: #fbbf24;
+          border-left-color: #42a5f5;
           transform: translateX(5px);
         }
 
@@ -496,7 +535,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+        background: linear-gradient(135deg, #0a1628 0%, #0d47a1 50%, #1565c0 100%);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -510,6 +549,7 @@
         opacity: 0 !important;
         visibility: hidden !important;
         pointer-events: none !important;
+        display: none !important;
       }
 
       .loader-spinner {
@@ -610,7 +650,7 @@
 
       /* Accessibility Improvements */
       .nav-link:focus, .btn:focus, .form-control:focus {
-        outline: 3px solid #fbbf24;
+        outline: 3px solid #42a5f5;
         outline-offset: 2px;
       }
 
@@ -864,7 +904,7 @@
         .navbar-collapse {
           max-height: 80vh;
           overflow-y: auto;
-          background: rgba(13, 110, 253, 0.98);
+          background: linear-gradient(135deg, #0a1628, #0d47a1);
           padding: 20px;
           margin: 10px -15px;
           border-radius: 15px;
@@ -1632,25 +1672,177 @@
     </script>
 </head>
   <body>
-    <!-- CSS Animation to auto-hide loader after 2.5s -->
+    <!-- Premium Loader Animation Styles -->
     <style>
       @keyframes hideLoader {
-        0%, 99% { opacity: 1; visibility: visible; }
-        100% { opacity: 0; visibility: hidden; pointer-events: none; }
+        0% { opacity: 1; visibility: visible; }
+        80% { opacity: 1; visibility: visible; }
+        100% { opacity: 0; visibility: hidden; display: none; }
       }
       .page-loader {
-        animation: hideLoader 2.5s forwards !important;
+        animation: hideLoader 2s forwards !important;
+        background: linear-gradient(135deg, #0a1628 0%, #0d47a1 50%, #1565c0 100%) !important;
+      }
+      
+      /* Floating particles */
+      .loader-particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: rgba(66,165,245,0.6);
+        border-radius: 50%;
+        animation: floatParticle 3s infinite ease-in-out;
+      }
+      .loader-particle:nth-child(1) { top: 15%; left: 10%; animation-delay: 0s; width: 6px; height: 6px; }
+      .loader-particle:nth-child(2) { top: 25%; right: 15%; animation-delay: 0.5s; }
+      .loader-particle:nth-child(3) { bottom: 30%; left: 20%; animation-delay: 1s; width: 8px; height: 8px; background: rgba(144,202,249,0.4); }
+      .loader-particle:nth-child(4) { top: 60%; right: 10%; animation-delay: 1.5s; }
+      .loader-particle:nth-child(5) { bottom: 20%; left: 50%; animation-delay: 0.3s; width: 5px; height: 5px; }
+      .loader-particle:nth-child(6) { top: 40%; left: 5%; animation-delay: 0.8s; background: rgba(144,202,249,0.5); }
+      .loader-particle:nth-child(7) { top: 10%; right: 30%; animation-delay: 1.2s; width: 3px; height: 3px; }
+      .loader-particle:nth-child(8) { bottom: 40%; right: 25%; animation-delay: 0.6s; width: 7px; height: 7px; background: rgba(66,165,245,0.3); }
+      
+      @keyframes floatParticle {
+        0%, 100% { transform: translateY(0) scale(1); opacity: 0.4; }
+        50% { transform: translateY(-20px) scale(1.5); opacity: 1; }
+      }
+      
+      /* Gear spin */
+      .loader-gear {
+        animation: gearSpin 2s linear infinite;
+        color: rgba(66,165,245,0.15);
+        font-size: 6rem;
+        position: absolute;
+      }
+      .loader-gear-1 { top: 12%; left: 8%; animation-direction: reverse; font-size: 4rem; }
+      .loader-gear-2 { bottom: 15%; right: 10%; font-size: 5rem; }
+      .loader-gear-3 { top: 50%; right: 5%; font-size: 3rem; animation-duration: 3s; color: rgba(144,202,249,0.1); }
+      
+      @keyframes gearSpin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      
+      /* Car drive animation */
+      .loader-car-container {
+        position: absolute;
+        bottom: 30%;
+        left: -60px;
+        animation: carDrive 2s ease-in-out forwards;
+      }
+      .loader-car-container i {
+        font-size: 2.5rem;
+        color: rgba(255,255,255,0.12);
+      }
+      @keyframes carDrive {
+        0% { left: -60px; opacity: 0; }
+        20% { opacity: 0.5; }
+        50% { left: 50%; transform: translateX(-50%); opacity: 0.15; }
+        100% { left: 50%; transform: translateX(-50%); opacity: 0.08; }
+      }
+      
+      /* Logo pulse */
+      .loader-logo-premium {
+        width: 90px;
+        height: 90px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        animation: logoPulseGlow 1.2s ease-in-out infinite alternate;
+        border: 2px solid rgba(66,165,245,0.3);
+      }
+      @keyframes logoPulseGlow {
+        0% { box-shadow: 0 0 20px rgba(66,165,245,0.2); transform: scale(1); }
+        100% { box-shadow: 0 0 40px rgba(66,165,245,0.5), 0 0 80px rgba(13,71,161,0.3); transform: scale(1.05); }
+      }
+      
+      /* Spinner ring */
+      .loader-spinner-premium {
+        width: 50px;
+        height: 50px;
+        border: 3px solid rgba(255,255,255,0.1);
+        border-top-color: #42a5f5;
+        border-right-color: #90caf9;
+        border-radius: 50%;
+        animation: spinnerSpin 0.8s linear infinite;
+        margin: 20px auto;
+      }
+      @keyframes spinnerSpin {
+        to { transform: rotate(360deg); }
+      }
+      
+      /* Text reveal */
+      .loader-title {
+        color: white;
+        font-weight: 800;
+        font-size: 1.3rem;
+        letter-spacing: 4px;
+        animation: textReveal 0.8s ease-out 0.3s both;
+      }
+      .loader-subtitle {
+        color: rgba(144,202,249,0.7);
+        font-size: 0.75rem;
+        letter-spacing: 3px;
+        margin-top: 6px;
+        animation: textReveal 0.8s ease-out 0.5s both;
+      }
+      @keyframes textReveal {
+        from { opacity: 0; transform: translateY(10px); letter-spacing: 8px; }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      /* Progress bar */
+      .loader-progress {
+        width: 180px;
+        height: 3px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 3px;
+        margin: 18px auto 0;
+        overflow: hidden;
+      }
+      .loader-progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #42a5f5, #90caf9, #42a5f5);
+        border-radius: 3px;
+        animation: progressSlide 1.5s ease-in-out infinite;
+        width: 40%;
+      }
+      @keyframes progressSlide {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(350%); }
       }
     </style>
     
     <!-- Premium Page Loader -->
     <div class="page-loader" id="pageLoader">
-      <div class="loader-content text-center">
-        <div class="loader-logo">
-          <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Loading..." style="width: 100%; height: 100%; object-fit: contain;">
+      <!-- Background elements -->
+      <div class="loader-particle"></div>
+      <div class="loader-particle"></div>
+      <div class="loader-particle"></div>
+      <div class="loader-particle"></div>
+      <div class="loader-particle"></div>
+      <div class="loader-particle"></div>
+      <div class="loader-particle"></div>
+      <div class="loader-particle"></div>
+      <i class="fas fa-cog loader-gear loader-gear-1"></i>
+      <i class="fas fa-cog loader-gear loader-gear-2"></i>
+      <i class="fas fa-cog loader-gear loader-gear-3"></i>
+      <div class="loader-car-container"><i class="fas fa-car-side"></i></div>
+      
+      <!-- Center content -->
+      <div class="text-center position-relative" style="z-index: 10;">
+        <div class="loader-logo-premium">
+          <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Loading..." style="width: 60px; height: 60px; object-fit: contain;">
         </div>
-        <div class="loader-spinner-ring mx-auto"></div>
-        <div class="loader-text">GAURAV MOTORS</div>
+        <div class="loader-spinner-premium"></div>
+        <div class="loader-title">GAURAV MOTORS</div>
+        <div class="loader-subtitle">AUTOMOBILE EXCELLENCE</div>
+        <div class="loader-progress">
+          <div class="loader-progress-bar"></div>
+        </div>
       </div>
     </div>
     
@@ -1666,23 +1858,31 @@
           }, 300);
         }
       });
-      // Fallback: force hide after 2 seconds
+      // Fallback: force hide after 1 second
       setTimeout(function() {
         var loader = document.getElementById('pageLoader');
         if (loader) {
           loader.classList.add('hidden');
+          loader.style.display = 'none';
           document.body.style.overflow = '';
         }
-      }, 2000);
+      }, 1000);
       // Immediate fallback on DOMContentLoaded
       document.addEventListener('DOMContentLoaded', function() {
         setTimeout(function() {
           var loader = document.getElementById('pageLoader');
           if (loader) {
             loader.classList.add('hidden');
+            loader.style.display = 'none';
             document.body.style.overflow = '';
           }
-        }, 1500);
+          // Also hide any other loaders that might exist
+          document.querySelectorAll('.page-loader, .loader-spinner-ring').forEach(function(el) {
+            el.style.display = 'none';
+            el.style.opacity = '0';
+            el.style.visibility = 'hidden';
+          });
+        }, 500);
       });
     </script>
 
@@ -1690,25 +1890,25 @@
     <div class="bg-pattern-overlay" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; pointer-events: none; opacity: 0.03; background-image: url('{{ url_for('static', filename='images/gm3.jpg') }}'); background-size: cover; background-position: center; background-attachment: fixed;"></div>
     
     <!-- Premium Top Bar -->
-    <div class="top-bar-premium d-none d-md-block" style="background: linear-gradient(90deg, #1e293b 0%, #0f172a 100%); padding: 10px 0;">
+    <div class="top-bar-premium d-none d-md-block" style="background: linear-gradient(135deg, #071226, #0a1628); padding: 8px 0; border-bottom: 1px solid rgba(66,165,245,0.15);">
       <div class="container">
         <div class="row align-items-center">
           <div class="col-md-4">
             <div class="d-flex align-items-center gap-3">
-              <a href="tel:+919997612579" class="text-white text-decoration-none d-flex align-items-center gap-2" style="font-size: 0.9rem;">
-                <i class="fas fa-phone-alt" style="color: #22c55e;"></i>
+              <a href="tel:+919997612579" class="text-white text-decoration-none d-flex align-items-center gap-2" style="font-size: 0.85rem; opacity: 0.9;">
+                <i class="fas fa-phone-alt" style="color: #42a5f5;"></i>
                 <span>+91 9997612579</span>
               </a>
-              <span class="text-white opacity-50">|</span>
-              <a href="mailto:gauravmotors@gmail.com" class="text-white text-decoration-none d-flex align-items-center gap-2" style="font-size: 0.9rem;">
-                <i class="fas fa-envelope" style="color: #fbbf24;"></i>
+              <span class="text-white opacity-25">|</span>
+              <a href="mailto:gauravmotors@gmail.com" class="text-white text-decoration-none d-flex align-items-center gap-2" style="font-size: 0.85rem; opacity: 0.9;">
+                <i class="fas fa-envelope" style="color: #42a5f5;"></i>
                 <span>gauravmotors@gmail.com</span>
               </a>
             </div>
           </div>
           <div class="col-md-4 text-center">
-            <span class="badge px-3 py-2" style="background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #1a1a2e; font-weight: 600;">
-              <i class="fas fa-clock me-2"></i>Open 7 Days: 9AM-7PM
+            <span class="badge px-3 py-2" style="background: rgba(66,165,245,0.2); color: #90caf9; font-weight: 600; white-space: nowrap; font-size: 0.78rem; border: 1px solid rgba(66,165,245,0.3);">
+              <i class="fas fa-clock me-2"></i>Open 7 Days: 9AM - 7PM
             </span>
           </div>
           <div class="col-md-4 text-end">
@@ -1724,30 +1924,27 @@
     </div>
     
     <!-- Modern Premium Navbar -->
-    <nav class="navbar navbar-expand-lg sticky-top" style="background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%); padding: 0; box-shadow: 0 4px 30px rgba(13,110,253,0.3);">
+    <nav class="navbar navbar-expand-lg sticky-top" style="background: linear-gradient(135deg, #0a1628 0%, #0d47a1 50%, #1565c0 100%) !important; padding: 0; box-shadow: 0 2px 20px rgba(13,71,161,0.3);">
       <div class="container">
         
         <!-- Brand Logo -->
         <a class="navbar-brand py-2 d-flex align-items-center gap-3" href="{{ url_for('index') }}">
-          <div class="logo-container position-relative" style="width: 65px; height: 65px;">
-            <div class="logo-bg" style="position: absolute; inset: 0; background: linear-gradient(135deg, #fff, #f8f9fa); border-radius: 16px; box-shadow: 0 8px 25px rgba(0,0,0,0.2);"></div>
-            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Gaurav Motors" style="position: relative; width: 100%; height: 100%; object-fit: contain; padding: 8px;">
+          <div class="logo-container position-relative" style="width: 55px; height: 55px;">
+            <div class="logo-bg" style="position: absolute; inset: 0; background: #fff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"></div>
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Gaurav Motors" style="position: relative; width: 100%; height: 100%; object-fit: contain; padding: 6px;">
           </div>
           <div class="brand-info d-none d-sm-block">
-            <div class="brand-name fw-bold text-white" style="font-size: 1.3rem; letter-spacing: 1px; text-shadow: 2px 2px 8px rgba(0,0,0,0.3);">GAURAV MOTORS</div>
+            <div class="brand-name fw-bold text-white" style="font-size: 1.2rem; letter-spacing: 0.5px;">GAURAV MOTORS</div>
             <div class="d-flex align-items-center gap-2 mt-1">
-              <span class="badge" style="background: rgba(251,191,36,0.9); color: #1a1a2e; font-size: 0.65rem; padding: 4px 10px;">
-                <i class="fas fa-map-marker-alt me-1"></i>Lohaghat
-              </span>
-              <span class="badge" style="background: rgba(34,197,94,0.9); color: #fff; font-size: 0.65rem; padding: 4px 10px;">
-                <i class="fas fa-star me-1"></i>4.9★
+              <span style="color: rgba(255,255,255,0.6); font-size: 0.75rem;">
+                <i class="fas fa-map-marker-alt me-1" style="color: #42a5f5;"></i>Lohaghat, Uttarakhand
               </span>
             </div>
           </div>
         </a>
         
         <!-- Mobile Toggle -->
-        <button class="navbar-toggler border-0 p-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="background: rgba(255,255,255,0.1); border-radius: 10px;">
+        <button class="navbar-toggler border-0 p-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="background: rgba(255,255,255,0.1); border-radius: 8px;">
           <span class="navbar-toggler-icon"></span>
         </button>
         
@@ -1783,11 +1980,11 @@
           <!-- Right Side Actions - Always Show Contact Buttons -->
           <ul class="navbar-nav">
             <li class="nav-item d-flex align-items-center gap-2 ms-lg-3">
-              <a href="tel:+919997612579" class="btn btn-outline-light btn-sm px-3 py-2 d-none d-md-inline-flex" style="border-radius: 20px;">
-                <i class="fas fa-phone me-1"></i>Call Us
+              <a href="tel:+919997612579" class="btn btn-sm px-3 py-2 d-none d-md-inline-flex" style="background: transparent; color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; font-size: 0.85rem;">
+                <i class="fas fa-phone me-1" style="color: #42a5f5;"></i>Call Us
               </a>
-              <a href="https://wa.me/919997612579?text=Hi%20Gaurav%20Motors!%20I%20want%20to%20book%20a%20car%20service." class="btn btn-sm px-4 py-2 fw-bold whatsapp-pulse" style="background: linear-gradient(135deg, #25D366, #128C7E); color: white; border-radius: 20px; box-shadow: 0 4px 15px rgba(37,211,102,0.4);">
-                <i class="fab fa-whatsapp me-1"></i>Book Now
+              <a href="https://wa.me/919997612579?text=Hi%20Gaurav%20Motors!%20I%20want%20to%20book%20a%20car%20service." class="btn btn-sm px-4 py-2 fw-semibold" style="background: linear-gradient(135deg, #42a5f5, #1e88e5); color: white; border-radius: 8px; font-size: 0.85rem; box-shadow: 0 3px 12px rgba(66,165,245,0.3);">
+                <i class="fas fa-calendar-check me-1"></i>Book Now
               </a>
             </li>
           </ul>
@@ -1836,9 +2033,9 @@
       {% block content %}{% endblock %}
     </div>
     <!-- Professional Automotive Footer -->
-    <footer class="mt-5 text-white shadow-lg" style="background: linear-gradient(135deg, #0b5bb0 0%, #0d6efd 50%, #0b84d9 100%); position: relative; overflow: hidden;">
-      <!-- Decorative Background Pattern -->
-      <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.05; background: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,0.05) 35px, rgba(255,255,255,0.05) 70px);"></div>
+    <footer class="mt-5 text-white" style="background: linear-gradient(135deg, #0a1628, #0d47a1); position: relative; overflow: hidden;">
+      <!-- Subtle Top Border -->
+      <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #42a5f5, #1565c0, #42a5f5);"></div>
       
       <div class="container position-relative" style="z-index: 1;">
         <!-- Main Footer Content -->
@@ -1856,16 +2053,16 @@
               Premier car workshop in Lohaghat, Uttarakhand, providing quality auto repair and maintenance services with expert technicians and modern equipment.
             </p>
             <div class="mb-3">
-              <span class="badge bg-light text-primary me-1 mb-2" style="font-size: 0.7rem;"><i class="fas fa-award me-1"></i>Trusted Service</span>
-              <span class="badge bg-light text-primary me-1 mb-2" style="font-size: 0.7rem;"><i class="fas fa-cogs me-1"></i>Genuine Parts</span>
-              <span class="badge bg-light text-primary mb-2" style="font-size: 0.7rem;"><i class="fas fa-star me-1"></i>Quality Parts</span>
+              <span class="badge me-1 mb-2" style="font-size: 0.7rem; background: rgba(66,165,245,0.15); color: #90caf9; border: 1px solid rgba(66,165,245,0.3);"><i class="fas fa-award me-1"></i>Trusted Service</span>
+              <span class="badge me-1 mb-2" style="font-size: 0.7rem; background: rgba(66,165,245,0.15); color: #90caf9; border: 1px solid rgba(66,165,245,0.3);"><i class="fas fa-cogs me-1"></i>Genuine Parts</span>
+              <span class="badge mb-2" style="font-size: 0.7rem; background: rgba(66,165,245,0.15); color: #90caf9; border: 1px solid rgba(66,165,245,0.3);"><i class="fas fa-star me-1"></i>Quality Parts</span>
             </div>
             <div class="d-flex gap-2">
-              <a href="#" class="btn btn-sm btn-outline-light rounded-circle" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; transition: all 0.3s;" onmouseover="this.style.background='#ffffff'; this.style.color='#0d6efd';" onmouseout="this.style.background=''; this.style.color='';"><i class="fab fa-facebook-f"></i></a>
-              <a href="#" class="btn btn-sm btn-outline-light rounded-circle" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; transition: all 0.3s;" onmouseover="this.style.background='#ffffff'; this.style.color='#0d6efd';" onmouseout="this.style.background=''; this.style.color='';"><i class="fab fa-twitter"></i></a>
-              <a href="#" class="btn btn-sm btn-outline-light rounded-circle" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; transition: all 0.3s;" onmouseover="this.style.background='#ffffff'; this.style.color='#0d6efd';" onmouseout="this.style.background=''; this.style.color='';"><i class="fab fa-instagram"></i></a>
-              <a href="#" class="btn btn-sm btn-outline-light rounded-circle" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; transition: all 0.3s;" onmouseover="this.style.background='#ffffff'; this.style.color='#0d6efd';" onmouseout="this.style.background=''; this.style.color='';"><i class="fab fa-linkedin-in"></i></a>
-              <a href="#" class="btn btn-sm btn-outline-light rounded-circle" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; transition: all 0.3s;" onmouseover="this.style.background='#ffffff'; this.style.color='#0d6efd';" onmouseout="this.style.background=''; this.style.color='';"><i class="fab fa-youtube"></i></a>
+              <a href="#" class="btn btn-sm btn-outline-light rounded-circle" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; transition: all 0.3s;" onmouseover="this.style.background='rgba(66,165,245,0.2)'; this.style.borderColor='#42a5f5';" onmouseout="this.style.background=''; this.style.borderColor='';"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="btn btn-sm btn-outline-light rounded-circle" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; transition: all 0.3s;" onmouseover="this.style.background='rgba(66,165,245,0.2)'; this.style.borderColor='#42a5f5';" onmouseout="this.style.background=''; this.style.borderColor='';"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="btn btn-sm btn-outline-light rounded-circle" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; transition: all 0.3s;" onmouseover="this.style.background='rgba(66,165,245,0.2)'; this.style.borderColor='#42a5f5';" onmouseout="this.style.background=''; this.style.borderColor='';"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="btn btn-sm btn-outline-light rounded-circle" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; transition: all 0.3s;" onmouseover="this.style.background='rgba(66,165,245,0.2)'; this.style.borderColor='#42a5f5';" onmouseout="this.style.background=''; this.style.borderColor='';"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#" class="btn btn-sm btn-outline-light rounded-circle" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; transition: all 0.3s;" onmouseover="this.style.background='rgba(66,165,245,0.2)'; this.style.borderColor='#42a5f5';" onmouseout="this.style.background=''; this.style.borderColor='';"><i class="fab fa-youtube"></i></a>
             </div>
           </div>
 
@@ -3242,6 +3439,49 @@
             }
         }
         
+        /* Image Responsiveness for All Devices */
+        @media (max-width: 992px) {
+            img.w-100 {
+                height: auto;
+                max-height: 100%;
+            }
+            
+            .img-hover-zoom {
+                border-radius: 20px !important;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .img-hover-zoom {
+                border-radius: 16px !important;
+                border-width: 6px !important;
+            }
+            
+            .position-absolute.animate-float {
+                static: relative !important;
+                margin-top: 20px !important;
+                bottom: auto !important;
+                left: auto !important;
+                right: auto !important;
+                top: auto !important;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .img-hover-zoom {
+                border-radius: 12px !important;
+                border-width: 4px !important;
+            }
+            
+            img[style*="height: 680px"] {
+                height: 450px !important;
+            }
+            
+            img[style*="height: 450px"] {
+                height: 300px !important;
+            }
+        }
+        
         /* =============================================
            CHATBOT V2 - ULTRA PREMIUM DESIGN WITH IMAGES
            ============================================= */
@@ -3974,10 +4214,10 @@
         /* V2 Mobile Responsive */
         @media (max-width: 768px) {
             .chatbot-fab-v2 {
-                bottom: 20px;
+                bottom: 85px;
                 left: 20px;
-                width: 65px;
-                height: 65px;
+                width: 60px;
+                height: 60px;
             }
             
             .chatbot-window-v2 {
@@ -4014,6 +4254,30 @@
                 width: 100%;
                 justify-content: center;
             }
+            
+            /* Trust badges mobile optimization */
+            .trust-badges {
+                flex-wrap: wrap !important;
+                gap: 10px !important;
+            }
+            
+            .trust-badges .badge {
+                flex: 1 1 calc(50% - 5px) !important;
+                min-width: 120px !important;
+                justify-content: center !important;
+            }
+        }
+        
+        /* Improved touch targets for mobile */
+        @media (max-width: 768px) {
+            .btn, a.btn {
+                min-height: 44px;
+                min-width: 44px;
+            }
+            
+            .nav-link {
+                padding: 12px 15px !important;
+            }
         }
     </style>
 
@@ -4032,7 +4296,7 @@
             const typingIndicator = document.getElementById('typing-indicator');
             
             // Toggle chatbot window
-            if (fab) {
+            if (fab && chatWindow) {
                 fab.onclick = function() {
                     chatWindow.classList.toggle('open');
                     if (chatWindow.classList.contains('open')) {
@@ -4044,7 +4308,7 @@
             }
             
             // Close chatbot
-            if (closeBtn) {
+            if (closeBtn && chatWindow && fab) {
                 closeBtn.onclick = function() {
                     chatWindow.classList.remove('open');
                     fab.style.display = 'flex';
@@ -4075,7 +4339,7 @@
                 "offers": "🎉 **Current Offers:**\n\n🔥 20% OFF on Full Service\n✨ FREE Car Wash with any service\n🛢️ Synthetic Oil Change @ ₹1,299\n🔋 FREE Battery Health Check\n\n📞 Book now: +91 9997612579",
                 "discount": "💸 **Special Discounts:**\n\n• First-time customers: 10% OFF\n• Refer a friend: ₹500 credit\n• Full service: 20% OFF (limited time)\n\n📱 Mention 'AI DISCOUNT' when booking!",
                 "owner": "👔 **About Our Founder:**\n\nMadan Mohan Chilkoti\n15+ Years Experience | Automotive Expert\n\nPersonally oversees every major repair. Committed to quality and customer satisfaction.\n\n📞 Connect: +91 9997612579",
-                "about": "🏢 **About Gaurav Motors:**\n\n• Established: 2010\n• Experience: 15+ Years\n• Team: 10+ Expert Mechanics\n• Customers Served: 5000+\n• Rating: 4.9★\n\nUttarakhand's most trusted workshop! 🏆",
+                "about": "🏢 **About Gaurav Motors:**\n\n• Established: 2010\n• Experience: 15+ Years\n• Team: 10+ Expert Mechanics\n• Customers Served: 5000+\n• Rating: 4.8★\n\nUttarakhand's most trusted workshop! 🏆",
                 "thank": "🙏 Thank you for choosing Gaurav Motors!\n\nWe appreciate your trust. See you soon at our workshop!\n\n📞 +91 9997612579 | ⭐ Rate us 5 stars!",
                 "thanks": "😊 You're welcome! Happy to help!\n\nFor any more questions, feel free to ask. Drive safe! 🚗",
                 "bye": "👋 Goodbye! Thank you for chatting with Gaurav Motors AI.\n\nSafe travels! 🚗 See you at our workshop soon!",
@@ -4084,7 +4348,7 @@
             };
             
             // Open chatbot
-            if (fab) {
+            if (fab && chatWindow && input) {
                 fab.onclick = function() {
                     console.log('🖱️ FAB clicked');
                     chatWindow.classList.add('open');
@@ -4094,7 +4358,7 @@
             }
             
             // Close chatbot
-            if (closeBtn) {
+            if (closeBtn && chatWindow && fab) {
                 closeBtn.onclick = function() {
                     console.log('🖱️ Close clicked');
                     chatWindow.classList.remove('open');
@@ -4104,6 +4368,7 @@
             
             // Send message function
             async function sendMessage() {
+                if (!input || !messages) return;
                 const text = input.value.trim();
                 if (!text) return;
 
@@ -4116,7 +4381,9 @@
                 input.value = '';
 
                 // Show typing
-                typingIndicator.classList.add('active');
+                if (typingIndicator) {
+                    typingIndicator.classList.add('active');
+                }
 
                 try {
                     // Make API call to backend
@@ -4131,7 +4398,9 @@
                     const data = await response.json();
 
                     // Hide typing
-                    typingIndicator.classList.remove('active');
+                    if (typingIndicator) {
+                        typingIndicator.classList.remove('active');
+                    }
 
                     if (data.success) {
                         addMessage(data.response, 'bot');
@@ -4140,13 +4409,17 @@
                     }
                 } catch (error) {
                     console.error('Chat API error:', error);
-                    typingIndicator.classList.remove('active');
+                    if (typingIndicator) {
+                        typingIndicator.classList.remove('active');
+                    }
                     addMessage('Sorry, I\'m having trouble connecting. Please try again later.', 'bot');
                 }
             }
             
             // Add message to chat with V2 styling
             function addMessage(text, sender) {
+                if (!messages) return;
+                
                 // Hide welcome card if it's the first message
                 const welcomeCard = document.querySelector('.welcome-card-v2');
                 if (welcomeCard) {
@@ -4178,8 +4451,10 @@
             
             // Quick reply function
             window.sendQuickReply = function(msg) {
-                input.value = msg;
-                sendMessage();
+                if (input) {
+                    input.value = msg;
+                    sendMessage();
+                }
             };
             
             // Send button click
@@ -4211,25 +4486,40 @@
         
         // Scroll to top button
         const scrollTopBtn = document.getElementById('scrollTopBtn');
-        window.onscroll = function() {
-            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-                scrollTopBtn.classList.add('visible');
-            } else {
-                scrollTopBtn.classList.remove('visible');
-            }
-        };
+        if (scrollTopBtn) {
+            window.onscroll = function() {
+                if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                    scrollTopBtn.classList.add('visible');
+                } else {
+                    scrollTopBtn.classList.remove('visible');
+                }
+            };
+        }
         function scrollToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // Navbar scroll effect
         const mainNavbar = document.querySelector('.main-navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                mainNavbar.classList.add('scrolled');
-            } else {
-                mainNavbar.classList.remove('scrolled');
-            }
+        if (mainNavbar) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    mainNavbar.classList.add('scrolled');
+                    // Force blue background with inline style
+                    mainNavbar.style.setProperty('background', 'linear-gradient(135deg, #0a1628 0%, #0d47a1 50%, #1565c0 100%)', 'important');
+                    mainNavbar.style.setProperty('box-shadow', '0 2px 20px rgba(13,71,161,0.4)', 'important');
+                } else {
+                    mainNavbar.classList.remove('scrolled');
+                    // Keep blue background even when not scrolled
+                    mainNavbar.style.setProperty('background', 'linear-gradient(135deg, #0a1628 0%, #0d47a1 50%, #1565c0 100%)', 'important');
+                }
+            });
+        }
+        
+        // Also apply to all navbar elements to ensure they stay blue
+        const allNavbars = document.querySelectorAll('.navbar, nav');
+        allNavbars.forEach(nav => {
+            nav.style.setProperty('background', 'linear-gradient(135deg, #0a1628 0%, #0d47a1 50%, #1565c0 100%)', 'important');
         });
     </script>
     
