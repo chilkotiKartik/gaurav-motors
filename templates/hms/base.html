@@ -392,8 +392,19 @@
         /* add extra space at bottom so CTA buttons and hero content remain visible */
         body { padding-bottom: 160px; }
 
-        /* Hide heavy chatbot FAB on small screens to reduce clutter */
-        .chatbot-fab-v2 { display: none !important; }
+        /* Show chatbot FAB on small screens (smaller, left side to avoid overlap) */
+        .chatbot-fab-v2 {
+          display: flex !important;
+          width: 54px !important;
+          height: 54px !important;
+          bottom: calc(72px + 18px) !important;
+          right: auto !important;
+          left: 14px !important;
+          z-index: 1500 !important;
+          align-items: center !important;
+          justify-content: center !important;
+          box-shadow: 0 6px 20px rgba(0,0,0,0.18) !important;
+        }
 
         /* Ensure mobile bottom nav has adequate height */
         .mobile-bottom-nav { height: 72px; }
