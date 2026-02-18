@@ -4,7 +4,7 @@
 <!-- ═══════════════════════════════════════════════════════════════════════════════
      PREMIUM ABOUT HERO WITH FLOATING ELEMENTS
 ═══════════════════════════════════════════════════════════════════════════════ -->
-<section class="position-relative" style="min-height: 60vh; background: #0d47a1; overflow: hidden; margin-top: -24px;">
+<section class="position-relative" style="min-height: 60vh; background: #0d47a1; overflow: hidden; margin-top: 0;">
   
   <!-- Subtle Background -->
   <div class="position-absolute w-100 h-100" style="background: linear-gradient(160deg, #0d47a1 0%, #1565c0 50%, #0d47a1 100%);">
@@ -74,24 +74,24 @@
 <!-- ═══════════════════════════════════════════════════════════════════════════════
      FOUNDER SECTION - Premium Design
 ═══════════════════════════════════════════════════════════════════════════════ -->
-<section class="py-5" style="background: #f8f9fa;">
+<section class="py-5 founder-section" style="background: #f8f9fa;">
   <div class="container">
     <div class="row align-items-center g-5">
       
       <!-- Founder Photo Column -->
-      <div class="col-lg-6 reveal">
+      <div class="col-lg-5 text-center reveal">
         <div class="position-relative">
           
           <!-- Main Photo with Premium Border -->
           <div class="img-hover-zoom" style="border-radius: 32px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.2); border: 8px solid #fff;">
-            <img src="{{ url_for('static', filename='images/owner.jpg') }}" alt="Madan Mohan Chilkoti - Founder & CEO" class="w-100" style="height: 680px; object-fit: cover;" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80'">
+            <img src="{{ url_for('static', filename='images/owner.jpg') }}" alt="Madan Mohan Chilkoti - Founder & CEO" class="img-fluid" style="width:100%; max-height:520px; height:auto; object-fit:cover;" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80'">
           </div>
           
-          <!-- Experience Badge - Top Left -->
-          <div class="position-absolute p-4 shadow-lg" style="top: -25px; left: -25px; background: #42a5f5; border-radius: 16px; z-index: 10;">
+          <!-- Experience Badge - Top Left (refactored) -->
+          <div class="experience-badge experience-badge--tl shadow-lg position-absolute">
             <div class="text-center text-white">
-              <div class="fw-bold" style="font-size: 2.5rem; line-height: 1;">15+</div>
-              <div style="font-size: 0.75rem; opacity: 0.9;">YEARS EXP</div>
+              <div class="badge-number fw-bold">15+</div>
+              <div class="badge-label small">YEARS EXP</div>
             </div>
           </div>
           
@@ -121,18 +121,22 @@
       </div>
       
       <!-- Founder Info Column -->
-      <div class="col-lg-6 reveal">
-        
-        <span class="badge px-4 py-2 mb-3" style="background: rgba(13,71,161,0.1); color: #42a5f5; font-size: 0.85rem; border-radius: 6px;">
-          <i class="fas fa-user-tie me-2"></i>MEET OUR FOUNDER
+      <div class="col-lg-7">
+        <span class="badge px-3 py-2 mb-3" style="background: rgba(13,71,161,0.1); color: #42a5f5; font-size: 0.8rem; border-radius: 6px; font-weight: 600;">
+          <i class="fas fa-user-tie me-1"></i>FOUNDER & OWNER
         </span>
         
-        <h2 class="display-5 fw-bold mb-3" style="color: #0d47a1;">
-          Madan Mohan Chilkoti
+        <h2 class="display-5 fw-bold mb-4 founder-heading" style="color: #0d47a1; line-height: 1.2;">
+          <span class="founder-name d-block">Madan Modan Chilkoti</span>
+          <span class="founder-tag d-block">Your Trusted Auto Expert</span>
         </h2>
         
-        <p class="lead text-muted mb-4">
-          Visionary entrepreneur and automotive expert with over 15 years of hands-on experience in vehicle maintenance, diagnostics, and business leadership.
+        <p class="lead mb-4" style="color: #475569; line-height: 1.7; font-size: 1.05rem; max-width: 560px;">
+          With over 15 years of hands-on experience in automotive repair and maintenance, Madan Modan Chilkoti has been serving the Uttarakhand community with dedication, expertise, and a commitment to excellence.
+        </p>
+        
+        <p class="mb-4" style="color: #64748b; line-height: 1.7; max-width: 560px;">
+          From apprentice mechanic to establishing Gaurav Motors, our founder's journey is driven by passion for automobiles and a promise to deliver honest, reliable service to every customer.
         </p>
         
         <!-- Premium Quote Box -->

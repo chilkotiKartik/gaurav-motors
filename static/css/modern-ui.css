@@ -178,6 +178,17 @@ body::before {
   padding: 5px 0 !important;
 }
 
+/* Shrink logo when navbar is scrolled */
+.main-navbar.scrolled .logo-container {
+  width: 56px !important;
+  height: 56px !important;
+}
+
+.main-navbar.scrolled .brand-name {
+  transform: scale(0.94);
+  transition: transform 180ms ease;
+}
+
 .navbar-brand {
   transition: all 0.4s var(--ease-bounce);
 }

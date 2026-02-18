@@ -185,23 +185,22 @@
       }
       
       .logo-img {
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.45s cubic-bezier(0.2, 0.9, 0.2, 1);
         filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+        transform-origin: center;
       }
-      
-      .brand-text {
-        display: flex;
-        flex-direction: column;
-        line-height: 1.2;
+
+      /* play logo entrance only after page loader finishes */
+      .logo-img.animate-on-load.animated {
+        animation: logoEnter 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
       }
-      
-      .brand-name {
-        font-size: 1.2rem;
-        letter-spacing: 1px;
-        color: #fff;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+
+      @keyframes logoEnter {
+        0% { transform: translateY(-8px) scale(0.92); opacity: 0; filter: blur(2px); }
+        60% { transform: translateY(2px) scale(1.06); opacity: 1; filter: blur(0); }
+        100% { transform: translateY(0) scale(1); opacity: 1; }
       }
-      
+
       @keyframes bounceIn {
         0% { transform: scale(0); opacity: 0; }
         50% { transform: scale(1.1); }
@@ -328,33 +327,83 @@
         }
       }
       
-      /* Scroll to Top Button */
+      /* Scroll / Call Button styles */
       .scroll-top {
         position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 50px;
-        height: 50px;
-        background: linear-gradient(135deg, #0d47a1, #1565c0);
+        bottom: 90px; /* keep above mobile bottom-nav */
+        right: 22px;
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, #00aaff, #0066cc);
         color: white;
         border: none;
         border-radius: 50%;
-        font-size: 1.5rem;
+        font-size: 1.4rem;
         cursor: pointer;
         opacity: 0;
-        transition: all 0.3s;
-        z-index: 1000;
-        box-shadow: 0 5px 20px rgba(13,71,161,0.3);
+        transform: translateY(0);
+        transition: all 0.25s ease;
+        z-index: 1200;
+        box-shadow: 0 8px 28px rgba(0,102,204,0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
       }
-      
+
+      /* Call-specific visual (primary circular FAB) */
+      .call-top { width: 64px; height: 64px; }
+
       .scroll-top.visible {
         opacity: 1;
-        animation: bounceIn 0.5s;
+        transform: translateY(-6px);
       }
-      
-      .scroll-top:hover {
-        transform: translateY(-10px) scale(1.1);
-        box-shadow: 0 10px 30px rgba(13,71,161,0.6);
+
+      .scroll-top i { pointer-events: none; }
+
+      /* small up-arrow badge inside the call button */
+      .call-top .call-arrow {
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        width: 28px;
+        height: 28px;
+        background: white;
+        color: #0d47a1;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.14);
+        font-size: 0.8rem;
+      }
+
+      .call-top .call-arrow i { font-size: 0.9rem; }
+
+      .scroll-top:hover { transform: translateY(-8px) scale(1.02); }
+
+      @media (max-width: 576px) {
+        .scroll-top { bottom: 100px; right: 16px; width:60px; height:60px; }
+        .call-top .call-arrow { width:26px; height:26px; top:-5px; right:-5px; }
+      }
+
+      /* Mobile spacing fixes: ensure important content isn't covered by bottom nav/fabs */
+      @media (max-width: 768px) {
+        /* add extra space at bottom so CTA buttons and hero content remain visible */
+        body { padding-bottom: 160px; }
+
+        /* Hide heavy chatbot FAB on small screens to reduce clutter */
+        .chatbot-fab-v2 { display: none !important; }
+
+        /* Ensure mobile bottom nav has adequate height */
+        .mobile-bottom-nav { height: 72px; }
+
+        /* Position call and whatsapp floats above the bottom nav */
+        .call-top { bottom: calc(72px + 16px); right: 18px; }
+        .whatsapp-float { bottom: calc(72px + 16px) !important; right: 92px !important; }
+
+        /* Small tweak for book/service button spacing */
+        .book-service, .btn-book, .btn.book-service { margin-bottom: 12px; }
       }
 
       /* ========================================
@@ -915,6 +964,16 @@
         .accessory-card,
         .service-card {
           margin-bottom: 20px;
+        }
+
+        /* Mobile bottom 'Book' pulse */
+        .mobile-bottom-nav .book-action > div {
+          animation: bookPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes bookPulse {
+          0%, 100% { transform: translateY(0); box-shadow: 0 4px 12px rgba(37,211,102,0.18); }
+          50% { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(37,211,102,0.32); }
         }
         
         /* Search bars */
@@ -1928,10 +1987,10 @@
       <div class="container">
         
         <!-- Brand Logo -->
-        <a class="navbar-brand py-2 d-flex align-items-center gap-3" href="{{ url_for('index') }}">
-          <div class="logo-container position-relative" style="width: 55px; height: 55px;">
+        <a class="navbar-brand py-0 d-flex align-items-center gap-3" href="{{ url_for('index') }}">
+          <div class="logo-container position-relative" style="width: 80px; height: 80px; transition: width 220ms ease, height 220ms ease;">
             <div class="logo-bg" style="position: absolute; inset: 0; background: #fff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"></div>
-            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Gaurav Motors" style="position: relative; width: 100%; height: 100%; object-fit: contain; padding: 6px;">
+            <img class="logo-img animate-on-load" src="{{ url_for('static', filename='images/logo.png') }}" alt="Gaurav Motors" style="position: relative; width: 100%; height: 100%; object-fit: contain; padding: 6px;">
           </div>
           <div class="brand-info d-none d-sm-block">
             <div class="brand-name fw-bold text-white" style="font-size: 1.2rem; letter-spacing: 0.5px;">GAURAV MOTORS</div>
@@ -2003,7 +2062,7 @@
           <i class="fas fa-tools" style="font-size: 1.2rem;"></i>
           <div style="font-size: 0.65rem; margin-top: 2px;">Services</div>
         </a>
-        <a href="https://wa.me/919997612579?text=Hi%20Gaurav%20Motors!%20I%20want%20to%20book%20a%20car%20service." class="text-center text-decoration-none" style="flex: 1;">
+        <a href="https://wa.me/919997612579?text=Hi%20Gaurav%20Motors!%20I%20want%20to%20book%20a%20car%20service." class="text-center text-decoration-none book-action" style="flex: 1;">
           <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #25D366, #128C7E); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: -20px auto 0; box-shadow: 0 4px 15px rgba(37,211,102,0.4);">
             <i class="fab fa-whatsapp text-white" style="font-size: 1.4rem;"></i>
           </div>
@@ -2019,7 +2078,7 @@
         </a>
       </div>
     </nav>
-    <div class="container mt-4">
+    <div class="container mt-2">
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
           {% for category, msg in messages %}
@@ -2195,6 +2254,10 @@
             <p class="mb-0 small" style="opacity: 0.8;">
               &copy; 2025 <strong>GAURAV MOTORS LOHAGHAT</strong>. All Rights Reserved.
             </p>
+            <p class="mb-0 small mt-1" style="opacity: 0.75;">
+              Built & maintained by <strong>Kartik Chilkoti</strong> —
+              <a href="mailto:gauravmotors818@gmail.com" class="text-white text-decoration-underline">gauravmotors818@gmail.com</a>
+            </p>
           </div>
           <div class="col-md-6 text-center text-md-end">
             <p class="mb-0 small" style="opacity: 0.8;">
@@ -2207,10 +2270,11 @@
       </div>
     </footer>
 
-    <!-- Scroll to Top Button -->
-    <button class="scroll-top" id="scrollTopBtn" onclick="scrollToTop()">
-      <i class="fas fa-arrow-up"></i>
-    </button>
+    <!-- Call Button (replaces upper scroll-to-top) -->
+    <a class="scroll-top call-top" id="callTopBtn" href="tel:+919997612579" aria-label="Call us">
+      <i class="fas fa-phone"></i>
+      <span class="call-arrow" title="Scroll to top" aria-hidden="true"><i class="fas fa-chevron-up"></i></span>
+    </a>
 
     <!-- ============= ULTRA PREMIUM CHATBOT SYSTEM V2 ============= -->
     
@@ -4484,19 +4548,33 @@
             }
         };
         
-        // Scroll to top button
-        const scrollTopBtn = document.getElementById('scrollTopBtn');
-        if (scrollTopBtn) {
-            window.onscroll = function() {
-                if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-                    scrollTopBtn.classList.add('visible');
-                } else {
-                    scrollTopBtn.classList.remove('visible');
-                }
-            };
+        // Call button (upper) visibility toggle
+        const callTopBtn = document.getElementById('callTopBtn');
+        if (callTopBtn) {
+          // show on mobile immediately and toggle on desktop scroll
+          if (window.innerWidth <= 768) {
+            callTopBtn.classList.add('visible');
+          }
+          window.onscroll = function() {
+            if (window.innerWidth > 768) {
+              if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                callTopBtn.classList.add('visible');
+              } else {
+                callTopBtn.classList.remove('visible');
+              }
+            }
+          };
+          // if the inner arrow is clicked, scroll to top instead of initiating call
+          callTopBtn.addEventListener('click', function(e) {
+            if (e.target.closest && e.target.closest('.call-arrow')) {
+              e.preventDefault();
+              scrollToTop();
+            }
+          });
         }
+        // preserve original scrollToTop function for other scroll-top elements
         function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // Navbar scroll effect
@@ -4523,10 +4601,7 @@
         });
     </script>
     
-    <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/919997612579?text=Hi%20GM%20Motors!%20I%20need%20help%20with%20my%20car." target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp">
-      <i class="fab fa-whatsapp"></i>
-    </a>
+    <!-- WhatsApp Floating Button — removed from markup (now created by JS to avoid duplicates) -->
     
     <style>
       .whatsapp-float {

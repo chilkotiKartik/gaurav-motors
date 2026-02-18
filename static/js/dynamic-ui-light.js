@@ -220,6 +220,8 @@
 
     // ===== SCROLL TO TOP =====
     function initScrollToTop() {
+        // If a call-top element exists (we replaced the upper arrow), don't create another scroll-to-top button
+        if (document.querySelector('.call-top')) return;
         var btn = document.createElement('button');
         btn.className = 'scroll-top-btn';
         btn.innerHTML = '<i class="fas fa-arrow-up"></i>';
@@ -253,7 +255,11 @@
 
     // ===== WHATSAPP FLOAT =====
     function initWhatsAppFloat() {
-        if (document.querySelector('.whatsapp-float')) return;
+        // avoid creating a second floating WA if one exists
+        if (document.querySelector('.whatsapp-float') || document.querySelector('.fab-whatsapp')) return;
+
+        // If mobile bottom nav exists, avoid adding a floating WA on small screens (use bottom nav WA)
+        if (window.innerWidth <= 991 && document.querySelector('.mobile-bottom-nav')) return;
 
         var btn = document.createElement('a');
         btn.className = 'whatsapp-float';

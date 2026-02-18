@@ -143,8 +143,10 @@
             
             if (currentScrollY > CONFIG.scrollThreshold) {
                 navbar.classList.add('scrolled');
+                navbar.classList.add('navbar-scrolled');
             } else {
                 navbar.classList.remove('scrolled');
+                navbar.classList.remove('navbar-scrolled');
             }
 
             // Hide/show on scroll direction
@@ -266,6 +268,9 @@
         const heroSection = document.querySelector('.hero-wrapper, .hero-section, .jumbotron');
         if (!heroSection) return;
 
+        // Disable particle system on small screens for clarity
+        if (window.innerWidth < 768) return;
+
         // Create particle container
         let particleContainer = heroSection.querySelector('.hero-particles');
         if (!particleContainer) {
@@ -364,7 +369,11 @@
 
     // ===== SCROLL TO TOP =====
     function initScrollToTop() {
-        let scrollBtn = document.querySelector('.fab-scroll-top, .scroll-top');
+        // If a call-top element exists (we replaced the upper arrow), don't create another scroll-to-top button
+        if (document.querySelector('.call-top')) return;
+
+        // avoid selecting the new call button (which also uses .scroll-top)
+        let scrollBtn = document.querySelector('.fab-scroll-top, .scroll-top:not(.call-top)');
         
         if (!scrollBtn) {
             scrollBtn = document.createElement('button');
@@ -734,6 +743,12 @@
 
     // ===== WHATSAPP FLOAT =====
     function initWhatsAppFloat() {
+        // don't add if another whatsapp float already exists
+        if (document.querySelector('.whatsapp-float')) return;
+
+        // If there's a mobile bottom nav (we'll show WA there), avoid adding a floating WA on small screens
+        if (window.innerWidth <= 991 && document.querySelector('.mobile-bottom-nav')) return;
+
         let whatsappBtn = document.querySelector('.fab-whatsapp');
         
         if (!whatsappBtn) {
